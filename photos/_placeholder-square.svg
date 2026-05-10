@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" preserveAspectRatio="xMidYMid slice" role="img" aria-label="Placeholder image">
+  <defs>
+    <radialGradient id="warmth-s" cx="45%" cy="40%" r="85%">
+      <stop offset="0%" stop-color="#c9a87a" />
+      <stop offset="45%" stop-color="#7a4a2a" />
+      <stop offset="100%" stop-color="#1c1410" />
+    </radialGradient>
+    <filter id="grain-s">
+      <feTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="2" stitchTiles="stitch" />
+      <feColorMatrix values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.18 0" />
+      <feComposite in2="SourceGraphic" operator="in" />
+    </filter>
+  </defs>
+  <rect width="1000" height="1000" fill="url(#warmth-s)" />
+  <rect width="1000" height="1000" filter="url(#grain-s)" />
+</svg>

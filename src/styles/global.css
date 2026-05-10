@@ -1,0 +1,163 @@
+@import '@fontsource/cormorant-garamond/400.css';
+@import '@fontsource/cormorant-garamond/500.css';
+@import '@fontsource/cormorant-garamond/600-italic.css';
+@import '@fontsource/cormorant-garamond/700.css';
+@import '@fontsource/lora/400.css';
+@import '@fontsource/lora/400-italic.css';
+@import '@fontsource/lora/500.css';
+@import '@fontsource/lora/600.css';
+@import '@fontsource/caveat/400.css';
+@import '@fontsource/caveat/600.css';
+@import '@fontsource/hind-siliguri/400.css';
+@import '@fontsource/hind-siliguri/500.css';
+@import '@fontsource/hind-siliguri/600.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+    --paper-tint: rgba(28, 20, 16, 0.025);
+  }
+
+  html {
+    @apply font-body text-ink antialiased;
+    background-color: theme('colors.cream');
+    background-image:
+      url('/paper-texture.svg'),
+      radial-gradient(ellipse at top, rgba(201, 168, 122, 0.18), transparent 60%),
+      radial-gradient(ellipse at bottom, rgba(122, 74, 42, 0.10), transparent 70%);
+    background-size: 600px 600px, 100% 100%, 100% 100%;
+    background-attachment: fixed, fixed, fixed;
+    background-blend-mode: multiply, normal, normal;
+  }
+
+  body {
+    @apply min-h-screen;
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif text-tea-900;
+    font-feature-settings: 'liga', 'kern';
+  }
+
+  h1 { @apply text-display-2xl font-medium; }
+  h2 { @apply text-display-lg font-medium; }
+  h3 { @apply text-display-md font-medium; }
+  h4 { @apply text-2xl font-medium; }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  ::selection {
+    background-color: theme('colors.tea.300');
+    color: theme('colors.tea.900');
+  }
+
+  a {
+    @apply transition-colors duration-200 ease-ink;
+  }
+
+  img {
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+@layer components {
+  .ink-link {
+    @apply relative text-tea-700 hover:text-tea-900;
+    background-image: linear-gradient(theme('colors.tea.500'), theme('colors.tea.500'));
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size 0.3s theme('transitionTimingFunction.ink');
+  }
+  .ink-link:hover { background-size: 100% 1px; }
+
+  .drop-cap::first-letter {
+    @apply font-serif text-tea-900;
+    font-size: 4.5em;
+    line-height: 0.85;
+    float: left;
+    padding-right: 0.12em;
+    padding-top: 0.05em;
+    font-weight: 600;
+    font-style: italic;
+  }
+
+  .ink-divider {
+    @apply mx-auto max-w-[18rem] my-12;
+    height: 1px;
+    background:
+      linear-gradient(to right, transparent, theme('colors.tea.500') 20%, theme('colors.tea.500') 80%, transparent);
+    opacity: 0.55;
+    position: relative;
+  }
+  .ink-divider::after {
+    content: '✦';
+    @apply absolute left-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2 px-2 text-tea-500;
+    background-color: theme('colors.cream');
+    font-size: 0.7rem;
+  }
+
+  .nav-pill {
+    @apply px-3 py-1.5 rounded-full text-sm tracking-wide transition-colors duration-200 ease-ink;
+  }
+
+  .tag {
+    @apply inline-block px-2.5 py-0.5 rounded-full text-xs uppercase tracking-[0.18em] text-tea-700 border border-tea-500/30 bg-cream/50;
+  }
+}
+
+@layer utilities {
+  .grain-overlay {
+    position: relative;
+  }
+  .grain-overlay::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url('/paper-texture.svg');
+    background-size: 300px 300px;
+    mix-blend-mode: multiply;
+    opacity: 0.18;
+    pointer-events: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* View Transitions — restrained ink-fade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 320ms;
+  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+::view-transition-old(root) {
+  animation-name: ink-fade-out;
+}
+::view-transition-new(root) {
+  animation-name: ink-fade-in;
+}
+
+@keyframes ink-fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+@keyframes ink-fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+}

@@ -1,0 +1,21 @@
+---
+interface Props {
+  author?: string;
+  lang?: 'en' | 'bn';
+  size?: 'md' | 'lg' | 'xl';
+}
+
+const { author, lang = 'en', size = 'lg' } = Astro.props;
+
+const sizeClass = size === 'xl' ? 'text-display-xl' : size === 'lg' ? 'text-display-lg' : 'text-2xl';
+const fontClass = lang === 'bn' ? 'font-bn font-medium' : 'font-serif italic font-medium';
+---
+
+<blockquote class="my-16 mx-auto max-w-prose text-center">
+  <p class:list={['text-balance leading-tight text-tea-900', sizeClass, fontClass]}>
+    <span aria-hidden="true" class="select-none text-tea-500/50">“</span><slot /><span aria-hidden="true" class="select-none text-tea-500/50">”</span>
+  </p>
+  {author && (
+    <cite class="mt-6 block font-hand text-base not-italic text-tea-600">— {author}</cite>
+  )}
+</blockquote>

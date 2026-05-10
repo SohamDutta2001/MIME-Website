@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '~/components/Layout.astro';
+import Section from '~/components/Section.astro';
+import MenuCard from '~/components/MenuCard.astro';
+import MenuFilter from '~/components/islands/MenuFilter.tsx';
+
+const all = await getCollection('menu', ({ data }) => data.available !== false);
+all.sort((a, b) => a.data.order - b.data.order);
+
+const groups: { key: 'tea' | 'coffee' | 'snack' | 'quick-bite'; label: string; bn?: string; note?: string }[] = [
+  { key: 'tea', label: 'Teas', bn: 'চা', note: 'The heart of the room.' },
+  { key: 'coffee', label: 'Coffees', note: 'Beans from Coorg and Chikmagalur.' },
+  { key: 'snack', label: 'Snacks', note: 'For the longer conversations.' },
+  { key: 'quick-bite', label: 'Quick Bites', note: 'For the late-night crowd.' },
+];
+
+const rotateFor = (i: number) => ((i % 5) - 2) * 0.5;
+---
+
+<Layout title="Menu" description="Tea pulled slow. Coffee from south filter beans. Snacks worth pausing for.">
+  <header class="pt-12 sm:pt-16">
+    <p class="font-hand text-lg text-tea-500">A tea-stained page</p>
+    <h1 class="mt-2 text-balance font-serif text-display-xl font-medium text-tea-900">The Menu</h1>
+    <p class="mt-6 max-w-prose font-body text-lg leading-relaxed text-tea-700">
+      Everything here is made slow. Tea is steeped, not steamed. Coffee is pulled, not poured.
+      Snacks come out when they're done, not when you ordered.
+    </p>
+  </header>
+
+  <div class="mt-10">
+    <MenuFilter client:visible />
+  </div>
+
+  <div class="ink-divider mt-16" aria-hidden="true" />
+
+  {groups.map(group => {
+    const items = all.filter(item => item.data.category === group.key);
+    if (items.length === 0) return null;
+    return (
+      <Section id={group.key}>
+        <header class="mb-8 max-w-prose">
+          <div class="flex items-baseline gap-3">
+            <h2 class="font-serif text-display-md font-medium text-tea-900">{group.label}</h2>
+            {group.bn && <span class="font-bn text-2xl text-tea-500">{group.bn}</span>}
+          </div>
+          {group.note && <p class="mt-2 font-hand text-base text-tea-500">{group.note}</p>}
+        </header>
+        <div class="grid gap-5 sm:grid-cols-2 md:gap-6">
+          {items.map((item, i) => (
+            <MenuCard
+              name={item.data.name}
+              price={item.data.price}
+              description={item.data.description}
+              note={item.data.note}
+              category={item.data.category}
+              highlight={item.data.highlight}
+              rotate={rotateFor(i)}
+            />
+          ))}
+        </div>
+      </Section>
+    );
+  })}
+
+  <Section align="center" divider>
+    <p class="mx-auto max-w-prose font-body text-tea-700">
+      Prices are in rupees, inclusive of tax. We accept cash, cards, and UPI.
+      A small bowl of nimki appears at every table on its own.
+    </p>
+  </Section>
+</Layout>

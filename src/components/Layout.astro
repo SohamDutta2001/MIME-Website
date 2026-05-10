@@ -1,0 +1,42 @@
+---
+import { ViewTransitions } from 'astro:transitions';
+import Nav from './Nav.astro';
+import Footer from './Footer.astro';
+import { site } from '~/data/site';
+import '~/styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  variant?: 'default' | 'wide';
+}
+
+const { title, description, variant = 'default' } = Astro.props;
+const fullTitle = title ? `${title} — ${site.name}` : site.name;
+const meta = description ?? site.description;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{fullTitle}</title>
+    <meta name="description" content={meta} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={meta} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="theme-color" content="#3b2418" />
+    <ViewTransitions />
+  </head>
+  <body class="grain-overlay">
+    <Nav />
+    <main class:list={['mx-auto', variant === 'wide' ? 'max-w-editorial' : 'max-w-column', 'px-gutter']}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

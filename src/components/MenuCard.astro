@@ -1,0 +1,35 @@
+---
+interface Props {
+  name: string;
+  price: number;
+  description?: string;
+  note?: string;
+  category: 'tea' | 'coffee' | 'snack' | 'quick-bite';
+  rotate?: number;
+  highlight?: boolean;
+}
+
+const { name, price, description, note, category, rotate = 0, highlight = false } = Astro.props;
+const formattedPrice = `₹${price}`;
+---
+
+<article
+  data-menu-category={category}
+  class:list={[
+    'menu-card group relative bg-cream/85 px-6 py-5 shadow-soft transition-transform duration-200 ease-ink hover:!rotate-0 hover:scale-[1.02]',
+    highlight && 'ring-1 ring-tea-500/40',
+  ]}
+  style={rotate !== 0 ? `transform: rotate(${rotate}deg);` : undefined}
+>
+  <header class="flex items-baseline justify-between gap-4">
+    <h3 class="font-serif text-xl font-medium text-tea-900">{name}</h3>
+    <span class="font-body tabular-nums text-base text-tea-700">{formattedPrice}</span>
+  </header>
+  {description && (
+    <p class="mt-1.5 font-body italic text-[15px] leading-snug text-tea-700">{description}</p>
+  )}
+  {note && (
+    <p class="mt-3 font-hand text-base text-tea-500">— {note}</p>
+  )}
+  <span aria-hidden="true" class="pointer-events-none absolute inset-0 -z-10 bg-paper opacity-0 transition-opacity duration-300 group-hover:opacity-30" />
+</article>

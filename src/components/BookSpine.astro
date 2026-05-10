@@ -1,0 +1,35 @@
+---
+interface Props {
+  title: string;
+  titleBn?: string;
+  author: string;
+  spineColor?: string;
+  height?: number;
+  width?: number;
+}
+
+const { title, titleBn, author, spineColor = '#7a4a2a', height = 240, width = 44 } = Astro.props;
+const txtColor = '#f4ecd8';
+---
+
+<div
+  class="book-spine relative inline-flex shrink-0 select-none flex-col items-center justify-between border border-black/30 px-2 py-3 text-center shadow-[2px_4px_8px_-4px_rgba(28,20,16,0.55)] transition-transform duration-300 ease-ink hover:-translate-y-1"
+  style={`background: linear-gradient(to right, ${spineColor}cc, ${spineColor} 50%, ${spineColor}d8); height: ${height}px; width: ${width}px;`}
+  title={`${title} — ${author}`}
+>
+  <span
+    class="font-serif text-[11px] font-medium leading-tight tracking-tight"
+    style={`color: ${txtColor}; writing-mode: vertical-rl; transform: rotate(180deg);`}
+  >
+    {title}
+  </span>
+  <span
+    class="font-body text-[9px] uppercase tracking-[0.18em]"
+    style={`color: ${txtColor}99; writing-mode: vertical-rl; transform: rotate(180deg);`}
+  >
+    {author}
+  </span>
+  {titleBn && (
+    <span class="sr-only">{titleBn}</span>
+  )}
+</div>

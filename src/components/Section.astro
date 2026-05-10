@@ -1,0 +1,27 @@
+---
+interface Props {
+  heading?: string;
+  accent?: string;
+  divider?: boolean;
+  id?: string;
+  class?: string;
+  align?: 'left' | 'center';
+}
+
+const { heading, accent, divider = false, id, class: extraClass = '', align = 'left' } = Astro.props;
+---
+
+<section id={id} class:list={['py-section', extraClass]}>
+  {divider && <div class="ink-divider" aria-hidden="true" />}
+  {(heading || accent) && (
+    <header class:list={['mb-10 max-w-prose', align === 'center' && 'mx-auto text-center']}>
+      {accent && (
+        <p class="mb-3 font-hand text-base text-tea-500">{accent}</p>
+      )}
+      {heading && (
+        <h2 class="text-balance text-display-lg font-serif font-medium text-tea-900">{heading}</h2>
+      )}
+    </header>
+  )}
+  <slot />
+</section>

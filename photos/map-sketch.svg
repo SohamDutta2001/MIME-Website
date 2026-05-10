@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" role="img" aria-label="Hand-drawn map of Art Teas Tree Cafe">
+  <defs>
+    <filter id="ink-bleed">
+      <feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="2" />
+      <feDisplacementMap in="SourceGraphic" scale="2" />
+    </filter>
+  </defs>
+  <g stroke="#1c1410" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" filter="url(#ink-bleed)">
+    <path d="M 60 320 Q 200 280 380 310 T 740 290" stroke-width="3" />
+    <path d="M 100 480 Q 280 460 460 470 T 720 490" />
+    <path d="M 240 90 Q 250 220 280 320 T 320 540" />
+    <path d="M 540 60 Q 530 200 520 320 T 530 540" />
+    <path d="M 380 200 Q 410 230 450 240" />
+    <path d="M 200 200 L 240 200 L 240 250 L 200 250 Z" />
+    <path d="M 580 380 L 640 380 L 640 430 L 580 430 Z" />
+    <circle cx="410" cy="320" r="14" fill="#7a4a2a" stroke="#1c1410" />
+    <circle cx="410" cy="320" r="6" fill="#f4ecd8" />
+  </g>
+  <g font-family="Caveat, cursive" fill="#1c1410">
+    <text x="420" y="295" font-size="22" font-style="italic">Art Teas Tree Cafe</text>
+    <text x="80" y="350" font-size="16" opacity="0.7">College Street →</text>
+    <text x="600" y="270" font-size="16" opacity="0.7">→ Park Street</text>
+    <text x="120" y="510" font-size="16" opacity="0.7">tram line</text>
+    <text x="560" y="100" font-size="16" opacity="0.6">north</text>
+  </g>
+</svg>

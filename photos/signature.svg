@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" role="img" aria-label="Hand-drawn signature flourish">
+  <g stroke="#3b2418" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M 20 35 Q 40 15 60 30 T 100 30 Q 120 15 140 35 T 180 30" />
+    <path d="M 30 42 Q 60 48 100 42 T 170 42" stroke-width="1.2" opacity="0.6" />
+  </g>
+</svg>

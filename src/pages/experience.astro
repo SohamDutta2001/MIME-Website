@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '~/components/Layout.astro';
+import Section from '~/components/Section.astro';
+import PullQuote from '~/components/PullQuote.astro';
+import { photos } from '~/data/photos';
+import { site } from '~/data/site';
+
+const movements = [
+  {
+    no: 'I',
+    title: 'Cha er Dokan',
+    titleBn: 'চায়ের দোকান',
+    photo: photos.experience.cha,
+    alt: 'A street tea stall at dusk, steam rising over the kettle',
+    body: `It begins, like most things in Kolkata, at the corner. A small kettle on a coal stove. A bench made of two planks and an idea. A man pouring chai from the height of a shoulder into a clay cup. You don't go for the tea. You go for the half-an-hour that happens around it.
+
+We thought: what if you didn't have to stand to be part of that? What if the bench had a back, the room had a roof, and nobody hurried you when the cup was empty. That's what's here. The same tea, mostly. The same arguments, hopefully. Different chairs.`,
+    pullquote: 'The chair, not the tea, is the point.',
+  },
+  {
+    no: 'II',
+    title: 'The Books',
+    photo: photos.experience.books,
+    alt: 'A bookshelf in late afternoon light',
+    body: `Every book on the shelf belongs to the café and to none of us. People bring books they have finished. They take books they've meant to read. Some come back. Some don't. We don't keep records.
+
+The shelf has a Tagore, naturally. A Pather Panchali. A Susan Sontag. A book about photography in Hindi that nobody understands but everybody picks up. The point of a shared shelf isn't the inventory. It's the small assumption: that you are the kind of person who reads. We choose to assume that of everyone who walks in.`,
+    pullquote: 'A shelf no one owns is a kind of public weather.',
+  },
+  {
+    no: 'III',
+    title: 'The Smoke',
+    photo: photos.experience.smoke,
+    alt: 'A cigarette resting on the lip of an ashtray',
+    body: `There is a courtyard, half open to the sky, where you may smoke. We don't pretend we don't see it. Kolkata adda has always smelled of unfiltered Charminars and Wills Navy Cut. We're not going to be the people who edited that out.
+
+The courtyard is also where the loudest conversations happen. The angriest arguments about Mahmoud Darwish or the Bengali election or whether Ray's Charulata is the better film than Pratidwandi. If you are a non-smoker, the room inside is yours, completely. The courtyard is for the others, and for the air between them.`,
+    pullquote: 'We are not going to be the people who edited that out.',
+  },
+  {
+    no: 'IV',
+    title: 'The Hours',
+    photo: photos.experience.hours,
+    alt: 'An empty table in the soft hour just before evening',
+    body: `Nobody is asked to leave. There is no two-hour table policy. There is no minimum order. There is no Wi-Fi password printed in three languages because there is no Wi-Fi. We are open until late, and on Fridays later. On Sundays we open at noon because Sundays should not start before noon.
+
+This is not a coffee shop trying to be a third place. This is a tea stall trying to be enough. If that distinction is too fine, you'll feel it within ten minutes of being here.`,
+    pullquote: 'A tea stall trying to be enough.',
+  },
+];
+---
+
+<Layout title="Experience" description="On adda, books, smoke, and the slow hours that make a place a place.">
+  <header class="pt-12 sm:pt-16">
+    <p class="font-hand text-lg text-tea-500">Notes from inside</p>
+    <h1 class="mt-2 text-balance font-serif text-display-xl font-medium text-tea-900">
+      The Experience
+    </h1>
+    <p class="mt-6 max-w-prose font-body text-lg leading-relaxed text-tea-700">
+      Four movements, none of them a manifesto. You can read these in order, or skip
+      to the one that already feels yours.
+    </p>
+  </header>
+
+  <div class="ink-divider mt-16" aria-hidden="true" />
+
+  {movements.map((m, i) => (
+    <Section id={`m-${m.no.toLowerCase()}`}>
+      <header class="mb-8 flex items-baseline gap-6">
+        <span class="font-serif text-display-xl font-medium leading-none text-tea-500/35">{m.no}</span>
+        <div>
+          {m.titleBn && <p class="font-bn text-xl text-tea-500">{m.titleBn}</p>}
+          <h2 class="font-serif text-display-lg font-medium text-tea-900">{m.title}</h2>
+        </div>
+      </header>
+
+      <div class="-mx-gutter mb-10 sm:mx-0">
+        <Image
+          src={m.photo}
+          alt={m.alt}
+          width={1400}
+          height={788}
+          loading={i === 0 ? 'eager' : 'lazy'}
+          class="h-auto w-full sm:rounded-sm"
+          style="filter: sepia(0.05) saturate(0.95);"
+        />
+      </div>
+
+      <div class="max-w-prose font-body text-lg leading-loose text-tea-800 drop-cap">
+        {m.body.split('\n\n').map((p, j) => (
+          <p class:list={['mb-6', j === 0 && 'drop-cap']}>{p}</p>
+        ))}
+      </div>
+
+      <PullQuote size="md">{m.pullquote}</PullQuote>
+    </Section>
+  ))}
+
+  <Section align="center">
+    <p class="mx-auto max-w-prose font-body text-tea-700">
+      Come for an hour. Stay for three. There is no rush.
+    </p>
+    <p class="mt-6 font-hand text-2xl text-tea-900">{site.bengali.cha}, and an evening.</p>
+    <div class="mt-10 flex justify-center gap-4">
+      <a href="/menu" class="rounded-full bg-tea-700 px-6 py-3 font-body text-sm font-medium text-cream transition-transform hover:scale-[1.02]">Read the menu</a>
+      <a href="/visit" class="rounded-full border border-tea-500/45 px-6 py-3 font-body text-sm font-medium text-tea-700 transition-colors hover:bg-tea-500/10">Find the door</a>
+    </div>
+  </Section>
+</Layout>

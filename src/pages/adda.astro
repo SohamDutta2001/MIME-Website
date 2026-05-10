@@ -1,0 +1,115 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '~/components/Layout.astro';
+import Section from '~/components/Section.astro';
+import PullQuote from '~/components/PullQuote.astro';
+import BookSpine from '~/components/BookSpine.astro';
+import GalleryLightbox from '~/components/islands/GalleryLightbox.tsx';
+import { photos } from '~/data/photos';
+import { books } from '~/data/books';
+
+// For the lightbox island, we need URL-resolvable strings, not ImageMetadata.
+// `.src` on Astro image imports gives the served URL.
+const lightboxPhotos = photos.gallery.map(g => ({ src: (g.src as any).src ?? g.src, alt: g.alt }));
+
+const voices = [
+  { quote: "I came to read for an hour. I stayed four. Nobody asked why.", who: 'Madhura, regular' },
+  { quote: "It's the only place in this city where I've watched a complete stranger become a friend across a single pot of Darjeeling.", who: 'Anirban, theatre director' },
+  { quote: "The cha is good. The arguments are better.", who: 'A note left on a napkin' },
+  { quote: "I rehearsed an entire monologue here. Out loud. Nobody asked me to stop.", who: 'Tia, second-year, Presidency' },
+  { quote: "I forgot my book. They lent me theirs.", who: "Anonymous, marked in the visitor's notebook" },
+];
+---
+
+<Layout title="Adda" description="A gallery and a few notes from the regulars. The room when nobody is looking." variant="wide">
+
+  <header class="pt-12 sm:pt-16">
+    <p class="font-hand text-lg text-tea-500">The room, the regulars, the long evenings</p>
+    <h1 class="mt-2 text-balance font-serif text-display-xl font-medium text-tea-900">Adda</h1>
+    <p class="mt-6 max-w-prose font-body text-lg leading-relaxed text-tea-700">
+      The Bengali word doesn't translate well. <em>Adda</em> isn't conversation,
+      isn't hanging out, isn't a meeting. It's all of them, slower. A few photos
+      from the room when nobody is looking, a shelf you can borrow from, and
+      some notes other people left.
+    </p>
+  </header>
+
+  <div class="ink-divider mt-16" aria-hidden="true" />
+
+  {/* GALLERY — masonry-ish */}
+  <Section heading="Photographs" accent="without permission, mostly">
+    <div class="columns-1 gap-4 sm:columns-2 sm:gap-5 lg:columns-3">
+      {photos.gallery.map((g, i) => (
+        <button
+          type="button"
+          data-gallery-index={i}
+          aria-label={`Open photo ${i + 1}: ${g.alt}`}
+          class="mb-4 block w-full break-inside-avoid bg-cream p-2 shadow-soft transition-transform duration-300 ease-ink hover:scale-[1.02] sm:mb-5 sm:p-2.5"
+          style={`transform: rotate(${(i % 5 - 2) * 0.4}deg);`}
+        >
+          <Image
+            src={g.src}
+            alt={g.alt}
+            width={g.orient === 'landscape' ? 800 : g.orient === 'portrait' ? 600 : 700}
+            height={g.orient === 'landscape' ? 500 : g.orient === 'portrait' ? 800 : 700}
+            loading={i < 3 ? 'eager' : 'lazy'}
+            class="block h-auto w-full"
+            style="filter: sepia(0.05) saturate(0.95);"
+          />
+          <span class="mt-2 block text-center font-hand text-sm text-tea-600">{g.alt}</span>
+        </button>
+      ))}
+    </div>
+    <GalleryLightbox client:idle photos={lightboxPhotos} />
+  </Section>
+
+  <div class="ink-divider" aria-hidden="true" />
+
+  {/* BOOK CORNER */}
+  <Section heading="The shelf" accent="borrow one, leave one" divider={false}>
+    <p class="mb-10 max-w-prose font-body leading-relaxed text-tea-700">
+      Every book here belongs to the café and to no one. People bring books they're done
+      with. People take books they've meant to read. Some come back. Some don't. The shelf
+      is a small public weather.
+    </p>
+    <div class="-mx-2 flex flex-wrap items-end gap-1 overflow-x-auto pb-4 pl-2 sm:gap-1.5">
+      {books.map((book, i) => (
+        <BookSpine
+          title={book.title}
+          titleBn={book.titleBn}
+          author={book.author}
+          spineColor={book.spineColor}
+          height={210 + (i % 4) * 18}
+          width={42 + (i % 3) * 4}
+        />
+      ))}
+    </div>
+    <p class="mt-8 font-hand text-base text-tea-500">
+      ↑ a sliver of what's there today. The shelf changes weekly.
+    </p>
+  </Section>
+
+  <div class="ink-divider" aria-hidden="true" />
+
+  {/* VOICES */}
+  <Section heading="Voices from the room" accent="notes pinned to the noticeboard">
+    <div class="grid gap-6 sm:grid-cols-2">
+      {voices.map((v, i) => (
+        <figure
+          class="bg-cream/90 p-6 shadow-soft"
+          style={`transform: rotate(${(i % 4 - 2) * 0.6}deg);`}
+        >
+          <p class={i % 2 === 0 ? "font-hand text-xl leading-snug text-tea-900" : "font-serif italic text-lg leading-relaxed text-tea-800"}>
+            "{v.quote}"
+          </p>
+          <figcaption class="mt-4 text-sm tracking-wide text-tea-500">— {v.who}</figcaption>
+        </figure>
+      ))}
+    </div>
+  </Section>
+
+  <PullQuote lang="bn" size="xl">আজও বসা হলো না</PullQuote>
+  <p class="-mt-12 text-center font-hand text-base text-tea-500">
+    "we still didn't quite sit down" — a Kolkata phrase, half regret, half promise.
+  </p>
+</Layout>

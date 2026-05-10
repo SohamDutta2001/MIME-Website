@@ -1,0 +1,56 @@
+---
+import { Image } from 'astro:assets';
+import { site } from '~/data/site';
+import { photos } from '~/data/photos';
+---
+
+<footer class="mt-section border-t border-tea-500/15 bg-tea-900 text-cream/85">
+  <div class="mx-auto grid max-w-editorial gap-12 px-gutter py-16 md:grid-cols-3 md:gap-8">
+    <div>
+      <p class="font-serif text-2xl font-medium text-cream">{site.name}</p>
+      <p class="mt-3 font-hand text-lg text-amber">{site.accent}</p>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed text-cream/70">
+        {site.philosophy}
+      </p>
+    </div>
+
+    <div class="space-y-6 text-sm leading-relaxed text-cream/85">
+      <div>
+        <p class="text-xs uppercase tracking-[0.22em] text-amber/70">Find us</p>
+        <p class="mt-2">{site.location.line1}</p>
+        <p>{site.location.line2}</p>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-[0.22em] text-amber/70">Hours</p>
+        <ul class="mt-2 space-y-1">
+          {site.hours.map(({ days, time }) => (
+            <li class="flex justify-between gap-4 max-w-xs"><span>{days}</span><span class="tabular-nums">{time}</span></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="space-y-6 text-sm leading-relaxed text-cream/85">
+      <div>
+        <p class="text-xs uppercase tracking-[0.22em] text-amber/70">Say hello</p>
+        <ul class="mt-2 space-y-1">
+          <li>{site.contact.phone}</li>
+          <li><a href={`mailto:${site.contact.email}`} class="ink-link !text-cream hover:!text-amber">{site.contact.email}</a></li>
+          <li><a href={site.contact.instagramUrl} target="_blank" rel="noopener" class="ink-link !text-cream hover:!text-amber">{site.contact.instagram}</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="text-xs uppercase tracking-[0.22em] text-amber/70">In good company</p>
+        <p class="mt-2 text-cream/70">{site.affiliation.name}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-cream/10">
+    <div class="mx-auto flex max-w-editorial flex-col items-center gap-6 px-gutter py-10 sm:flex-row sm:justify-between">
+      <Image src={photos.signature} alt="" width={120} height={36} class="opacity-70" />
+      <p class="font-hand text-sm text-cream/55">{site.bengali.closing}</p>
+      <p class="text-xs uppercase tracking-[0.22em] text-cream/40">© {new Date().getFullYear()} {site.name}</p>
+    </div>
+  </div>
+</footer>
