@@ -11,7 +11,7 @@ import { photos } from '~/data/photos';
 <Layout description={site.description}>
   {/* HERO — image-led, large emotional landing */}
   <section class="relative -mx-gutter mt-2 overflow-hidden" transition:name="hero">
-    <div class="relative aspect-[16/10] w-full sm:aspect-[16/7]">
+    <div class="relative w-full min-h-[78svh] sm:min-h-[82svh] lg:min-h-0 lg:aspect-[16/7]">
       <Image
         src={photos.hero}
         alt="The cafe at golden hour, light through the windows, an open notebook on a wooden table"
@@ -21,9 +21,9 @@ import { photos } from '~/data/photos';
         class="absolute inset-0 h-full w-full object-cover"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-tea-900/75 via-tea-900/25 to-tea-900/10" />
-      <div class="absolute inset-0 flex flex-col items-center justify-end px-gutter pb-12 text-center sm:pb-20">
+      <div class="absolute inset-0 flex flex-col items-center justify-end px-gutter pb-12 pt-8 text-center sm:pb-20 sm:pt-12">
         <p class="font-hand text-xl text-amber sm:text-2xl">{site.accent}</p>
-        <h1 class="mt-4 text-balance font-serif text-display-2xl font-medium text-cream drop-shadow-md">
+        <h1 class="mt-4 text-balance font-serif text-display-xl font-medium text-cream drop-shadow-md sm:text-display-2xl">
           {site.tagline}
         </h1>
         <p class="mt-6 max-w-prose font-body text-base leading-relaxed text-cream/85 sm:text-lg">
