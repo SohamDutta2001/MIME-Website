@@ -6,6 +6,10 @@ import PullQuote from '~/components/PullQuote.astro';
 import { photos } from '~/data/photos';
 import { site } from '~/data/site';
 
+const base = import.meta.env.BASE_URL;
+const basePath = base === '/' ? '' : base.replace(/\/$/, '');
+const withBase = (path: string) => `${basePath}${path}`;
+
 const movements = [
   {
     no: 'I',
@@ -103,8 +107,8 @@ This is not a coffee shop trying to be a third place. This is a tea stall trying
     </p>
     <p class="mt-6 font-hand text-2xl text-tea-900">{site.bengali.cha}, and an evening.</p>
     <div class="mt-10 flex justify-center gap-4">
-      <a href="/menu" class="rounded-full bg-tea-700 px-6 py-3 font-body text-sm font-medium text-cream transition-transform hover:scale-[1.02]">Read the menu</a>
-      <a href="/visit" class="rounded-full border border-tea-500/45 px-6 py-3 font-body text-sm font-medium text-tea-700 transition-colors hover:bg-tea-500/10">Find the door</a>
+      <a href={withBase('/menu')} class="rounded-full bg-tea-700 px-6 py-3 font-body text-sm font-medium text-cream transition-transform hover:scale-[1.02]">Read the menu</a>
+      <a href={withBase('/visit')} class="rounded-full border border-tea-500/45 px-6 py-3 font-body text-sm font-medium text-tea-700 transition-colors hover:bg-tea-500/10">Find the door</a>
     </div>
   </Section>
 </Layout>

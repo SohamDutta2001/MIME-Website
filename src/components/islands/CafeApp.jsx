@@ -19,10 +19,14 @@ import {
   WashiTape,
   CoffeeRing,
   InkCorrection,
-  BharCup,
   CoasterStamp,
   PencilUnderline,
 } from './Scraps.jsx';
+
+const assetBase = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const assetPath = (path) => `${assetBase}${path.replace(/^\/+/, '')}`;
 
 // ─── constants ───────────────────────────────────────────────────────────────
 
@@ -68,7 +72,7 @@ const SHELF_BOOKS = [
 const REEL_FRAMES = [
   {
     id: 1,
-    src: '/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp',
+    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp'),
     caption: 'The morning shift, before the doors swing open.',
     bn: 'সকালের চা',
     lens: '35mm · f/2.8 · ISO 400',
@@ -78,7 +82,7 @@ const REEL_FRAMES = [
   },
   {
     id: 2,
-    src: '/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp',
+    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp'),
     caption: 'Books, tea, a slow afternoon — the table forgets the time.',
     bn: 'বইপাড়ার বিকেল',
     lens: '50mm · f/1.8 · ISO 200',
@@ -88,7 +92,7 @@ const REEL_FRAMES = [
   },
   {
     id: 3,
-    src: '/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg',
+    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg'),
     caption: 'Steam rising from the bhar — a small public theatre.',
     bn: 'ভাঁড়ের ধোঁয়া',
     lens: '85mm · f/2.0 · ISO 800',
@@ -98,7 +102,7 @@ const REEL_FRAMES = [
   },
   {
     id: 4,
-    src: '/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp',
+    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp'),
     caption: 'After the last conversation, before the lights go down.',
     bn: 'শেষ আলো',
     lens: '24mm · f/4 · ISO 1600',
@@ -192,7 +196,7 @@ function Hero() {
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#1C1208]">
       {/* Actual café photo — sepia-tinted */}
       <img
-        src="/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp"
+        src={assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp')}
         alt="Warm interior of Art-Teas-Tree Café, Kolkata"
         className="absolute inset-0 h-full w-full object-cover sepia"
         style={{ opacity: 0.55 }}
@@ -776,7 +780,7 @@ function Menu() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 opacity-[0.18]"
         style={{
-          backgroundImage: "url('/wicker.svg')",
+          backgroundImage: `url('${assetPath('/wicker.svg')}')`,
           backgroundSize: '64px 64px',
           mixBlendMode: 'overlay',
         }}
@@ -1020,7 +1024,7 @@ function FullRosterModal({ open, onClose, artists }) {
                 >
                   {/* Thumb */}
                   <img
-                    src={artist.imageUrl}
+                    src={assetPath(artist.imageUrl)}
                     alt=""
                     loading="lazy"
                     className="h-16 w-16 shrink-0 border border-[#7A4A2A]/22 object-cover sepia sm:h-20 sm:w-20"
@@ -1183,7 +1187,7 @@ function Stage() {
             {/* Vintage postcard anatomy */}
             <div className="border border-[#7A4A2A]/22 bg-[#EDE2CB] shadow-polaroid">
               <img
-                src={artist.imageUrl}
+                src={assetPath(artist.imageUrl)}
                 alt={`${artist.name}, ${artist.craft}`}
                 className="block h-auto w-full border-b border-[#3B2418]/10 object-cover sepia"
               />
@@ -1359,7 +1363,7 @@ function Books() {
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.9, delay: 0.35 }}
-          src="/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp"
+          src={assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp')}
           alt="Warm books and tea inside the café corner"
           className="mt-12 max-h-[520px] w-full border border-[#F5F0E6]/15 object-cover sepia shadow-[0_22px_65px_rgba(0,0,0,0.32)] lg:max-h-[420px]"
         />

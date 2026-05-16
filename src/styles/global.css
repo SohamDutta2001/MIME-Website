@@ -26,7 +26,7 @@
     @apply font-body text-ink antialiased;
     background-color: theme('colors.cream');
     background-image:
-      url('/paper-texture.svg'),
+      url('../paper-texture.svg'),
       radial-gradient(ellipse at top, rgba(201, 168, 122, 0.18), transparent 60%),
       radial-gradient(ellipse at bottom, rgba(122, 74, 42, 0.10), transparent 70%);
     background-size: 600px 600px, 100% 100%, 100% 100%;
@@ -135,7 +135,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background-image: url('/paper-texture.svg');
+    background-image: url('../paper-texture.svg');
     background-size: 300px 300px;
     mix-blend-mode: multiply;
     opacity: 0.18;
@@ -152,7 +152,7 @@
     pointer-events: none;
     z-index: 9999;
     opacity: 0.03;
-    background-image: url('/grain.svg');
+    background-image: url('../grain.svg');
     background-size: 220px 220px;
     animation: filmGrain 10s steps(10) infinite;
     will-change: transform;

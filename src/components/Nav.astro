@@ -1,12 +1,17 @@
 ---
 import { navLinks, site } from '~/data/site';
 
-const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const base = import.meta.env.BASE_URL;
+const basePath = base === '/' ? '' : base.replace(/\/$/, '');
+const withBase = (path: string) => `${basePath}${path}`;
+const path = Astro.url.pathname
+  .replace(basePath, '')
+  .replace(/\/$/, '') || '/';
 ---
 
 <header class="border-b border-tea-500/15 bg-cream/40 backdrop-blur-[2px]">
   <nav class="mx-auto flex max-w-editorial items-center justify-between px-gutter py-5" aria-label="Primary">
-    <a href="/" class="group flex items-baseline gap-2 transition-opacity hover:opacity-80">
+    <a href={withBase('/')} class="group flex items-baseline gap-2 transition-opacity hover:opacity-80">
       <span class="font-serif text-xl font-semibold tracking-tight text-tea-900 sm:text-2xl">
         {site.name}
       </span>
@@ -18,7 +23,7 @@ const path = Astro.url.pathname.replace(/\/$/, '') || '/';
         return (
           <li>
             <a
-              href={link.href}
+              href={withBase(link.href)}
               aria-current={isActive ? 'page' : undefined}
               class:list={[
                 'nav-pill',
