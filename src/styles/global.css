@@ -110,6 +110,21 @@
   .tag {
     @apply inline-block px-2.5 py-0.5 rounded-full text-xs uppercase tracking-[0.18em] text-tea-700 border border-tea-500/30 bg-cream/50;
   }
+
+  /* Faded chalk/pencil handwriting — soaks into paper instead of sitting on it.
+     Apply to annotation overlays (margin scribbles, corrections) on light backgrounds. */
+  .chalk-pencil {
+    mix-blend-mode: multiply;
+    opacity: 0.78;
+    text-shadow: 0 0 1px rgba(255, 248, 232, 0.35);
+    letter-spacing: 0.005em;
+  }
+  /* Same idea, calibrated for dark backgrounds — uses lighten so chalk sits softly on top */
+  .chalk-pencil-dark {
+    mix-blend-mode: screen;
+    opacity: 0.62;
+    text-shadow: 0 0 2px rgba(28, 18, 8, 0.4);
+  }
 }
 
 @layer utilities {
@@ -127,9 +142,43 @@
     pointer-events: none;
   }
 
+  /* Animated cinematic film grain — fixed overlay on the whole page */
+  .film-grain {
+    position: fixed;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url('/grain.svg');
+    background-size: 220px 220px;
+    animation: filmGrain 10s steps(10) infinite;
+    will-change: transform;
+  }
+
+  .writing-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
   .text-balance {
     text-wrap: balance;
   }
+}
+
+@keyframes filmGrain {
+  0%,  100% { transform: translate(0, 0); }
+  10%        { transform: translate(-4%, -7%); }
+  20%        { transform: translate(-10%, 4%); }
+  30%        { transform: translate(5%, -16%); }
+  40%        { transform: translate(-3%, 14%); }
+  50%        { transform: translate(-12%, 8%); }
+  60%        { transform: translate(10%, 0%); }
+  70%        { transform: translate(0%, 12%); }
+  80%        { transform: translate(3%, 22%); }
+  90%        { transform: translate(-8%, 7%); }
 }
 
 /* View Transitions — restrained ink-fade */

@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "name": "Anirban Chatterjee",
+    "craft": "Mime",
+    "bio": "A silent performer from the Mime Institute circle, interested in everyday gestures and street memories.",
+    "contactLink": "mailto:stage@artteastree.example",
+    "imageUrl": "/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Mrittika Sen",
+    "craft": "Poet",
+    "bio": "Writes small poems about buses, rainwater, old para balconies, and the difficult art of staying human.",
+    "contactLink": "mailto:stage@artteastree.example",
+    "imageUrl": "/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp"
+  },
+  {
+    "id": 3,
+    "name": "Ritwik Basu",
+    "craft": "Guitarist",
+    "bio": "Plays Bengali folk, blues, and half-remembered songs that somehow everyone knows by the chorus.",
+    "contactLink": "mailto:stage@artteastree.example",
+    "imageUrl": "/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp"
+  },
+  {
+    "id": 4,
+    "name": "Farah Naaz",
+    "craft": "Storyteller",
+    "bio": "Collects neighbourhood stories and performs them as intimate spoken-word theatre.",
+    "contactLink": "mailto:stage@artteastree.example",
+    "imageUrl": "/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp"
+  },
+  {
+    "id": 5,
+    "name": "Sohini Dey",
+    "craft": "Illustrator",
+    "bio": "Sketches teacups, tram lines, theatre masks, and other proof that a city remembers.",
+    "contactLink": "mailto:stage@artteastree.example",
+    "imageUrl": "/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg"
+  },
+  {
+    "id": 6,
+    "name": "Nelabha Banerjee",
+    "craft": "Guitarist",
+    "bio": "Plays Bengali folk, blues, and half-remembered songs that somehow everyone knows by the chorus.",
+    "contactLink": "mailto:stage@artteastree.example",
+    "imageUrl": "/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg"
+  }
+]

@@ -8,7 +8,6 @@ import portrait from '../../photos/_placeholder-portrait.svg';
 import square from '../../photos/_placeholder-square.svg';
 import mapSketch from '../../photos/map-sketch.svg';
 import signature from '../../photos/signature.svg';
-
 export const photos = {
   hero: landscape,
 

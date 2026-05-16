@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "category": "Tea",
+    "itemName": "Bharer Cha",
+    "price": 25,
+    "description": "Milky roadside tea, cardamom warmth, served in the spirit of a clay cup."
+  },
+  {
+    "id": 2,
+    "category": "Tea",
+    "itemName": "Lebu Cha",
+    "price": 30,
+    "description": "Black tea with lemon, salt, and the sharp lift of a rainy College Street evening."
+  },
+  {
+    "id": 3,
+    "category": "Tea",
+    "itemName": "Adrak Cha",
+    "price": 35,
+    "description": "Ginger-heavy tea for long conversations and monsoon throats."
+  },
+  {
+    "id": 4,
+    "category": "Tea",
+    "itemName": "Tulsi Malai Cha",
+    "price": 45,
+    "description": "Holy basil, slow milk, and a soft cream finish."
+  },
+  {
+    "id": 5,
+    "category": "Coffee",
+    "itemName": "Filter Coffee",
+    "price": 70,
+    "description": "South Indian decoction, foamed high, strong enough for a second act."
+  },
+  {
+    "id": 6,
+    "category": "Coffee",
+    "itemName": "Adda Cold Brew",
+    "price": 95,
+    "description": "Steeped overnight, mellow and dark, with a jaggery note."
+  },
+  {
+    "id": 7,
+    "category": "Coffee",
+    "itemName": "Cinnamon Cappuccino",
+    "price": 110,
+    "description": "A small café classic with cinnamon dust and a warm brown crema."
+  },
+  {
+    "id": 8,
+    "category": "Quick Bites",
+    "itemName": "Singara",
+    "price": 30,
+    "description": "Crisp pastry, spiced potato, best eaten before the first argument cools."
+  },
+  {
+    "id": 9,
+    "category": "Quick Bites",
+    "itemName": "Buttered Toast",
+    "price": 45,
+    "description": "Thick toast with salted butter, the old reliable companion to tea."
+  },
+  {
+    "id": 10,
+    "category": "Quick Bites",
+    "itemName": "Telebhaja Plate",
+    "price": 65,
+    "description": "Seasonal fritters wrapped in paper-menu nostalgia."
+  },
+  {
+    "id": 11,
+    "category": "Quick Bites",
+    "itemName": "Banana Cake",
+    "price": 80,
+    "description": "Soft, dark, not too sweet, baked for late afternoon readers."
+  }
+]

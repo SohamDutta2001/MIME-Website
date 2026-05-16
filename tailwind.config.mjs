@@ -5,6 +5,11 @@ export default {
     extend: {
       colors: {
         ink: '#1c1410',
+        maroon: {
+          light: '#8B4040',
+          DEFAULT: '#6B2D2D',
+          dark: '#4A1E1E',
+        },
         tea: {
           50: '#f4ecd8',
           100: '#e8dcc4',
@@ -21,12 +26,24 @@ export default {
         paper: '#ede2cb',
         moss: '#5a6b3e',
         amber: '#c9a87a',
+        // Faded pastel chalk/pencil tones — for handwritten margin scribbles,
+        // corrections, and decorative annotations. Meant to feel like aged ink
+        // that has softened into the paper rather than sitting on top of it.
+        chalk: {
+          sage: '#A8B79C',
+          rose: '#C99A93',
+          butter: '#D9C68E',
+          sky: '#9DAEBF',
+          mauve: '#B89BB0',
+          ink: '#7B6F5E',
+        },
       },
       fontFamily: {
         serif: ['"Cormorant Garamond"', 'Georgia', 'serif'],
         body: ['"Lora"', 'Georgia', 'serif'],
         hand: ['"Caveat"', 'cursive'],
         bn: ['"Hind Siliguri"', '"Noto Serif Bengali"', 'serif'],
+        typewriter: ['"Courier Prime"', '"Courier New"', 'Courier', 'monospace'],
       },
       fontSize: {
         'display-2xl': ['clamp(3rem, 8vw, 6.5rem)', { lineHeight: '1.05', letterSpacing: '-0.015em' }],
