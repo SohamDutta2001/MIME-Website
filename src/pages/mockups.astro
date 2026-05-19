@@ -1,0 +1,128 @@
+---
+// Mockup deck page — visible at /mockups.
+// Each <section> is a discrete slide with a stable id so the screenshot
+// pipeline can target it: page.locator('#slide-01').screenshot(...)
+// The deck is laid out top-to-bottom; no slideshow keybindings needed —
+// scrolling is enough for human review.
+
+import DirectoryMockup from '~/components/islands/mockups/DirectoryMockup.jsx';
+import ProfileMockup from '~/components/islands/mockups/ProfileMockup.jsx';
+import ChatMockup from '~/components/islands/mockups/ChatMockup.jsx';
+import {
+  CHAT_BOOKING_SCRIPT,
+  CHAT_CULTURAL_SCRIPT,
+  CHAT_MENU_SCRIPT,
+} from '~/data/mockupData.js';
+import '~/styles/global.css';
+
+const slides = [
+  { id: 'slide-01', tier: 'Demo 3', title: 'Artist directory · homepage' },
+  { id: 'slide-02', tier: 'Demo 3', title: 'Artist directory · filtered (Mime)' },
+  { id: 'slide-03', tier: 'Demo 3', title: 'Single artist profile' },
+  { id: 'slide-04', tier: 'Demo 4', title: 'Concierge chat · artist booking' },
+  { id: 'slide-05', tier: 'Demo 4', title: 'Concierge chat · multilingual (Bengali → English)' },
+  { id: 'slide-06', tier: 'Demo 4', title: 'Concierge chat · menu Q&A' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>Mockup deck — Art-Teas-Tree Cafe</title>
+    <meta name="robots" content="noindex" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-[#0E0805] text-[#F5F0E6]">
+    <!-- Deck index — small banner at top so you can jump between slides -->
+    <header class="sticky top-0 z-50 border-b border-[#C9A87A]/15 bg-[#1C1208]/95 px-4 py-3 backdrop-blur">
+      <div class="mx-auto flex max-w-7xl flex-wrap items-center gap-3 sm:gap-5">
+        <p class="font-serif text-base font-medium text-[#F5F0E6]">
+          Mockup deck
+          <span class="font-typewriter text-[10px] uppercase tracking-[0.32em] text-[#C9A87A]/65">
+            · {slides.length} slides
+          </span>
+        </p>
+        <nav class="flex flex-1 flex-wrap items-center gap-1">
+          {
+            slides.map((s, i) => (
+              <a
+                href={`#${s.id}`}
+                class="border border-[#C9A87A]/22 px-2.5 py-1 font-typewriter text-[9px] uppercase tracking-[0.22em] text-[#C9A87A]/85 transition-colors hover:bg-[#C9A87A]/15"
+              >
+                {String(i + 1).padStart(2, '0')} · {s.tier}
+              </a>
+            ))
+          }
+        </nav>
+      </div>
+    </header>
+
+    <!-- Per-slide layout helper — each slide has a tiny caption strip on top
+         and then the mockup itself. The caption is screenshot-friendly: it
+         tells anyone reading the PNG which demo and which scene this is. -->
+    {
+      slides.map((s, i) => (
+        <section id={s.id} class="border-t-2 border-[#C9A87A]/15">
+          <div class="bg-[#1C1208] px-5 py-3 sm:px-8">
+            <div class="mx-auto flex max-w-7xl flex-wrap items-baseline justify-between gap-3">
+              <p class="font-typewriter text-[10px] uppercase tracking-[0.38em] text-[#C9A87A]/85">
+                Slide {String(i + 1).padStart(2, '0')} of {String(slides.length).padStart(2, '0')}
+                <span class="ml-3 text-[#5A6B3E]">{s.tier}</span>
+              </p>
+              <p class="font-serif text-lg text-[#F5F0E6]">{s.title}</p>
+            </div>
+          </div>
+
+          <div data-mockup-frame>
+            {i === 0 && <DirectoryMockup client:load activeFilter="All" />}
+            {i === 1 && (
+              <DirectoryMockup
+                client:load
+                activeFilter="Mime"
+                searchValue="available in december"
+              />
+            )}
+            {i === 2 && <ProfileMockup client:load />}
+            {i === 3 && (
+              <ChatMockup
+                client:load
+                script={CHAT_BOOKING_SCRIPT}
+                caption="A patron books an artist for a Diwali corporate event"
+              />
+            )}
+            {i === 4 && (
+              <ChatMockup
+                client:load
+                script={CHAT_CULTURAL_SCRIPT}
+                caption="A visitor switches between Bengali and English mid-conversation"
+              />
+            )}
+            {i === 5 && (
+              <ChatMockup
+                client:load
+                script={CHAT_MENU_SCRIPT}
+                caption="A patron asks what's vegan and caffeine-free off the live menu"
+              />
+            )}
+          </div>
+        </section>
+      ))
+    }
+
+    <footer class="border-t border-[#C9A87A]/15 bg-[#1C1208] px-5 py-8 text-center sm:px-8">
+      <p class="font-hand text-xl text-[#C9A87A]">end of deck</p>
+      <p class="mt-2 font-typewriter text-[10px] uppercase tracking-[0.32em] text-[#C9A87A]/55">
+        Art-Teas-Tree Cafe · internal mockups · {new Date().getFullYear()}
+      </p>
+    </footer>
+  </body>
+</html>
