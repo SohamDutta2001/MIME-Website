@@ -6,9 +6,12 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "npm run sync:menu",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "sync:menu": "node scripts/sync-menu.mjs",
+    "sync:menu:local": "node --env-file=.env scripts/sync-menu.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

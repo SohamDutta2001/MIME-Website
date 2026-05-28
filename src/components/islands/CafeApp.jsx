@@ -1,20 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   BookOpen,
   ChevronDown,
+  ChevronLeft,
+  ChevronRight,
   Clock,
   Coffee,
   MapPin,
-  Mic2,
-  Send,
   Sparkles,
   Theater,
-  Users,
-  X,
 } from 'lucide-react';
 import menuRows from '../../data/mockMenuData.json';
-import artistRows from '../../data/mockArtistData.json';
 import {
   WashiTape,
   CoffeeRing,
@@ -22,36 +19,59 @@ import {
   CoasterStamp,
   PencilUnderline,
 } from './Scraps.jsx';
-
-const assetBase = import.meta.env.BASE_URL.endsWith('/')
-  ? import.meta.env.BASE_URL
-  : `${import.meta.env.BASE_URL}/`;
-const assetPath = (path) => `${assetBase}${path.replace(/^\/+/, '')}`;
+import { assetPath, cldImg } from '../../lib/img.js';
 
 // ─── constants ───────────────────────────────────────────────────────────────
 
-const CATEGORIES = ['All', 'Tea', 'Coffee', 'Quick Bites'];
+// Menu categories are derived from the data at module load — that way the
+// café owner can add a new category in the Sheet (say "Sweets" or
+// "Cold Drinks") and the filter chip appears automatically, in the order
+// it first appears in the sheet.
+const CATEGORIES = ['All', ...Array.from(new Set(menuRows.map((r) => r.category)))];
 
 // Bengali rendering of menu categories — used as the small caligraphic label
-// above each grouped category section when viewing "All". Fall back to the
-// English name if a new category is added without a Bengali entry.
+// above each grouped category section when viewing "All". Categories without
+// a Bengali entry fall back to the English name (see CATEGORY_BN[cat] ?? cat).
 const CATEGORY_BN = {
   Tea: 'চা',
   Coffee: 'কফি',
   'Quick Bites': 'টা',
+  Sweets: 'মিষ্টি',
+  'Cold Drinks': 'ঠাণ্ডা',
 };
 
 // When the visible item count crosses this, the menu body switches to an
 // internal max-height scroll instead of growing the page indefinitely.
 const MENU_SCROLL_THRESHOLD = 20;
 
-// Number of artists shown prominently as vintage postcards on the main page.
-// Any beyond this surface inside the full-roster modal — keeps the page
-// scannable while letting the cafe grow the roster indefinitely.
-const FEATURED_ARTIST_COUNT = 5;
+// Hero carousel — the four café photos, in display order. Each entry is just
+// a filename (matching what's in /public/cafe-assets/) plus alt text. The
+// cldImg helper turns the filename into a Cloudinary CDN URL when
+// CLOUDINARY_CLOUD_NAME is configured in src/lib/img.js, or falls back to
+// the local file otherwise. To swap a photo, replace the file (or upload a
+// new image to Cloudinary with public_id matching the filename minus ext).
+const HERO_IMAGES = [
+  {
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp',
+    alt: 'Warm interior of Art-Teas-Tree Café, Kolkata',
+  },
+  {
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp',
+    alt: 'Books and tea on a wooden table at Art-Teas-Tree Café',
+  },
+  {
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg',
+    alt: 'Bhar of tea steaming on the café counter',
+  },
+  {
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp',
+    alt: 'Soft light through the café in the late afternoon',
+  },
+];
 
-// Deterministic card tilts — avoids Math.random() hydration mismatch
-const CARD_TILTS = [-1.2, 0.8, -0.5, 1.0, -0.7, 0.4, -0.9, 0.6];
+// Auto-advance every 6 seconds — slow enough to feel like a film cut, not a
+// slide carousel. Paused on hover and when the user clicks an arrow.
+const HERO_AUTO_ADVANCE_MS = 6000;
 
 // Book spines for the College Street shelf — inline to keep CafeApp self-contained
 const SHELF_BOOKS = [
@@ -69,10 +89,12 @@ const SHELF_BOOKS = [
   { title: 'Strange Address', author: 'Chaudhuri', color: '#6a4729', h: 210, w: 38 },
 ];
 
+// Reel section — `src` is just a filename now; cldImg() resolves it to a
+// Cloudinary URL when configured, or to /public/cafe-assets/ otherwise.
 const REEL_FRAMES = [
   {
     id: 1,
-    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp'),
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp',
     caption: 'The morning shift, before the doors swing open.',
     bn: 'সকালের চা',
     lens: '35mm · f/2.8 · ISO 400',
@@ -82,7 +104,7 @@ const REEL_FRAMES = [
   },
   {
     id: 2,
-    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp'),
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp',
     caption: 'Books, tea, a slow afternoon — the table forgets the time.',
     bn: 'বইপাড়ার বিকেল',
     lens: '50mm · f/1.8 · ISO 200',
@@ -92,7 +114,7 @@ const REEL_FRAMES = [
   },
   {
     id: 3,
-    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg'),
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg',
     caption: 'Steam rising from the bhar — a small public theatre.',
     bn: 'ভাঁড়ের ধোঁয়া',
     lens: '85mm · f/2.0 · ISO 800',
@@ -102,7 +124,7 @@ const REEL_FRAMES = [
   },
   {
     id: 4,
-    src: assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp'),
+    src: 'art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp',
     caption: 'After the last conversation, before the lights go down.',
     bn: 'শেষ আলো',
     lens: '24mm · f/4 · ISO 1600',
@@ -156,7 +178,6 @@ function Nav() {
     { href: '#philosophy', label: 'Philosophy' },
     { href: '#reel', label: 'রিল' },
     { href: '#menu', label: 'Menu' },
-    { href: '#stage', label: 'মঞ্চ' },
     { href: '#books', label: 'বইপাড়া' },
   ];
 
@@ -191,16 +212,106 @@ function Nav() {
 
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
+/**
+ * HeroCarousel — cinematic cross-fade through the four café photos.
+ * Auto-advances every HERO_AUTO_ADVANCE_MS milliseconds. Pauses on hover so
+ * a reader isn't jolted while taking in the headline. Manual arrows + dot
+ * indicators give explicit control. Honors prefers-reduced-motion by holding
+ * on a single still frame (no auto-advance, no fade).
+ */
+function HeroCarousel() {
+  const [index, setIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const reduceMotion = useRef(false);
+
+  // Capture the reduced-motion preference once on mount.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    reduceMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  // Auto-advance timer. Pauses when the user is hovering, or when the OS
+  // tells us not to animate. Cleared on unmount / dependency change.
+  useEffect(() => {
+    if (isPaused || reduceMotion.current) return undefined;
+    const id = window.setInterval(() => {
+      setIndex((i) => (i + 1) % HERO_IMAGES.length);
+    }, HERO_AUTO_ADVANCE_MS);
+    return () => window.clearInterval(id);
+  }, [isPaused]);
+
+  const go = (delta) =>
+    setIndex((i) => (i + delta + HERO_IMAGES.length) % HERO_IMAGES.length);
+
+  const current = HERO_IMAGES[index];
+
+  return (
+    <div
+      className="absolute inset-0"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+    >
+      {/* Cross-fading image layer — old fades out while new fades in. */}
+      <AnimatePresence initial={false} mode="sync">
+        <motion.img
+          key={current.src}
+          src={cldImg(current.src, { width: 2400 })}
+          alt={current.alt}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.55 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 1.2, ease: [0.22, 0.61, 0.36, 1] }}
+          className="absolute inset-0 h-full w-full object-cover sepia"
+        />
+      </AnimatePresence>
+
+      {/* Manual nav arrows — copper-tinted, sit on the inner playbill margin.
+          Hidden on the smallest screens where the dot indicators are enough. */}
+      <button
+        type="button"
+        aria-label="Previous photo"
+        onClick={() => go(-1)}
+        className="absolute left-3 top-1/2 z-20 hidden -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] sm:left-6 sm:grid sm:p-3"
+      >
+        <ChevronLeft size={20} strokeWidth={1.5} />
+      </button>
+      <button
+        type="button"
+        aria-label="Next photo"
+        onClick={() => go(1)}
+        className="absolute right-3 top-1/2 z-20 hidden -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] sm:right-6 sm:grid sm:p-3"
+      >
+        <ChevronRight size={20} strokeWidth={1.5} />
+      </button>
+
+      {/* Dot indicators — also direct-jump buttons. Active dot is a longer
+          bar, copper-filled; inactive dots are short and faded. */}
+      <div className="absolute bottom-20 left-1/2 z-20 flex -translate-x-1/2 items-center gap-2 sm:bottom-24">
+        {HERO_IMAGES.map((img, i) => {
+          const isActive = i === index;
+          return (
+            <button
+              key={img.src}
+              type="button"
+              aria-label={`Show photo ${i + 1} of ${HERO_IMAGES.length}`}
+              aria-pressed={isActive}
+              onClick={() => setIndex(i)}
+              className={`h-[3px] rounded-none transition-all duration-500 ${
+                isActive ? 'w-8 bg-[#C9A87A]' : 'w-4 bg-[#C9A87A]/30 hover:bg-[#C9A87A]/55'
+              }`}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function Hero() {
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#1C1208]">
-      {/* Actual café photo — sepia-tinted */}
-      <img
-        src={assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp')}
-        alt="Warm interior of Art-Teas-Tree Café, Kolkata"
-        className="absolute inset-0 h-full w-full object-cover sepia"
-        style={{ opacity: 0.55 }}
-      />
+      {/* Auto-advancing photo carousel — replaces the previous single image */}
+      <HeroCarousel />
 
       {/* Cinematic gradient — heavy left, soft right, bottom vignette */}
       <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(28,18,8,0.97)_0%,rgba(28,18,8,0.78)_48%,rgba(28,18,8,0.38)_100%)]" />
@@ -274,10 +385,10 @@ function Hero() {
               <Coffee size={17} /> Open menu
             </a>
             <a
-              href="#stage"
+              href="#reel"
               className="inline-flex items-center gap-2 rounded-full border border-[#F5F0E6]/35 px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.16em] text-[#F5F0E6] transition-colors hover:bg-[#F5F0E6]/10"
             >
-              <Theater size={17} /> The stage
+              <Theater size={17} /> The reel
             </a>
           </div>
         </div>
@@ -554,7 +665,7 @@ function Reel() {
               <AnimatePresence mode="wait" initial={false}>
                 <motion.img
                   key={frame.id}
-                  src={frame.src}
+                  src={cldImg(frame.src, { width: 1600 })}
                   alt={frame.caption}
                   initial={{ opacity: 0, scale: 1.04 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -690,7 +801,7 @@ function Reel() {
                     >
                       <div className="relative aspect-[16/10] overflow-hidden">
                         <img
-                          src={f.src}
+                          src={cldImg(f.src, { width: 320 })}
                           alt=""
                           className="h-full w-full object-cover transition-opacity"
                           style={{
@@ -955,305 +1066,6 @@ function Menu() {
   );
 }
 
-// ─── Artist Modal ─────────────────────────────────────────────────────────────
-
-/**
- * FullRosterModal — the "see everyone" overlay. Holds the entire artist
- * roster in a compact list view (thumb + name + craft + contact). Used
- * because the masonry only surfaces FEATURED_ARTIST_COUNT artists; the rest
- * live here. Designed to feel like flipping through a director's casting
- * binder rather than a sterile data table.
- */
-function FullRosterModal({ open, onClose, artists }) {
-  return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 grid place-items-center bg-[#1C1208]/82 px-4 py-8 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Full artist roster"
-          onClick={(e) => e.target === e.currentTarget && onClose()}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 24, rotate: -0.6 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            exit={{ opacity: 0, y: 16 }}
-            transition={{ duration: 0.4, ease: [0.22, 0.61, 0.36, 1] }}
-            className="relative flex max-h-[88vh] w-full max-w-3xl flex-col border border-[#7A4A2A]/28 bg-[#F5EDD6] bg-paper text-[#1C1410] shadow-[0_28px_90px_rgba(0,0,0,0.5)]"
-          >
-            {/* Tape strip — pinned to the wall */}
-            <WashiTape className="-top-3 left-12 z-10" color="#6B2D2D" rotate={-5} width={110} />
-            <WashiTape className="-top-3 right-16 z-10" color="#5A6B3E" rotate={6} width={92} />
-
-            {/* Header */}
-            <div className="flex shrink-0 items-start justify-between border-b border-[#7A4A2A]/22 px-6 py-5 sm:px-8">
-              <div>
-                <p className="font-typewriter text-[9px] uppercase tracking-[0.42em] text-[#7A4A2A]/70">
-                  Natyamancha — full roster
-                </p>
-                <h3 className="mt-2 font-serif text-3xl font-medium sm:text-4xl">
-                  <span className="font-bn text-[#5E3820]">নাট্যমঞ্চ</span>
-                  <span className="ml-3 italic">· every voice</span>
-                </h3>
-                <p className="chalk-pencil mt-2 font-hand text-base text-chalk-ink">
-                  {artists.length} artists currently in residence
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={onClose}
-                className="border border-[#7A4A2A]/22 p-2 transition-colors hover:bg-[#7A4A2A]/10"
-                aria-label="Close roster"
-              >
-                <X size={17} />
-              </button>
-            </div>
-
-            {/* Scrollable list */}
-            <ul className="flex-1 overflow-y-auto px-3 py-4 sm:px-5">
-              {artists.map((artist, i) => (
-                <li
-                  key={artist.id}
-                  className={`flex gap-4 px-3 py-4 ${
-                    i < artists.length - 1 ? 'border-b border-[#7A4A2A]/14' : ''
-                  }`}
-                >
-                  {/* Thumb */}
-                  <img
-                    src={assetPath(artist.imageUrl)}
-                    alt=""
-                    loading="lazy"
-                    className="h-16 w-16 shrink-0 border border-[#7A4A2A]/22 object-cover sepia sm:h-20 sm:w-20"
-                  />
-                  {/* Body */}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-baseline justify-between gap-3">
-                      <h4 className="truncate font-serif text-xl font-medium text-[#1C1410]">
-                        {artist.name}
-                      </h4>
-                      <span className="shrink-0 border border-[#7A4A2A]/30 px-2 py-0.5 font-typewriter text-[9px] uppercase tracking-[0.25em] text-[#5A6B3E]">
-                        {artist.craft}
-                      </span>
-                    </div>
-                    <p className="mt-1.5 line-clamp-2 font-body text-sm leading-6 text-[#5E3820]">
-                      {artist.bio}
-                    </p>
-                    <a
-                      href={artist.contactLink}
-                      className="mt-2 inline-block font-hand text-base text-[#7A4A2A] transition-colors hover:text-[#3B2418]"
-                    >
-                      → contact artist
-                    </a>
-                  </div>
-                </li>
-              ))}
-            </ul>
-
-            {/* Footer note */}
-            <div className="shrink-0 border-t border-[#7A4A2A]/22 px-6 py-4 sm:px-8">
-              <p className="chalk-pencil text-center font-hand text-lg text-chalk-ink">
-                ↑ the roster changes with the seasons. drop by the cafe to meet them.
-              </p>
-            </div>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-function ArtistModal({ open, onClose }) {
-  return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 grid place-items-center bg-[#1C1208]/78 px-4 backdrop-blur-sm"
-          role="dialog"
-          aria-modal="true"
-          onClick={(e) => e.target === e.currentTarget && onClose()}
-        >
-          <motion.div
-            initial={{ opacity: 0, y: 28, rotate: -1.2 }}
-            animate={{ opacity: 1, y: 0, rotate: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
-            className="relative w-full max-w-xl border border-[#7A4A2A]/28 bg-[#F5EDD6] bg-paper p-6 text-[#1C1410] shadow-[0_28px_90px_rgba(0,0,0,0.48)] sm:p-8"
-          >
-            <button
-              type="button"
-              onClick={onClose}
-              className="absolute right-4 top-4 border border-[#7A4A2A]/22 p-2 transition-colors hover:bg-[#7A4A2A]/10"
-              aria-label="Close"
-            >
-              <X size={17} />
-            </button>
-
-            {/* Casting notice header */}
-            <div className="border-b border-[#7A4A2A]/20 pb-4">
-              <p className="font-typewriter text-[9px] uppercase tracking-[0.42em] text-[#7A4A2A]/70">
-                Casting notice — Natyamancha
-              </p>
-              <SectionKicker className="mt-2">Take the Stage</SectionKicker>
-              <h3 className="mt-1 font-serif text-4xl font-medium">Artist application</h3>
-            </div>
-
-            <form className="mt-6 grid gap-4">
-              {['Name', 'Craft', 'Contact link'].map((label) => (
-                <label key={label} className="grid gap-1.5 font-body text-sm text-[#5E3820]">
-                  {label}
-                  <input
-                    className="border border-[#7A4A2A]/22 bg-[#FFF9EC]/75 px-4 py-3 font-body text-sm outline-none transition-colors focus:border-[#5A6B3E]"
-                    placeholder={
-                      label === 'Craft' ? 'Mime, poet, guitarist, painter…' : ''
-                    }
-                  />
-                </label>
-              ))}
-              <label className="grid gap-1.5 font-body text-sm text-[#5E3820]">
-                Tell us about your act
-                <textarea
-                  rows="4"
-                  className="border border-[#7A4A2A]/22 bg-[#FFF9EC]/75 px-4 py-3 font-body text-sm outline-none transition-colors focus:border-[#5A6B3E]"
-                />
-              </label>
-              <button
-                type="button"
-                className="mt-2 inline-flex w-fit items-center gap-2 bg-[#3B2418] px-5 py-3 font-body text-sm font-semibold uppercase tracking-[0.16em] text-[#F5F0E6] transition-colors hover:bg-[#1C1208]"
-              >
-                <Send size={15} /> Send application
-              </button>
-            </form>
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-// ─── Stage / Natyamancha ──────────────────────────────────────────────────────
-
-function Stage() {
-  const [applicationOpen, setApplicationOpen] = useState(false);
-  const [rosterOpen, setRosterOpen] = useState(false);
-
-  // Featured set surfaces as postcards on the page; the remainder lives in
-  // the full-roster modal. Slicing here keeps the page scannable as the
-  // roster grows past five.
-  const featured = artistRows.slice(0, FEATURED_ARTIST_COUNT);
-  const remaining = Math.max(0, artistRows.length - FEATURED_ARTIST_COUNT);
-
-  return (
-    <section id="stage" className="mx-auto max-w-7xl px-5 py-24 sm:px-8 lg:py-36">
-      {/* Section header — Bengali first */}
-      <div className="mb-12 flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="font-bn text-3xl text-[#7A4A2A]">নাট্যমঞ্চ</p>
-          <SectionKicker className="mt-0.5" style={{ display: 'inline-block', transform: 'rotate(-0.8deg)' }}>
-            Natyamancha · The Stage
-          </SectionKicker>
-          <h2 className="mt-3 font-serif text-5xl font-medium text-[#1C1410] sm:text-6xl">
-            Artists in residence
-          </h2>
-        </div>
-        <button
-          type="button"
-          onClick={() => setApplicationOpen(true)}
-          className="inline-flex w-fit shrink-0 items-center gap-2 bg-[#6B2D2D] px-5 py-3 font-body text-sm font-semibold uppercase tracking-[0.16em] text-[#F5F0E6] transition-colors hover:bg-[#4A1E1E]"
-        >
-          <Mic2 size={17} /> Take the Stage
-        </button>
-      </div>
-
-      {/* Masonry postcard grid — featured artists only */}
-      <div className="columns-1 gap-5 sm:columns-2 lg:columns-3">
-        {featured.map((artist, i) => (
-          <motion.article
-            key={artist.id}
-            variants={fadeUp}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
-            transition={{ duration: 0.7, delay: i * 0.06 }}
-            className="mb-5 break-inside-avoid"
-            style={{ transform: `rotate(${CARD_TILTS[i % CARD_TILTS.length]}deg)` }}
-          >
-            {/* Vintage postcard anatomy */}
-            <div className="border border-[#7A4A2A]/22 bg-[#EDE2CB] shadow-polaroid">
-              <img
-                src={assetPath(artist.imageUrl)}
-                alt={`${artist.name}, ${artist.craft}`}
-                className="block h-auto w-full border-b border-[#3B2418]/10 object-cover sepia"
-              />
-              <div className="p-4">
-                {/* Postcard header */}
-                <div className="flex items-start justify-between border-b border-[#7A4A2A]/18 pb-3">
-                  <div>
-                    <p className="font-typewriter text-[9px] uppercase tracking-[0.3em] text-[#5A6B3E]">
-                      {artist.craft}
-                    </p>
-                    <h3 className="mt-0.5 font-serif text-2xl font-medium text-[#1C1410]">
-                      {artist.name}
-                    </h3>
-                  </div>
-                  <p className="font-typewriter text-[9px] text-[#7A4A2A]/50">
-                    No. {String(artist.id).padStart(2, '0')}
-                  </p>
-                </div>
-                <p className="mt-3 font-body text-sm leading-6 text-[#5E3820]">{artist.bio}</p>
-                <a
-                  href={artist.contactLink}
-                  className="mt-4 inline-block font-hand text-xl text-[#7A4A2A] transition-colors hover:text-[#3B2418]"
-                >
-                  → contact artist
-                </a>
-              </div>
-            </div>
-          </motion.article>
-        ))}
-      </div>
-
-      {/* See full roster CTA — only renders when there are artists beyond
-          the featured five. Doubles as a count indicator so visitors know
-          how much more is behind the modal. */}
-      {remaining > 0 && (
-        <div className="mt-10 flex flex-col items-center gap-3">
-          <button
-            type="button"
-            onClick={() => setRosterOpen(true)}
-            className="group inline-flex items-center gap-3 border-2 border-[#3B2418] bg-transparent px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.18em] text-[#3B2418] transition-colors hover:bg-[#3B2418] hover:text-[#F5EDD6]"
-          >
-            <Users size={17} />
-            See the full roster
-            <span className="ml-1 font-typewriter text-[10px] tracking-[0.2em] text-[#7A4A2A] group-hover:text-[#C9A87A]">
-              · {String(remaining).padStart(2, '0')} more
-            </span>
-          </button>
-          <p
-            className="chalk-pencil font-hand text-lg text-chalk-ink"
-            style={{ transform: 'rotate(-1deg)' }}
-            aria-hidden="true"
-          >
-            ↑ everyone currently on our wall
-          </p>
-        </div>
-      )}
-
-      <ArtistModal open={applicationOpen} onClose={() => setApplicationOpen(false)} />
-      <FullRosterModal
-        open={rosterOpen}
-        onClose={() => setRosterOpen(false)}
-        artists={artistRows}
-      />
-    </section>
-  );
-}
 
 // ─── Book Corner / Boipara ────────────────────────────────────────────────────
 
@@ -1363,7 +1175,7 @@ function Books() {
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.9, delay: 0.35 }}
-          src={assetPath('/cafe-assets/art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp')}
+          src={cldImg('art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp', { width: 2000 })}
           alt="Warm books and tea inside the café corner"
           className="mt-12 max-h-[520px] w-full border border-[#F5F0E6]/15 object-cover sepia shadow-[0_22px_65px_rgba(0,0,0,0.32)] lg:max-h-[420px]"
         />
@@ -1445,7 +1257,6 @@ export default function CafeApp() {
         <Philosophy />
         <Reel />
         <Menu />
-        <Stage />
         <Books />
       </main>
 
