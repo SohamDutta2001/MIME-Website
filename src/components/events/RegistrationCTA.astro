@@ -1,0 +1,60 @@
+---
+// Registration call-to-action. The sheet's registrationUrl can point
+// anywhere — Google Form, WhatsApp, a ticketing site, Instagram — and the
+// button labels itself accordingly. No URL means walk-in: say so warmly
+// instead of hiding the section.
+import type { CafeEvent } from '~/types/event';
+
+interface Props {
+  event: CafeEvent;
+}
+
+const { event } = Astro.props;
+const url = event.registrationUrl.trim();
+
+function describe(href: string): { label: string; note: string } {
+  let host = '';
+  try {
+    host = new URL(href).hostname.replace(/^www\./, '');
+  } catch {
+    return { label: 'Register', note: 'opens an external page' };
+  }
+  if (host === 'wa.me' || host.endsWith('whatsapp.com')) {
+    return { label: 'Reserve on WhatsApp', note: 'a message to the café is enough' };
+  }
+  if (host === 'forms.gle' || host.includes('docs.google.com')) {
+    return { label: 'Fill the registration form', note: 'takes about a minute' };
+  }
+  if (host.includes('instagram.com')) {
+    return { label: 'Follow on Instagram', note: 'details and updates on the page' };
+  }
+  if (host.includes('bookmyshow') || host.includes('insider.in') || host.includes('skillboxes')) {
+    return { label: 'Book tickets', note: `via ${host}` };
+  }
+  return { label: 'Register', note: `via ${host}` };
+}
+
+const cta = url ? describe(url) : null;
+---
+
+<div class="relative border-y border-tea-500/20 py-10 text-center">
+  {cta ? (
+    <>
+      <p class="font-hand text-2xl text-tea-600">a seat kept aside, a tea kept warm</p>
+      <a
+        href={url}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-5 inline-flex items-center gap-2 rounded-full bg-maroon px-8 py-3.5 font-body text-sm font-semibold uppercase tracking-[0.16em] text-cream transition-colors hover:bg-maroon-light"
+      >
+        {cta.label} <span aria-hidden="true">↗</span>
+      </a>
+      <p class="mt-3 font-typewriter text-[10px] uppercase tracking-[0.3em] text-tea-500">{cta.note}</p>
+    </>
+  ) : (
+    <>
+      <p class="font-hand text-2xl text-tea-600">no registration, no ceremony</p>
+      <p class="mt-3 font-serif text-xl italic text-tea-800">Walk in. The door is the whole formality.</p>
+    </>
+  )}
+</div>

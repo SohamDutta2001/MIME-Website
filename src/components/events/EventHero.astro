@@ -1,0 +1,91 @@
+---
+// Event hero — a playbill poster at the top of every event page. Dark
+// frame, sepia banner, rubber category stamp, and the title set like a
+// theatre bill. Shared by all three category templates.
+import { resolveEventImage } from '~/lib/events/images.js';
+import { formatEventDate, todayISO } from '~/lib/events/utils.js';
+import type { CafeEvent } from '~/types/event';
+
+interface Props {
+  event: CafeEvent;
+  /** Hand-written kicker above the title, set per category template. */
+  kicker: string;
+  /** Bengali rendering of the category, stamped beside the kicker. */
+  kickerBn: string;
+}
+
+const { event, kicker, kickerBn } = Astro.props;
+const banner = resolveEventImage(event.bannerUrl, { width: 1800 });
+const isPast = event.date < todayISO();
+
+const CATEGORY_INK: Record<string, string> = {
+  Performance: '#6B2D2D',
+  Workshop: '#5A6B3E',
+  Exhibition: '#7A4A2A',
+};
+const ink = CATEGORY_INK[event.category] ?? '#6B2D2D';
+---
+
+<header class="relative overflow-hidden bg-[#1C1208] text-cream">
+  <!-- Banner photo, or a textured curtain when the sheet has no image -->
+  <div class="relative aspect-[16/10] sm:aspect-[21/9]">
+    {banner ? (
+      <img
+        src={banner}
+        alt={event.title}
+        class="absolute inset-0 h-full w-full object-cover opacity-60 sepia-[0.35]"
+        loading="eager"
+      />
+    ) : (
+      <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#3B2418_0%,#1C1208_75%)]">
+        <span class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 font-bn text-7xl text-amber/20">{kickerBn}</span>
+      </div>
+    )}
+
+    <!-- Cinematic gradients + playbill double border, as on the homepage hero -->
+    <div class="absolute inset-0 bg-[linear-gradient(100deg,rgba(28,18,8,0.92)_0%,rgba(28,18,8,0.55)_50%,rgba(28,18,8,0.25)_100%)]"></div>
+    <div class="absolute inset-0 bg-gradient-to-t from-[#1C1208] via-transparent to-[#1C1208]/40"></div>
+    <div class="pointer-events-none absolute inset-3 border border-amber/20 sm:inset-5" aria-hidden="true"></div>
+    <div class="pointer-events-none absolute inset-[1.35rem] border border-amber/10 sm:inset-[1.9rem]" aria-hidden="true"></div>
+
+    <!-- Category rubber stamp -->
+    <div
+      class="absolute right-7 top-7 z-10 border-2 px-3 py-1.5 font-typewriter text-[10px] uppercase tracking-[0.35em] sm:right-10 sm:top-10"
+      style={`color:#EDD9B8;border-color:#C9A87A99;transform:rotate(2.5deg);background:rgba(28,18,8,0.55);`}
+      aria-hidden="true"
+    >
+      {event.category}
+    </div>
+
+    <!-- Title block, bottom-left like the homepage playbill -->
+    <div class="absolute inset-x-0 bottom-0 z-10 px-7 pb-8 sm:px-12 sm:pb-12">
+      <div class="mb-5 flex items-center gap-4">
+        <div class="h-px w-10 bg-amber/55"></div>
+        <p class="font-typewriter text-[9px] uppercase tracking-[0.42em] text-amber/75 sm:text-[10px]">
+          Mime Institute of Calcutta presents
+        </p>
+        <div class="h-px flex-1 bg-amber/55"></div>
+      </div>
+
+      <p class="font-hand text-xl text-chalk-sage sm:text-2xl">
+        {kicker} · <span class="font-bn">{kickerBn}</span>
+      </p>
+
+      <h1 class="mt-2 max-w-4xl text-balance font-serif text-[2.6rem] leading-[0.95] text-[#F5F0E6] sm:text-[4rem] lg:text-[5rem]">
+        {event.title}
+      </h1>
+
+      <p class="mt-5 font-typewriter text-[11px] uppercase tracking-[0.25em] text-amber/85 sm:text-xs">
+        {formatEventDate(event.date)}
+        {event.time && <span class="text-cream/55"> · {event.time}</span>}
+        {event.venue && <span class="text-cream/55"> · {event.venue}</span>}
+      </p>
+
+      {isPast && (
+        <p class="mt-4 inline-block font-hand text-lg text-chalk-rose" style="transform: rotate(-1.2deg);">
+          this one has already happened — the photographs remain ↓
+        </p>
+      )}
+    </div>
+  </div>
+</header>

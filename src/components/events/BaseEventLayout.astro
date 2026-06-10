@@ -1,0 +1,72 @@
+---
+// Shared structure for every event page: playbill hero, description beside
+// the ticket stub, a category-specific slot (artist bios / learning
+// outcomes / curator notes), registration, then the gallery. The category
+// templates wrap this and fill the "info" slot with their own flavour.
+import Layout from '../Layout.astro';
+import EventHero from './EventHero.astro';
+import EventMeta from './EventMeta.astro';
+import RegistrationCTA from './RegistrationCTA.astro';
+import EventGallery from './EventGallery.astro';
+import { paragraphs } from '~/lib/events/utils.js';
+import type { CafeEvent } from '~/types/event';
+
+interface Props {
+  event: CafeEvent;
+  kicker: string;
+  kickerBn: string;
+}
+
+const { event, kicker, kickerBn } = Astro.props;
+const description = paragraphs(event.description);
+
+const base = import.meta.env.BASE_URL;
+const basePath = base === '/' ? '' : base.replace(/\/$/, '');
+---
+
+<Layout title={event.title} description={event.description.slice(0, 150)} variant="wide">
+  <article class="py-10 sm:py-14">
+    <EventHero event={event} kicker={kicker} kickerBn={kickerBn} />
+
+    <div class="mt-14 grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
+      <div class="max-w-prose">
+        {description.length > 0 ? (
+          description.map((para, i) => (
+            <p
+              class:list={[
+                'font-body text-lg leading-relaxed text-tea-700',
+                i === 0 && 'drop-cap',
+                i > 0 && 'mt-6',
+              ]}
+            >
+              {para}
+            </p>
+          ))
+        ) : (
+          <p class="font-hand text-2xl text-tea-600" style="transform: rotate(-1deg);">
+            no notes survived for this one — ask at the counter, someone will remember.
+          </p>
+        )}
+      </div>
+
+      <EventMeta event={event} />
+    </div>
+
+    <!-- Category-specific section (artists / outcomes / curator) -->
+    <slot name="info" />
+
+    <div class="mt-16">
+      <RegistrationCTA event={event} />
+    </div>
+
+    <div class="mt-16">
+      <EventGallery event={event} />
+    </div>
+
+    <p class="mt-16">
+      <a href={`${basePath}/events/`} class="ink-link font-body text-sm text-tea-600">
+        ← back to the notice board
+      </a>
+    </p>
+  </article>
+</Layout>

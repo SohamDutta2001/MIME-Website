@@ -1,0 +1,44 @@
+---
+// Ticket-stub card with the practical details. Sits beside the description
+// in the base layout. Perforated left edge, ADMIT-ALL stamp — the sort of
+// ticket a Kolkata single-screen would have torn in half.
+import { formatEventDate } from '~/lib/events/utils.js';
+import type { CafeEvent } from '~/types/event';
+
+interface Props {
+  event: CafeEvent;
+}
+
+const { event } = Astro.props;
+
+const rows = [
+  { label: 'Date', value: formatEventDate(event.date) },
+  { label: 'Time', value: event.time || 'Drop in any time' },
+  { label: 'Venue', value: event.venue || 'Art-Teas-Tree Cafe' },
+];
+---
+
+<aside
+  class="relative border border-tea-500/35 bg-cream px-7 py-6 shadow-soft"
+  style="transform: rotate(0.8deg);"
+>
+  <!-- Perforation: punched dots along the left edge -->
+  <div class="absolute inset-y-2 left-2 flex flex-col justify-between" aria-hidden="true">
+    {Array.from({ length: 9 }).map(() => (
+      <span class="block h-1.5 w-1.5 rounded-full bg-paper shadow-[inset_0_0_0_1px_rgba(94,56,32,0.35)]"></span>
+    ))}
+  </div>
+
+  <p class="font-typewriter text-[9px] uppercase tracking-[0.4em] text-tea-500">admit all · no ticket torn</p>
+
+  <dl class="mt-4 space-y-3 pl-3">
+    {rows.map(({ label, value }) => (
+      <div class="flex items-baseline gap-3 border-b border-dashed border-tea-500/25 pb-2">
+        <dt class="w-14 shrink-0 font-typewriter text-[10px] uppercase tracking-[0.25em] text-tea-500">{label}</dt>
+        <dd class="font-body text-sm text-tea-800">{value}</dd>
+      </div>
+    ))}
+  </dl>
+
+  <p class="mt-4 pl-3 font-hand text-lg text-moss">tea counter stays open throughout</p>
+</aside>

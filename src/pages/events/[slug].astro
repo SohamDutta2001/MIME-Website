@@ -1,7 +1,6 @@
 ---
-import Layout from '~/components/Layout.astro';
+import BaseEventLayout from '~/components/events/BaseEventLayout.astro';
 import { allEvents } from '~/lib/events/events';
-import { formatEventDate } from '~/lib/events/utils.js';
 import type { CafeEvent } from '~/types/event';
 
 export function getStaticPaths() {
@@ -18,12 +17,4 @@ interface Props {
 const { event } = Astro.props;
 ---
 
-<Layout title={event.title} description={event.description.slice(0, 150)} variant="wide">
-  <article class="py-section">
-    <p class="font-hand text-lg text-tea-500">{event.category}</p>
-    <h1 class="mt-2 text-balance font-serif text-display-xl font-medium text-tea-900">{event.title}</h1>
-    <p class="mt-4 font-typewriter text-sm uppercase tracking-[0.2em] text-tea-600">
-      {formatEventDate(event.date)}{event.time && ` · ${event.time}`}{event.venue && ` · ${event.venue}`}
-    </p>
-  </article>
-</Layout>
+<BaseEventLayout event={event} kicker={event.category} kickerBn="অনুষ্ঠান" />
