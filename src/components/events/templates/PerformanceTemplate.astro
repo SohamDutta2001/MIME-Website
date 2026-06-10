@@ -1,6 +1,8 @@
 ---
 // Performance events — music, drama, stand-up, poetry, storytelling.
+// The info slot becomes the bill: who is performing, in their own light.
 import BaseEventLayout from '../BaseEventLayout.astro';
+import { paragraphs } from '~/lib/events/utils.js';
 import type { CafeEvent } from '~/types/event';
 
 interface Props {
@@ -8,6 +10,25 @@ interface Props {
 }
 
 const { event } = Astro.props;
+const artistNotes = paragraphs(event.additionalInfo);
 ---
 
-<BaseEventLayout event={event} kicker="An evening of performance" kickerBn="পরিবেশনা" />
+<BaseEventLayout event={event} kicker="An evening of performance" kickerBn="পরিবেশনা">
+  {artistNotes.length > 0 && (
+    <section slot="info" class="mt-16" aria-label="About the artists">
+      <p class="font-hand text-2xl text-tea-500">tonight, on the bill</p>
+      <h2 class="mt-2 font-serif text-display-md font-medium text-tea-900">About the artists.</h2>
+
+      <div class="mt-8 max-w-prose border-l-2 border-maroon/50 pl-6">
+        {artistNotes.map((para, i) => (
+          <p class:list={['font-body text-lg leading-relaxed text-tea-700', i > 0 && 'mt-5']}>
+            {para}
+          </p>
+        ))}
+        <p class="mt-6 font-typewriter text-[9px] uppercase tracking-[0.4em] text-maroon/70">
+          ✦ applause is welcome, encores negotiable
+        </p>
+      </div>
+    </section>
+  )}
+</BaseEventLayout>
