@@ -1,5 +1,9 @@
 ---
-import BaseEventLayout from '~/components/events/BaseEventLayout.astro';
+// Template engine: category → template component. Every event page is one
+// of the three category templates wrapped around BaseEventLayout.
+import PerformanceTemplate from '~/components/events/templates/PerformanceTemplate.astro';
+import WorkshopTemplate from '~/components/events/templates/WorkshopTemplate.astro';
+import ExhibitionTemplate from '~/components/events/templates/ExhibitionTemplate.astro';
 import { allEvents } from '~/lib/events/events';
 import type { CafeEvent } from '~/types/event';
 
@@ -15,6 +19,14 @@ interface Props {
 }
 
 const { event } = Astro.props;
+
+const templates = {
+  Performance: PerformanceTemplate,
+  Workshop: WorkshopTemplate,
+  Exhibition: ExhibitionTemplate,
+} as const;
+
+const Template = templates[event.category];
 ---
 
-<BaseEventLayout event={event} kicker={event.category} kickerBn="অনুষ্ঠান" />
+<Template event={event} />

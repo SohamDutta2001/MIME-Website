@@ -1,0 +1,13 @@
+---
+// Performance events — music, drama, stand-up, poetry, storytelling.
+import BaseEventLayout from '../BaseEventLayout.astro';
+import type { CafeEvent } from '~/types/event';
+
+interface Props {
+  event: CafeEvent;
+}
+
+const { event } = Astro.props;
+---
+
+<BaseEventLayout event={event} kicker="An evening of performance" kickerBn="পরিবেশনা" />

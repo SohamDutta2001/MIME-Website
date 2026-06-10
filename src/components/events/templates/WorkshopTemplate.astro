@@ -1,0 +1,13 @@
+---
+// Workshop events — acting, music, art workshops, educational sessions.
+import BaseEventLayout from '../BaseEventLayout.astro';
+import type { CafeEvent } from '~/types/event';
+
+interface Props {
+  event: CafeEvent;
+}
+
+const { event } = Astro.props;
+---
+
+<BaseEventLayout event={event} kicker="A working session" kickerBn="কর্মশালা" />

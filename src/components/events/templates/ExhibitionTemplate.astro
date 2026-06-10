@@ -1,0 +1,13 @@
+---
+// Exhibition events — art, photography, installations, books.
+import BaseEventLayout from '../BaseEventLayout.astro';
+import type { CafeEvent } from '~/types/event';
+
+interface Props {
+  event: CafeEvent;
+}
+
+const { event } = Astro.props;
+---
+
+<BaseEventLayout event={event} kicker="On the walls" kickerBn="প্রদর্শনী" />
