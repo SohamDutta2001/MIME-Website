@@ -51,6 +51,9 @@ npm install
 | `npm run build` | Runs `astro check` (type + content schema validation) then builds the static site to `dist/`. This is what CI runs. |
 | `npm run preview` | Serves the `dist/` folder so you can inspect the production build locally before deploying. |
 | `npm run astro -- <cmd>` | Runs an arbitrary Astro CLI command (e.g. `npm run astro -- add mdx`). |
+| `npm test` | Runs the unit tests for the event utilities (`node --test`). |
+| `npm run sync:menu:local` | Pulls the live menu from Google Sheets into `src/data/mockMenuData.json` (needs `MENU_SHEET_ID` in `.env`; see [docs/SETUP.md](docs/SETUP.md)). |
+| `npm run sync:events:local` | Pulls the Events tab from Google Sheets into `src/data/events.json` (needs `EVENTS_SHEET_GID` in `.env`; see [docs/SETUP.md](docs/SETUP.md)). |
 
 ### First-run checklist
 
