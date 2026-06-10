@@ -1,0 +1,43 @@
+---
+// Validation route for event image delivery (roadmap Phase 4) — renders
+// every banner and gallery image through resolveEventImage so a broken
+// Cloudinary URL or missing local file is visible at a glance.
+import { allEvents } from '~/lib/events/events';
+import { resolveEventImage } from '~/lib/events/images.js';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>debug · images</title>
+  </head>
+  <body style="font-family: monospace; background: #1c1410; color: #f4ecd8; padding: 2rem;">
+    <h1 style="font-size: 1rem;">event images — {allEvents.length} events</h1>
+    {allEvents.map((event) => (
+      <section style="margin-bottom: 3rem;">
+        <h2 style="font-size: 0.9rem;">{event.title}</h2>
+        <p style="font-size: 0.75rem; opacity: 0.7;">banner: {event.bannerUrl || '(none)'}</p>
+        {event.bannerUrl && (
+          <img
+            src={resolveEventImage(event.bannerUrl, { width: 800 })}
+            alt={`${event.title} banner`}
+            style="max-width: 480px; display: block; margin: 0.5rem 0;"
+          />
+        )}
+        <p style="font-size: 0.75rem; opacity: 0.7;">gallery: {event.galleryUrls.length} images</p>
+        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+          {event.galleryUrls.map((url, i) => (
+            <img
+              src={resolveEventImage(url, { width: 300 })}
+              alt={`${event.title} gallery ${i + 1}`}
+              style="width: 160px; height: 120px; object-fit: cover;"
+            />
+          ))}
+        </div>
+      </section>
+    ))}
+  </body>
+</html>
