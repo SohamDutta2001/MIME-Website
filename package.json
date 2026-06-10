@@ -9,6 +9,7 @@
     "prebuild": "npm run sync:menu && npm run sync:events",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "test": "node --test \"tests/**/*.test.mjs\"",
     "astro": "astro",
     "sync:menu": "node scripts/sync-menu.mjs",
     "sync:menu:local": "node --env-file=.env scripts/sync-menu.mjs",
