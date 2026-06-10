@@ -20,6 +20,7 @@ import {
   PencilUnderline,
 } from './Scraps.jsx';
 import { assetPath, cldImg } from '../../lib/img.js';
+import EventsCarousel from './events/EventsCarousel.jsx';
 
 // ─── constants ───────────────────────────────────────────────────────────────
 
@@ -176,6 +177,7 @@ function TornEdge({ fill = '#F5F0E6', flip = false }) {
 function Nav() {
   const links = [
     { href: '#philosophy', label: 'Philosophy' },
+    { href: '#events', label: 'Events' },
     { href: '#reel', label: 'রিল' },
     { href: '#menu', label: 'Menu' },
     { href: '#books', label: 'বইপাড়া' },
@@ -1255,6 +1257,7 @@ export default function CafeApp() {
       <main>
         <Hero />
         <Philosophy />
+        <EventsCarousel />
         <Reel />
         <Menu />
         <Books />

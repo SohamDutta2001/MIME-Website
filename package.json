@@ -25,6 +25,7 @@
     "@fontsource/hind-siliguri": "^5.1.0",
     "@fontsource/lora": "^5.1.1",
     "astro": "^4.16.18",
+    "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",
     "lucide-react": "^1.16.0",
     "react": "^18.3.1",
