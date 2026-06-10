@@ -1,4 +1,4 @@
-# Setup — Cloudinary (photos) & Google Sheets (menu)
+# Setup — Cloudinary (photos) & Google Sheets (menu + events)
 
 This guide walks through wiring the two CMS surfaces:
 
@@ -156,6 +156,71 @@ Once everything's set up, the café owner's flow is:
 
 ---
 
+## 3. Google Sheets (events)
+
+Events follow the same pattern as the menu: the café owner edits a tab in
+Google Sheets, and a build-time sync (`scripts/sync-events.mjs`) pulls the
+latest rows into `src/data/events.json`. The committed JSON acts as fallback
+sample data, so the site works without any setup.
+
+### Step 1 — create the Events tab
+
+In the same spreadsheet as the menu (or a separate one), add a tab named
+**Events** and import [`docs/events-template.csv`](events-template.csv)
+(**File → Import → Upload** → **Insert new sheet(s)**).
+
+| Column            | Format                                          | Notes |
+|-------------------|--------------------------------------------------|-------|
+| `active`          | `TRUE` / `FALSE`                                 | Controls visibility. Set `FALSE` to hide an event without deleting the row. |
+| `category`        | `Performance` / `Workshop` / `Exhibition`        | Picks the page template. Performance covers music, drama, stand-up, poetry, storytelling; Workshop covers classes and training sessions; Exhibition covers art, photography, installations, books. |
+| `title`           | text                                             | Event title. The page URL (slug) is generated from this automatically. |
+| `date`            | `2026-07-04` (YYYY-MM-DD)                        | Used for sorting and the upcoming/past split. |
+| `time`            | `6:00 PM`                                        | Free text, shown as-is. |
+| `venue`           | text                                             | e.g. `Art-Teas-Tree Cafe` or `Mime Hall`. |
+| `bannerUrl`       | Cloudinary URL                                   | The hero image. A bare filename (no `https://`) is treated as a file in `/public/cafe-assets/` — handy before Cloudinary is set up. |
+| `description`     | text                                             | Main description. Blank lines split paragraphs. |
+| `additionalInfo`  | text                                             | Category-specific: artist bios (Performance), learning outcomes (Workshop), curator notes (Exhibition). |
+| `galleryUrls`     | one URL per line (Alt+Enter inside the cell)     | Optional gallery images. |
+| `registrationUrl` | any link                                         | Google Form, WhatsApp (`https://wa.me/…`), ticketing site, Instagram… Leave blank for walk-in events. |
+
+Header matching is forgiving — `Banner URL`, `bannerUrl`, and `bannerurl` all
+work (spaces and case are ignored).
+
+### Step 2 — share the sheet and grab the ids
+
+Share exactly like the menu sheet ("Anyone with the link can view"). Then,
+with the Events tab selected, copy from the URL:
+
+```text
+https://docs.google.com/spreadsheets/d/SHEET_ID/edit?gid=TAB_GID#gid=TAB_GID
+```
+
+`.env` for local syncs:
+
+```bash
+EVENTS_SHEET_ID=...   # optional — defaults to MENU_SHEET_ID
+EVENTS_SHEET_GID=...  # required — the Events tab's gid
+```
+
+For CI, add the same names as GitHub repo secrets and they're passed through
+in [`build.yml`](../.github/workflows/build.yml). Failure behaviour matches
+the menu sync: no vars → keep committed JSON; vars set but sheet unreachable
+or malformed → build fails loudly.
+
+### Step 3 — Cloudinary folders for event images
+
+In the Cloudinary media library create two folders:
+
+```text
+events/banners     ← one hero image per event
+events/galleries   ← event photos
+```
+
+Upload, click an image → **Copy URL**, paste into the sheet. Any Cloudinary
+delivery URL works verbatim; the site does not transform event URLs.
+
+---
+
 ## Next steps (not done by default)
 
 ### Scheduled menu refresh
@@ -206,5 +271,10 @@ For the simplest café-owner image workflow: create an [unsigned upload preset](
 | Menu fallback data | [`src/data/mockMenuData.json`](../src/data/mockMenuData.json) (auto-overwritten by sync) |
 | Menu sync script | [`scripts/sync-menu.mjs`](../scripts/sync-menu.mjs) |
 | Menu CSV template | [`docs/menu-template.csv`](menu-template.csv) |
+| Events sheet ID (local) | `.env` → `EVENTS_SHEET_ID` (falls back to `MENU_SHEET_ID`) + `EVENTS_SHEET_GID` |
+| Events sheet ID (CI) | GitHub repo secrets `EVENTS_SHEET_ID` / `EVENTS_SHEET_GID` |
+| Events fallback data | [`src/data/events.json`](../src/data/events.json) (auto-overwritten by sync) |
+| Events sync script | [`scripts/sync-events.mjs`](../scripts/sync-events.mjs) |
+| Events CSV template | [`docs/events-template.csv`](events-template.csv) |
 | Build command | `npm run build` (runs `prebuild` → `sync:menu` first) |
 | Local sync command | `npm run sync:menu:local` (reads from `.env`) |
