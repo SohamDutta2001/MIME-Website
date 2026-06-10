@@ -100,7 +100,17 @@ export default function EventsCarousel() {
                   key={event.slug}
                   className="min-w-0 flex-[0_0_86%] sm:flex-[0_0_46%] lg:flex-[0_0_31.5%]"
                 >
-                  <EventCard event={event} index={i} />
+                  {/* Posters settle onto the board one after another */}
+                  <motion.div
+                    className="h-full"
+                    variants={fadeUp}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: '-60px' }}
+                    transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 0.61, 0.36, 1] }}
+                  >
+                    <EventCard event={event} index={i} />
+                  </motion.div>
                 </div>
               ))}
             </div>

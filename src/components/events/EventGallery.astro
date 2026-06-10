@@ -21,18 +21,21 @@ const tilts = [-2, 1.5, -1, 2.2, -1.8, 0.8];
 
 {photos.length > 0 && (
   <section aria-label="Event photographs">
-    <p class="font-hand text-2xl text-tea-500">from the camera roll</p>
-    <h2 class="mt-2 font-serif text-display-md font-medium text-tea-900">
-      The room, mid-moment.
-    </h2>
+    <div data-reveal>
+      <p class="font-hand text-2xl text-tea-500">from the camera roll</p>
+      <h2 class="mt-2 font-serif text-display-md font-medium text-tea-900">
+        The room, mid-moment.
+      </h2>
+    </div>
 
     <div class="mt-10 grid grid-cols-2 gap-5 sm:grid-cols-3 sm:gap-8">
       {photos.map((photo, i) => (
+        <div data-reveal style={`--reveal-delay: ${(i % 3) * 90}ms`}>
         <button
           type="button"
           data-gallery-index={i}
           aria-label={`Open ${photo.alt}`}
-          class="group bg-cream p-2.5 pb-8 text-left shadow-polaroid transition-transform duration-300 ease-ink hover:rotate-0 hover:scale-[1.03] sm:p-3 sm:pb-10"
+          class="group w-full bg-cream p-2.5 pb-8 text-left shadow-polaroid transition-transform duration-300 ease-ink hover:rotate-0 hover:scale-[1.03] sm:p-3 sm:pb-10"
           style={`transform: rotate(${tilts[i % tilts.length]}deg);`}
         >
           <img
@@ -43,6 +46,7 @@ const tilts = [-2, 1.5, -1, 2.2, -1.8, 0.8];
           />
           <span class="mt-2 block px-1 font-hand text-sm text-tea-600">№ {i + 1}</span>
         </button>
+        </div>
       ))}
     </div>
 

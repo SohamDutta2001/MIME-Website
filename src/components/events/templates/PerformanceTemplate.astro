@@ -15,7 +15,7 @@ const artistNotes = paragraphs(event.additionalInfo);
 
 <BaseEventLayout event={event} kicker="An evening of performance" kickerBn="পরিবেশনা">
   {artistNotes.length > 0 && (
-    <section slot="info" class="mt-16" aria-label="About the artists">
+    <section slot="info" class="mt-16" data-reveal aria-label="About the artists">
       <p class="font-hand text-2xl text-tea-500">tonight, on the bill</p>
       <h2 class="mt-2 font-serif text-display-md font-medium text-tea-900">About the artists.</h2>
 

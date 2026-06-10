@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
 import {
   BookOpen,
   ChevronDown,
@@ -310,10 +310,17 @@ function HeroCarousel() {
 }
 
 function Hero() {
+  // Cinematic parallax — the photo layer drifts slower than the page so the
+  // hero recedes like a backdrop on rails. Scale hides the travelling edge.
+  const { scrollY } = useScroll();
+  const photoY = useTransform(scrollY, [0, 900], [0, 180]);
+
   return (
     <section id="home" className="relative min-h-screen overflow-hidden bg-[#1C1208]">
       {/* Auto-advancing photo carousel — replaces the previous single image */}
-      <HeroCarousel />
+      <motion.div className="absolute inset-0" style={{ y: photoY, scale: 1.12 }}>
+        <HeroCarousel />
+      </motion.div>
 
       {/* Cinematic gradient — heavy left, soft right, bottom vignette */}
       <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(28,18,8,0.97)_0%,rgba(28,18,8,0.78)_48%,rgba(28,18,8,0.38)_100%)]" />
@@ -607,7 +614,14 @@ function Reel() {
 
       <div className="relative mx-auto max-w-6xl">
         {/* Section header */}
-        <div className="grid gap-6 sm:flex sm:items-end sm:justify-between">
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.9, ease: [0.22, 0.61, 0.36, 1] }}
+          className="grid gap-6 sm:flex sm:items-end sm:justify-between"
+        >
           <div>
             <p className="font-bn text-3xl text-[#C9A87A]/75">রিল</p>
             <SectionKicker className="mt-0.5 text-[#5A6B3E]">
@@ -635,7 +649,7 @@ function Reel() {
               scene 03<br />take 01
             </p>
           </div>
-        </div>
+        </motion.div>
 
         {/* ── Viewfinder ───────────────────────────────────────────── */}
         <div className="relative mx-auto mt-12 max-w-5xl">

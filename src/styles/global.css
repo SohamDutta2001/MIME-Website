@@ -125,6 +125,26 @@
     opacity: 0.62;
     text-shadow: 0 0 2px rgba(28, 18, 8, 0.4);
   }
+
+  /* Scroll-reveal — elements tagged data-reveal get this class from the
+     Layout script, then `.revealed` when they enter the viewport. The ink
+     easing makes content settle onto the page like a print drying. JS adds
+     the class, so without JS everything is simply visible. Stagger with
+     style="--reveal-delay: 120ms". Disabled under prefers-reduced-motion. */
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition:
+        opacity 0.9s theme('transitionTimingFunction.ink'),
+        transform 0.9s theme('transitionTimingFunction.ink');
+      transition-delay: var(--reveal-delay, 0s);
+    }
+    .reveal.revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
 
 @layer utilities {

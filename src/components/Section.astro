@@ -14,7 +14,7 @@ const { heading, accent, divider = false, id, class: extraClass = '', align = 'l
 <section id={id} class:list={['py-section', extraClass]}>
   {divider && <div class="ink-divider" aria-hidden="true" />}
   {(heading || accent) && (
-    <header class:list={['mb-10 max-w-prose', align === 'center' && 'mx-auto text-center']}>
+    <header class:list={['mb-10 max-w-prose', align === 'center' && 'mx-auto text-center']} data-reveal>
       {accent && (
         <p class="mb-3 font-hand text-base text-tea-500">{accent}</p>
       )}

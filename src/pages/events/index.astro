@@ -24,7 +24,7 @@ const eventHref = (slug: string) => `${basePath}/events/${slug}/`;
     ) : (
       <ul class="mt-8 divide-y divide-tea-500/15">
         {upcomingEvents.map((event) => (
-          <li>
+          <li data-reveal>
             <a href={eventHref(event.slug)} class="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5">
               <span class="font-typewriter text-xs uppercase tracking-[0.2em] text-tea-600 w-56">{formatEventDate(event.date)}</span>
               <span class="font-serif text-2xl text-tea-900 transition-colors group-hover:text-maroon">{event.title}</span>
@@ -40,7 +40,7 @@ const eventHref = (slug: string) => `${basePath}/events/${slug}/`;
       <h2 class="mt-16 font-serif text-display-md font-medium text-tea-900">Already happened</h2>
       <ul class="mt-8 divide-y divide-tea-500/15 opacity-75">
         {pastEvents.map((event) => (
-          <li>
+          <li data-reveal>
             <a href={eventHref(event.slug)} class="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5">
               <span class="font-typewriter text-xs uppercase tracking-[0.2em] text-tea-600 w-56">{formatEventDate(event.date)}</span>
               <span class="font-serif text-2xl text-tea-900 transition-colors group-hover:text-maroon">{event.title}</span>

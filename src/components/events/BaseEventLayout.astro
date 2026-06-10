@@ -29,7 +29,7 @@ const basePath = base === '/' ? '' : base.replace(/\/$/, '');
     <EventHero event={event} kicker={kicker} kickerBn={kickerBn} />
 
     <div class="mt-14 grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_320px]">
-      <div class="max-w-prose">
+      <div class="max-w-prose" data-reveal>
         {description.length > 0 ? (
           description.map((para, i) => (
             <p
@@ -49,13 +49,15 @@ const basePath = base === '/' ? '' : base.replace(/\/$/, '');
         )}
       </div>
 
-      <EventMeta event={event} />
+      <div data-reveal style="--reveal-delay: 140ms">
+        <EventMeta event={event} />
+      </div>
     </div>
 
     <!-- Category-specific section (artists / outcomes / curator) -->
     <slot name="info" />
 
-    <div class="mt-16">
+    <div class="mt-16" data-reveal>
       <RegistrationCTA event={event} />
     </div>
 
