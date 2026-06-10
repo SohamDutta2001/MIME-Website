@@ -1,6 +1,8 @@
 ---
 // Exhibition events — art, photography, installations, books.
+// The info slot is set like the wall text beside a gallery entrance.
 import BaseEventLayout from '../BaseEventLayout.astro';
+import { paragraphs } from '~/lib/events/utils.js';
 import type { CafeEvent } from '~/types/event';
 
 interface Props {
@@ -8,6 +10,23 @@ interface Props {
 }
 
 const { event } = Astro.props;
+const curatorNotes = paragraphs(event.additionalInfo);
 ---
 
-<BaseEventLayout event={event} kicker="On the walls" kickerBn="প্রদর্শনী" />
+<BaseEventLayout event={event} kicker="On the walls" kickerBn="প্রদর্শনী">
+  {curatorNotes.length > 0 && (
+    <section slot="info" class="mt-16" aria-label="Curator's notes">
+      <p class="font-hand text-2xl text-tea-500">read before you wander</p>
+      <h2 class="mt-2 font-serif text-display-md font-medium text-tea-900">Curator's notes.</h2>
+
+      <div class="mt-8 max-w-prose border border-tea-500/30 bg-cream px-8 py-7 shadow-soft">
+        <p class="font-typewriter text-[9px] uppercase tracking-[0.45em] text-tea-500">wall text · no flash photography</p>
+        {curatorNotes.map((para) => (
+          <p class="mt-5 font-serif text-xl italic leading-relaxed text-tea-800">
+            {para}
+          </p>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseEventLayout>
