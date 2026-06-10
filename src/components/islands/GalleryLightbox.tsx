@@ -1,9 +1,13 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 
 type Photo = { src: string; alt: string };
 
+// Horizontal swipe distance (px) that counts as a prev/next gesture.
+const SWIPE_THRESHOLD = 48;
+
 export default function GalleryLightbox({ photos }: { photos: Photo[] }) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+  const touchStartX = useRef<number | null>(null);
 
   const close = useCallback(() => setActiveIndex(null), []);
   const next = useCallback(
@@ -53,6 +57,14 @@ export default function GalleryLightbox({ photos }: { photos: Photo[] }) {
       aria-modal="true"
       aria-label="Photo viewer"
       onClick={close}
+      onTouchStart={(e) => { touchStartX.current = e.touches[0]?.clientX ?? null; }}
+      onTouchEnd={(e) => {
+        if (touchStartX.current === null) return;
+        const dx = (e.changedTouches[0]?.clientX ?? touchStartX.current) - touchStartX.current;
+        touchStartX.current = null;
+        if (dx <= -SWIPE_THRESHOLD) next();
+        else if (dx >= SWIPE_THRESHOLD) prev();
+      }}
     >
       <button
         type="button"

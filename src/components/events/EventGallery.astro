@@ -1,7 +1,8 @@
 ---
 // Event photo gallery — polaroids scattered on the page, opened full-size
-// by the existing GalleryLightbox island (it listens for clicks on
+// by the GalleryLightbox island (it listens for clicks on
 // [data-gallery-index] anywhere in the document).
+import GalleryLightbox from '~/components/islands/GalleryLightbox.tsx';
 import { resolveEventImage } from '~/lib/events/images.js';
 import type { CafeEvent } from '~/types/event';
 
@@ -44,5 +45,7 @@ const tilts = [-2, 1.5, -1, 2.2, -1.8, 0.8];
         </button>
       ))}
     </div>
+
+    <GalleryLightbox client:load photos={photos.map((p) => ({ src: p.full, alt: p.alt }))} />
   </section>
 )}
