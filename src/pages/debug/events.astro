@@ -1,0 +1,28 @@
+---
+// Validation route for the events pipeline (roadmap Phase 2) — dumps the
+// parsed event data the build is actually using, so a sheet edit can be
+// verified end-to-end without clicking through the site.
+import events from '~/data/events.json';
+
+const counts = events.reduce((acc, e) => {
+  acc[e.category] = (acc[e.category] ?? 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex" />
+    <title>debug · events</title>
+  </head>
+  <body style="font-family: monospace; background: #1c1410; color: #f4ecd8; padding: 2rem;">
+    <h1 style="font-size: 1rem;">src/data/events.json — {events.length} active events</h1>
+    <p>
+      {Object.entries(counts).map(([cat, n]) => <span style="margin-right: 1.5rem;">{cat}: {n}</span>)}
+    </p>
+    <pre style="white-space: pre-wrap; word-break: break-word; font-size: 0.8rem; line-height: 1.5;">{JSON.stringify(events, null, 2)}</pre>
+  </body>
+</html>

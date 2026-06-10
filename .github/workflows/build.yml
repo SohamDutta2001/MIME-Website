@@ -34,6 +34,10 @@ jobs:
       - name: Astro check + build
         env:
           GITHUB_PAGES: 'true'
+          MENU_SHEET_ID: ${{ secrets.MENU_SHEET_ID }}
+          MENU_SHEET_GID: ${{ secrets.MENU_SHEET_GID }}
+          EVENTS_SHEET_ID: ${{ secrets.EVENTS_SHEET_ID }}
+          EVENTS_SHEET_GID: ${{ secrets.EVENTS_SHEET_GID }}
         run: npm run build
 
       - name: Upload Pages artifact

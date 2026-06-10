@@ -1,0 +1,70 @@
+[
+  {
+    "slug": "rabindra-sangeet-evening",
+    "active": true,
+    "category": "Performance",
+    "title": "Rabindra Sangeet Evening",
+    "date": "2026-07-04",
+    "time": "6:00 PM",
+    "venue": "Art-Teas-Tree Cafe",
+    "bannerUrl": "art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp",
+    "description": "An evening of Tagore's songs over tea and dim lamplight. Doors open at 5:30; the music starts when the rain does.\n\nWe clear the long table, light the lamps, and let the songs do the rest. Come early for a seat near the window.",
+    "additionalInfo": "Sharmila Sen has sung Rabindra Sangeet for two decades, from Jorasanko courtyards to Nandan stages. She is joined by Arko Mitra on esraj.",
+    "galleryUrls": [
+      "art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp",
+      "art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg"
+    ],
+    "registrationUrl": "https://forms.gle/example"
+  },
+  {
+    "slug": "mime-movement-workshop",
+    "active": true,
+    "category": "Workshop",
+    "title": "Mime & Movement Workshop",
+    "date": "2026-07-12",
+    "time": "11:00 AM",
+    "venue": "Mime Hall",
+    "bannerUrl": "art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp",
+    "description": "A three-hour introduction to mime taught by senior students of the Mime Institute of Calcutta. No experience needed — bring loose clothes and curiosity.",
+    "additionalInfo": "You will learn: the fixed point, the wall, weight and resistance, and a short silent scene to take home.\n\nAges 14+. Limited to 20 seats. Tea and singara included in the break.",
+    "galleryUrls": [
+      "art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp"
+    ],
+    "registrationUrl": "https://wa.me/919800000000"
+  },
+  {
+    "slug": "college-street-in-photographs",
+    "active": true,
+    "category": "Exhibition",
+    "title": "College Street in Photographs",
+    "date": "2026-07-20",
+    "time": "4:00 PM",
+    "venue": "Art-Teas-Tree Cafe",
+    "bannerUrl": "art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp",
+    "description": "Thirty black-and-white frames of boipara — the stalls, the sellers, the rain on plastic-wrapped books. On the cafe walls through the end of the month.",
+    "additionalInfo": "Curated by Ritwik Basu. Prints are silver gelatin, shot on a Yashica twin-lens between 2019 and 2025. All works are for sale; proceeds support the Institute.",
+    "galleryUrls": [
+      "art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp",
+      "art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp",
+      "art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg"
+    ],
+    "registrationUrl": "https://instagram.com/artteastree"
+  },
+  {
+    "slug": "poetry-at-the-long-table",
+    "active": true,
+    "category": "Performance",
+    "title": "Poetry at the Long Table",
+    "date": "2026-05-09",
+    "time": "7:00 PM",
+    "venue": "Art-Teas-Tree Cafe",
+    "bannerUrl": "art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg",
+    "description": "An open evening of Bangla and English poetry — readers, listeners, and one long table. This one has already happened; the photographs remain.",
+    "additionalInfo": "Hosted by the café's regulars. No stage, no mic — just the room.",
+    "galleryUrls": [
+      "art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp",
+      "art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp"
+    ],
+    "registrationUrl": ""
+  }
+]
