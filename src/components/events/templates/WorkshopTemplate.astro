@@ -1,6 +1,8 @@
 ---
 // Workshop events — acting, music, art workshops, educational sessions.
+// The info slot reads like a page from a workbook: what you'll take home.
 import BaseEventLayout from '../BaseEventLayout.astro';
+import { paragraphs } from '~/lib/events/utils.js';
 import type { CafeEvent } from '~/types/event';
 
 interface Props {
@@ -8,6 +10,32 @@ interface Props {
 }
 
 const { event } = Astro.props;
+const outcomes = paragraphs(event.additionalInfo);
 ---
 
-<BaseEventLayout event={event} kicker="A working session" kickerBn="কর্মশালা" />
+<BaseEventLayout event={event} kicker="A working session" kickerBn="কর্মশালা">
+  {outcomes.length > 0 && (
+    <section slot="info" class="mt-16" aria-label="What you'll learn">
+      <p class="font-hand text-2xl text-tea-500">bring curiosity, leave with</p>
+      <h2 class="mt-2 font-serif text-display-md font-medium text-tea-900">What you'll take home.</h2>
+
+      <div
+        class="relative mt-8 max-w-prose border border-moss/30 bg-cream/60 px-7 py-6 shadow-soft"
+        style="background-image: repeating-linear-gradient(transparent 0 27px, rgba(90,107,62,0.12) 27px 28px);"
+      >
+        <span
+          class="absolute -top-3 right-6 font-hand text-xl text-moss"
+          style="transform: rotate(2deg);"
+          aria-hidden="true"
+        >
+          notes to self ↓
+        </span>
+        {outcomes.map((para, i) => (
+          <p class:list={['font-body text-lg leading-[28px] text-tea-700', i > 0 && 'mt-[28px]']}>
+            {para}
+          </p>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseEventLayout>
