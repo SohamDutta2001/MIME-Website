@@ -1,0 +1,55 @@
+---
+// /events/ — the full board: every upcoming event, then the recent past.
+import Layout from '~/components/Layout.astro';
+import { upcomingEvents, pastEvents } from '~/lib/events/events';
+import { formatEventDate } from '~/lib/events/utils.js';
+
+const base = import.meta.env.BASE_URL;
+const basePath = base === '/' ? '' : base.replace(/\/$/, '');
+const eventHref = (slug: string) => `${basePath}/events/${slug}/`;
+---
+
+<Layout title="Events" description="Performances, workshops, and exhibitions at Art-Teas-Tree Cafe and the Mime Institute of Calcutta." variant="wide">
+  <header class="pt-12 sm:pt-16">
+    <p class="font-hand text-lg text-tea-500">Performances, workshops, exhibitions</p>
+    <h1 class="mt-2 text-balance font-serif text-display-xl font-medium text-tea-900">
+      The notice board, <span class="font-bn">অনুষ্ঠান</span>
+    </h1>
+  </header>
+
+  <section class="py-section">
+    <h2 class="font-serif text-display-md font-medium text-tea-900">Coming up</h2>
+    {upcomingEvents.length === 0 ? (
+      <p class="mt-6 font-hand text-2xl text-maroon">এখন কিছু নেই — the board is bare, the kettle is not.</p>
+    ) : (
+      <ul class="mt-8 divide-y divide-tea-500/15">
+        {upcomingEvents.map((event) => (
+          <li>
+            <a href={eventHref(event.slug)} class="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5">
+              <span class="font-typewriter text-xs uppercase tracking-[0.2em] text-tea-600 w-56">{formatEventDate(event.date)}</span>
+              <span class="font-serif text-2xl text-tea-900 transition-colors group-hover:text-maroon">{event.title}</span>
+              <span class="font-hand text-base text-tea-500">{event.category}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    {pastEvents.length > 0 && (
+      <>
+      <h2 class="mt-16 font-serif text-display-md font-medium text-tea-900">Already happened</h2>
+      <ul class="mt-8 divide-y divide-tea-500/15 opacity-75">
+        {pastEvents.map((event) => (
+          <li>
+            <a href={eventHref(event.slug)} class="group flex flex-wrap items-baseline gap-x-6 gap-y-1 py-5">
+              <span class="font-typewriter text-xs uppercase tracking-[0.2em] text-tea-600 w-56">{formatEventDate(event.date)}</span>
+              <span class="font-serif text-2xl text-tea-900 transition-colors group-hover:text-maroon">{event.title}</span>
+              <span class="font-hand text-base text-tea-500">{event.category}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+      </>
+    )}
+  </section>
+</Layout>
