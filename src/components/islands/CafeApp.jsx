@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion';
+import {
+  AnimatePresence,
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from 'framer-motion';
+import useEmblaCarousel from 'embla-carousel-react';
 import {
   BookOpen,
+  CalendarDays,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
@@ -142,6 +150,66 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
+// Hero title — letters rise out of a clipped line like a film title card.
+// Stagger sits in the 30–50ms band so the reveal reads as one gesture.
+const titleContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.045, delayChildren: 0.35 } },
+};
+
+const titleLetter = {
+  hidden: { y: '108%', rotate: 3 },
+  visible: {
+    y: '0%',
+    rotate: 0,
+    transition: { duration: 0.65, ease: [0.22, 0.61, 0.36, 1] },
+  },
+};
+
+// ─── ScrollProgress ───────────────────────────────────────────────────────────
+// A hair-thin copper strip across the very top — fills as the page plays out,
+// like the progress of a reel through a projector. Sits above the nav (z-50).
+
+function ScrollProgress() {
+  const { scrollYProgress } = useScroll();
+  return (
+    <motion.div
+      className="fixed inset-x-0 top-0 z-50 h-[2px] origin-left bg-gradient-to-r from-[#7A4A2A] via-[#C9A87A] to-[#C73A2D]"
+      style={{ scaleX: scrollYProgress }}
+      aria-hidden="true"
+    />
+  );
+}
+
+// ─── Steam ────────────────────────────────────────────────────────────────────
+// Three soft wisps rising and dissolving — the bhar is always hot somewhere.
+// Pure transform/opacity, removed entirely under prefers-reduced-motion.
+
+function Steam({ className = '' }) {
+  const reduce = useReducedMotion();
+  if (reduce) return null;
+  return (
+    <span
+      className={`pointer-events-none inline-flex items-end gap-[5px] ${className}`}
+      aria-hidden="true"
+    >
+      {[0, 1, 2].map((i) => (
+        <motion.span
+          key={i}
+          className="block h-5 w-[3px] rounded-full bg-[#C9A87A]/60 blur-[1.5px]"
+          animate={{ y: [4, -14], opacity: [0, 0.85, 0], scaleY: [0.6, 1.3] }}
+          transition={{
+            repeat: Infinity,
+            duration: 2.2,
+            delay: i * 0.45,
+            ease: 'easeInOut',
+          }}
+        />
+      ))}
+    </span>
+  );
+}
+
 // ─── sub-components ───────────────────────────────────────────────────────────
 
 function SectionKicker({ children, className = '' }) {
@@ -175,6 +243,18 @@ function TornEdge({ fill = '#F5F0E6', flip = false }) {
 // ─── Nav ─────────────────────────────────────────────────────────────────────
 
 function Nav() {
+  // Over the dark hero photo the bar is transparent with cream lettering;
+  // once the reader scrolls past the hero's top edge it settles onto cream
+  // paper with dark ink. Fixes the name disappearing into the first photo.
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 60);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   const links = [
     { href: '#philosophy', label: 'Philosophy' },
     { href: '#events', label: 'Events' },
@@ -184,24 +264,48 @@ function Nav() {
   ];
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-[#5E3820]/15 bg-[#F5F0E6]/88 backdrop-blur-md">
+    <header
+      className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
+        scrolled
+          ? 'border-b border-[#5E3820]/15 bg-[#F5F0E6]/92 shadow-[0_10px_35px_rgba(28,18,8,0.10)] backdrop-blur-md'
+          : 'border-b border-transparent bg-gradient-to-b from-[#1C1208]/85 via-[#1C1208]/40 to-transparent'
+      }`}
+    >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-8">
         <a href="#home" className="flex flex-col leading-none">
-          <span className="font-serif text-xl font-semibold text-[#1C1410] sm:text-2xl">
+          <span
+            className={`font-serif text-xl font-semibold transition-colors duration-500 sm:text-2xl ${
+              scrolled ? 'text-[#1C1410]' : 'text-[#F5F0E6]'
+            }`}
+          >
             Art-Teas-Tree
           </span>
-          <span className="font-hand text-sm text-[#5A6B3E] sm:text-base">
+          <span
+            className={`font-hand text-sm transition-colors duration-500 sm:text-base ${
+              scrolled ? 'text-[#5A6B3E]' : 'text-[#C9A87A]'
+            }`}
+          >
             Mime Institute of Calcutta &mdash;{' '}
             <span className="font-bn">কলকাতা</span>
           </span>
         </a>
 
-        <div className="hidden items-center gap-0.5 rounded-full border border-[#7A4A2A]/20 bg-[#EDE2CB]/65 px-2 py-1 md:flex">
+        <div
+          className={`hidden items-center gap-0.5 rounded-full border px-2 py-1 transition-colors duration-500 md:flex ${
+            scrolled
+              ? 'border-[#7A4A2A]/20 bg-[#EDE2CB]/65'
+              : 'border-[#C9A87A]/25 bg-[#1C1208]/35 backdrop-blur-sm'
+          }`}
+        >
           {links.map(({ href, label }) => (
             <a
               key={href}
               href={href}
-              className="rounded-full px-4 py-2 text-sm text-[#3B2418] transition-colors hover:bg-[#7A4A2A]/10 font-body"
+              className={`rounded-full px-4 py-2 font-body text-sm transition-colors ${
+                scrolled
+                  ? 'text-[#3B2418] hover:bg-[#7A4A2A]/10'
+                  : 'text-[#F5F0E6]/85 hover:bg-[#F5F0E6]/10'
+              }`}
             >
               {label}
             </a>
@@ -215,13 +319,14 @@ function Nav() {
 // ─── Hero ─────────────────────────────────────────────────────────────────────
 
 /**
- * HeroCarousel — cinematic cross-fade through the four café photos.
- * Auto-advances every HERO_AUTO_ADVANCE_MS milliseconds. Pauses on hover so
- * a reader isn't jolted while taking in the headline. Manual arrows + dot
- * indicators give explicit control. Honors prefers-reduced-motion by holding
- * on a single still frame (no auto-advance, no fade).
+ * HeroCarousel — a drag/swipe-scrollable strip of the café photos, built on
+ * Embla (same engine as the events board). Loops endlessly, auto-advances
+ * every HERO_AUTO_ADVANCE_MS, and pauses while hovered or mid-drag. Arrows,
+ * dot indicators, and a playbill frame counter give explicit control.
+ * Honors prefers-reduced-motion by not auto-advancing.
  */
 function HeroCarousel() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, duration: 32 });
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const reduceMotion = useRef(false);
@@ -232,20 +337,28 @@ function HeroCarousel() {
     reduceMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }, []);
 
-  // Auto-advance timer. Pauses when the user is hovering, or when the OS
-  // tells us not to animate. Cleared on unmount / dependency change.
+  // Track the selected slide, and pause the auto-advance the moment the
+  // reader grabs the strip — a drag should never be fought by a timer.
   useEffect(() => {
-    if (isPaused || reduceMotion.current) return undefined;
-    const id = window.setInterval(() => {
-      setIndex((i) => (i + 1) % HERO_IMAGES.length);
-    }, HERO_AUTO_ADVANCE_MS);
+    if (!emblaApi) return undefined;
+    const onSelect = () => setIndex(emblaApi.selectedScrollSnap());
+    const onPointerDown = () => setIsPaused(true);
+    emblaApi.on('select', onSelect);
+    emblaApi.on('pointerDown', onPointerDown);
+    onSelect();
+    return () => {
+      emblaApi.off('select', onSelect);
+      emblaApi.off('pointerDown', onPointerDown);
+    };
+  }, [emblaApi]);
+
+  // Auto-advance timer. Pauses on hover/drag, or when the OS says not to
+  // animate. Cleared on unmount / dependency change.
+  useEffect(() => {
+    if (!emblaApi || isPaused || reduceMotion.current) return undefined;
+    const id = window.setInterval(() => emblaApi.scrollNext(), HERO_AUTO_ADVANCE_MS);
     return () => window.clearInterval(id);
-  }, [isPaused]);
-
-  const go = (delta) =>
-    setIndex((i) => (i + delta + HERO_IMAGES.length) % HERO_IMAGES.length);
-
-  const current = HERO_IMAGES[index];
+  }, [emblaApi, isPaused]);
 
   return (
     <div
@@ -253,26 +366,40 @@ function HeroCarousel() {
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
-      {/* Cross-fading image layer — old fades out while new fades in. */}
-      <AnimatePresence initial={false} mode="sync">
-        <motion.img
-          key={current.src}
-          src={cldImg(current.src, { width: 2400 })}
-          alt={current.alt}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.55 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1.2, ease: [0.22, 0.61, 0.36, 1] }}
-          className="absolute inset-0 h-full w-full object-cover sepia"
-        />
-      </AnimatePresence>
+      {/* Scrollable photo strip — grab it and pull, or swipe on touch. */}
+      <div
+        ref={emblaRef}
+        className="h-full cursor-grab overflow-hidden active:cursor-grabbing"
+      >
+        <div className="flex h-full touch-pan-y">
+          {HERO_IMAGES.map((img, i) => (
+            <div
+              key={img.src}
+              className="relative h-full min-w-0 flex-[0_0_100%] overflow-hidden"
+            >
+              {/* Ken Burns — the frame in view drifts slowly into a zoom,
+                  like a rostrum camera over a still. Transform-only. */}
+              <motion.img
+                src={cldImg(img.src, { width: 2400 })}
+                alt={img.alt}
+                draggable={false}
+                animate={{
+                  scale: i === index && !reduceMotion.current ? 1.1 : 1,
+                }}
+                transition={{ duration: 8, ease: 'linear' }}
+                className="h-full w-full select-none object-cover opacity-80 sepia will-change-transform sm:opacity-55"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Manual nav arrows — copper-tinted, sit on the inner playbill margin.
-          Hidden on the smallest screens where the dot indicators are enough. */}
+          Hidden on the smallest screens where swiping is the natural gesture. */}
       <button
         type="button"
         aria-label="Previous photo"
-        onClick={() => go(-1)}
+        onClick={() => emblaApi?.scrollPrev()}
         className="absolute left-3 top-1/2 z-20 hidden -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] sm:left-6 sm:grid sm:p-3"
       >
         <ChevronLeft size={20} strokeWidth={1.5} />
@@ -280,7 +407,7 @@ function HeroCarousel() {
       <button
         type="button"
         aria-label="Next photo"
-        onClick={() => go(1)}
+        onClick={() => emblaApi?.scrollNext()}
         className="absolute right-3 top-1/2 z-20 hidden -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] sm:right-6 sm:grid sm:p-3"
       >
         <ChevronRight size={20} strokeWidth={1.5} />
@@ -297,13 +424,23 @@ function HeroCarousel() {
               type="button"
               aria-label={`Show photo ${i + 1} of ${HERO_IMAGES.length}`}
               aria-pressed={isActive}
-              onClick={() => setIndex(i)}
+              onClick={() => emblaApi?.scrollTo(i)}
               className={`h-[3px] rounded-none transition-all duration-500 ${
                 isActive ? 'w-8 bg-[#C9A87A]' : 'w-4 bg-[#C9A87A]/30 hover:bg-[#C9A87A]/55'
               }`}
             />
           );
         })}
+      </div>
+
+      {/* Playbill frame counter + drag hint — bottom-right margin. */}
+      <div className="pointer-events-none absolute bottom-20 right-8 z-20 hidden text-right sm:bottom-24 sm:block">
+        <p className="font-typewriter text-[10px] uppercase tracking-[0.4em] text-[#C9A87A]/75">
+          {String(index + 1).padStart(2, '0')} / {String(HERO_IMAGES.length).padStart(2, '0')}
+        </p>
+        <p className="mt-1 font-hand text-base text-[#C9A87A]/45">
+          drag · টানুন →
+        </p>
       </div>
     </div>
   );
@@ -314,40 +451,30 @@ function Hero() {
   // hero recedes like a backdrop on rails. Scale hides the travelling edge.
   const { scrollY } = useScroll();
   const photoY = useTransform(scrollY, [0, 900], [0, 180]);
+  const reduceTitleMotion = useReducedMotion();
 
   return (
-    <section id="home" className="relative min-h-screen overflow-hidden bg-[#1C1208]">
+    <section id="home" className="relative min-h-[100dvh] overflow-hidden bg-[#1C1208]">
       {/* Auto-advancing photo carousel — replaces the previous single image */}
       <motion.div className="absolute inset-0" style={{ y: photoY, scale: 1.12 }}>
         <HeroCarousel />
       </motion.div>
 
-      {/* Cinematic gradient — heavy left, soft right, bottom vignette */}
-      <div className="absolute inset-0 bg-[linear-gradient(100deg,rgba(28,18,8,0.97)_0%,rgba(28,18,8,0.78)_48%,rgba(28,18,8,0.38)_100%)]" />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#1C1208]/95 via-transparent to-[#1C1208]/50" />
-
-      {/* Theatre playbill double-border frame */}
-      <div className="pointer-events-none absolute inset-4 border border-[#C9A87A]/18 sm:inset-8" />
-      <div className="pointer-events-none absolute inset-[1.65rem] border border-[#C9A87A]/8 sm:inset-[2.75rem]" />
+      {/* Cinematic gradient — pointer-events-none so the carousel underneath
+          stays draggable. Phones get a light top-to-bottom vignette (the
+          desktop left-heavy wash blacked out the whole photo on a narrow
+          screen); sm+ gets the original heavy-left playbill gradient. */}
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(180deg,rgba(28,18,8,0.55)_0%,rgba(28,18,8,0.12)_42%,rgba(28,18,8,0.94)_88%)] sm:bg-[linear-gradient(100deg,rgba(28,18,8,0.97)_0%,rgba(28,18,8,0.78)_48%,rgba(28,18,8,0.38)_100%)]" />
+      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-t from-[#1C1208]/95 via-transparent to-[#1C1208]/50 sm:block" />
 
       <motion.div
         variants={fadeUp}
         initial="hidden"
         animate="visible"
         transition={{ duration: 1.3, ease: [0.22, 0.61, 0.36, 1] }}
-        className="relative z-10 mx-auto flex min-h-screen max-w-7xl flex-col justify-end px-6 pb-24 pt-36 sm:px-10 lg:pb-32"
+        className="pointer-events-none relative z-10 mx-auto flex min-h-[100dvh] max-w-7xl flex-col justify-end px-6 pb-28 pt-36 sm:px-10 sm:pb-24 lg:pb-32"
       >
         <div className="relative max-w-3xl">
-
-          {/* Handwritten Bengali annotation — overlaps the heading, rotated.
-              Pastel chalk treatment so it reads like aged pencil on the playbill paper. */}
-          <div
-            className="chalk-pencil-dark absolute -right-2 top-0 font-hand text-[1.6rem] text-chalk-sage sm:-right-8 sm:text-4xl select-none"
-            style={{ transform: 'rotate(-4deg) translateY(-3rem)' }}
-            aria-hidden="true"
-          >
-            এখানে আড্ডা ফ্রি ↙
-          </div>
 
           {/* Playbill rule line */}
           <div className="mb-7 flex items-center gap-4">
@@ -358,14 +485,42 @@ function Hero() {
             <div className="h-px flex-1 bg-[#C9A87A]/55" />
           </div>
 
-          {/* Main title */}
+          {/* Main title — film-title-card reveal: each letter rises out of a
+              clipped line, then "Café" blurs in underneath. Falls back to a
+              static title under prefers-reduced-motion. */}
           <h1 className="font-serif leading-[0.88] text-[#F5F0E6]">
-            <span className="block text-[3.6rem] sm:text-[5.5rem] lg:text-[7.5rem]">
-              Art-Teas-Tree
-            </span>
-            <span className="mt-3 block text-[2.4rem] italic text-[#C9A87A] sm:text-[3.5rem] lg:text-[4.5rem]">
+            {reduceTitleMotion ? (
+              <span className="block text-[3.6rem] sm:text-[5.5rem] lg:text-[7.5rem]">
+                Art-Teas-Tree
+              </span>
+            ) : (
+              <motion.span
+                variants={titleContainer}
+                className="block overflow-hidden pb-[0.08em] text-[3.6rem] sm:text-[5.5rem] lg:text-[7.5rem]"
+              >
+                {'Art-Teas-Tree'.split('').map((ch, i) => (
+                  <motion.span
+                    key={i}
+                    variants={titleLetter}
+                    className="inline-block will-change-transform"
+                  >
+                    {ch}
+                  </motion.span>
+                ))}
+              </motion.span>
+            )}
+            <motion.span
+              initial={
+                reduceTitleMotion
+                  ? false
+                  : { opacity: 0, y: 26, filter: 'blur(10px)' }
+              }
+              animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              transition={{ delay: 1.15, duration: 0.9, ease: [0.22, 0.61, 0.36, 1] }}
+              className="mt-3 block text-[2.4rem] italic text-[#C9A87A] sm:text-[3.5rem] lg:text-[4.5rem]"
+            >
               Café
-            </span>
+            </motion.span>
           </h1>
 
           {/* Ornamental divider */}
@@ -375,18 +530,26 @@ function Hero() {
             <div className="h-px flex-1 bg-[#C9A87A]/22" />
           </div>
 
-          {/* Tagline */}
-          <p className="font-serif text-2xl italic text-[#F5F0E6]/78 sm:text-3xl">
+          {/* Tagline — full-strength cream with a soft shadow so it stays
+              readable over whichever photo is behind it on mobile. */}
+          <p
+            className="font-serif text-2xl italic text-[#F5F0E6] sm:text-3xl"
+            style={{ textShadow: '0 2px 22px rgba(10,6,4,0.85)' }}
+          >
             "Where conversations steep slowly."
           </p>
 
           {/* Bengali subtitle */}
-          <p className="mt-4 font-bn text-sm text-[#F5F0E6]/42 sm:text-base">
+          <p
+            className="mt-4 font-bn text-sm text-[#F5F0E6]/70 sm:text-base"
+            style={{ textShadow: '0 2px 16px rgba(10,6,4,0.85)' }}
+          >
             চা, থিয়েটার, আড্ডা &mdash; Bidhan Nagar, Kolkata
           </p>
 
-          {/* CTAs */}
-          <div className="mt-10 flex flex-wrap gap-3">
+          {/* CTAs — pointer-events restored here since the parent column is
+              click-through to keep the photo strip draggable. */}
+          <div className="pointer-events-auto mt-10 flex flex-wrap gap-3">
             <a
               href="#menu"
               className="inline-flex items-center gap-2 rounded-full bg-[#F5F0E6] px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.16em] text-[#1C1410] transition-colors hover:bg-[#EDE2CB]"
@@ -394,10 +557,10 @@ function Hero() {
               <Coffee size={17} /> Open menu
             </a>
             <a
-              href="#reel"
+              href="#events"
               className="inline-flex items-center gap-2 rounded-full border border-[#F5F0E6]/35 px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.16em] text-[#F5F0E6] transition-colors hover:bg-[#F5F0E6]/10"
             >
-              <Theater size={17} /> The reel
+              <CalendarDays size={17} /> Events
             </a>
           </div>
         </div>
@@ -407,13 +570,57 @@ function Hero() {
       <motion.div
         animate={{ y: [0, 9, 0] }}
         transition={{ repeat: Infinity, duration: 2.6, ease: 'easeInOut' }}
-        className="absolute bottom-8 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1.5 text-[#C9A87A]/45"
+        className="pointer-events-none absolute bottom-8 left-1/2 z-20 hidden -translate-x-1/2 flex-col items-center gap-1.5 text-[#C9A87A]/45 sm:flex"
         aria-hidden="true"
       >
         <span className="font-typewriter text-[8px] uppercase tracking-[0.45em]">scroll</span>
         <ChevronDown size={14} />
       </motion.div>
     </section>
+  );
+}
+
+// ─── Marquee ticker ───────────────────────────────────────────────────────────
+// A slow film-credit crawl between the hero and the manifesto — the kind of
+// strip that runs under an old single-screen cinema's marquee. Decorative,
+// hence aria-hidden; duplicated content + -50% travel makes the loop seamless.
+
+const TICKER_ITEMS = [
+  'চা · cha',
+  'adda',
+  'theatre',
+  'বই · books',
+  'mime',
+  'bidhan nagar · kolkata',
+  'slow conversations',
+];
+
+function Ticker() {
+  // One "reel" of items; rendered twice so the -50% translate loops cleanly.
+  // Holds still under prefers-reduced-motion.
+  const reduce = useReducedMotion();
+  const reel = [...TICKER_ITEMS, ...TICKER_ITEMS];
+  return (
+    <div
+      className="relative overflow-hidden border-y border-[#C9A87A]/20 bg-[#1C1208] py-3"
+      aria-hidden="true"
+    >
+      <motion.div
+        className="flex w-max items-center whitespace-nowrap"
+        animate={reduce ? undefined : { x: ['0%', '-50%'] }}
+        transition={{ repeat: Infinity, duration: 48, ease: 'linear' }}
+      >
+        {[...reel, ...reel].map((item, i) => (
+          <span
+            key={i}
+            className="flex items-center font-typewriter text-[10px] uppercase tracking-[0.4em] text-[#C9A87A]/55"
+          >
+            <span className="px-6">{item}</span>
+            <span className="text-[#C9A87A]/25">✦</span>
+          </span>
+        ))}
+      </motion.div>
+    </div>
   );
 }
 
@@ -520,10 +727,13 @@ function Philosophy() {
             </h2>
           </div>
 
-          {/* Director's notebook — dark card, tilted, taped to the page */}
-          <div
+          {/* Director's notebook — dark card, tilted, taped to the page.
+              On hover it straightens and lifts, as if picked off the wall. */}
+          <motion.div
+            initial={{ rotate: -0.9 }}
+            whileHover={{ rotate: 0, scale: 1.02, y: -5 }}
+            transition={{ type: 'spring', stiffness: 220, damping: 16 }}
             className="relative bg-[#2A1812] p-6 text-[#F5F0E6] shadow-[0_14px_45px_rgba(0,0,0,0.38)]"
-            style={{ transform: 'rotate(-0.9deg)' }}
           >
             {/* Washi tape — pinning the notebook to the wall */}
             <WashiTape className="-top-3 left-4" color="#6B2D2D" rotate={-8} width={96} />
@@ -542,7 +752,7 @@ function Philosophy() {
             <p className="mt-4 font-typewriter text-[10px] text-[#F5F0E6]/38">
               — Mime Institute of Calcutta, founding note
             </p>
-          </div>
+          </motion.div>
 
           {/* Affiliation badge */}
           <div className="flex items-center gap-4">
@@ -715,6 +925,15 @@ function Reel() {
                   backgroundImage:
                     'repeating-linear-gradient(0deg, rgba(0,0,0,0.6) 0 1px, transparent 1px 3px)',
                 }}
+              />
+
+              {/* Projector flicker — an uneven lamp behind the gate. Barely
+                  perceptible opacity wobble, never above 6%. */}
+              <motion.div
+                aria-hidden="true"
+                className="pointer-events-none absolute inset-0 bg-[#F5F0E6] mix-blend-overlay"
+                animate={{ opacity: [0.015, 0.05, 0.02, 0.06, 0.01, 0.04, 0.015] }}
+                transition={{ repeat: Infinity, duration: 1.1, ease: 'linear' }}
               />
 
               {/* HUD — top row */}
@@ -928,6 +1147,7 @@ function Menu() {
           </SectionKicker>
           <h2 className="mt-3 font-serif text-5xl font-medium text-[#F5F0E6] sm:text-6xl">
             What's steeping today
+            <Steam className="ml-3 -translate-y-2" />
           </h2>
         </div>
 
@@ -1157,8 +1377,16 @@ function Books() {
         >
           <div className="flex min-w-max items-end gap-1 border-b-2 border-[#F5F0E6]/20 pb-0">
             {SHELF_BOOKS.map((book, i) => (
-              <div
+              <motion.div
                 key={i}
+                initial={{ y: 36, opacity: 0 }}
+                whileInView={{ y: 0, opacity: 1 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ delay: i * 0.04, duration: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
+                whileHover={{
+                  y: -14,
+                  transition: { type: 'spring', stiffness: 320, damping: 18 },
+                }}
                 className="relative flex shrink-0 cursor-default select-none items-end justify-center overflow-hidden"
                 style={{
                   height: `${book.h}px`,
@@ -1176,7 +1404,7 @@ function Books() {
                 </p>
                 {/* Subtle spine highlight */}
                 <div className="absolute inset-y-0 left-0 w-px bg-[#F5F0E6]/10" />
-              </div>
+              </motion.div>
             ))}
           </div>
           <p className="chalk-pencil-dark mt-3 font-hand text-sm text-chalk-butter">
@@ -1266,12 +1494,16 @@ export default function CafeApp() {
       {/* Animated cinematic film grain — fixed overlay, sits above everything */}
       <div className="film-grain" aria-hidden="true" />
 
+      <ScrollProgress />
       <Nav />
 
       <main>
         <Hero />
-        <Philosophy />
+        <Ticker />
+        {/* Notice board first — what's on at the café matters more to a
+            visitor than the manifesto. */}
         <EventsCarousel />
+        <Philosophy />
         <Reel />
         <Menu />
         <Books />
