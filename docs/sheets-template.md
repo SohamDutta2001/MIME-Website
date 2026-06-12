@@ -16,7 +16,7 @@ When you save the Sheet, the website updates automatically every morning at 7:00
 
 ## Your Google Sheet
 
-👉 **[Open the café sheet here]** ← *Developer: replace this with the actual share link*
+👉 **[Open the café spreadsheet](https://docs.google.com/spreadsheets/d/1Vbjc75P7A3dTZGCeNCJfUga-e_qN4hgfjNwuRwmlGAM/edit?usp=sharing)**
 
 If you don't have access, ask the developer to share it with you.
 
@@ -151,5 +151,9 @@ If you're the developer reading this, complete these steps before handing off:
    - `MENU_SHEET_GID` — the `gid=` number in the URL when the Menu tab is selected
    - `EVENTS_SHEET_GID` — the `gid=` number for the Events tab
 4. **Trigger a manual build** via GitHub Actions to confirm the sync works
-5. **Replace** the placeholder link at the top of this document with the actual Sheet URL
-6. **Share the Sheet** directly with the owner's Google account
+5. **Share the Sheet** directly with the owner's Google account
+
+### Current secrets status
+- ✅ `MENU_SHEET_ID` — `1Vbjc75P7A3dTZGCeNCJfUga-e_qN4hgfjNwuRwmlGAM`
+- ✅ `MENU_SHEET_GID` — `0` (first tab)
+- ⏳ `EVENTS_SHEET_GID` — pending (Events tab must be created in the sheet first)
