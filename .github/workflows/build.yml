@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
+  # Rebuild daily at 07:00 IST (01:30 UTC) so sheet edits go live automatically.
+  schedule:
+    - cron: '30 1 * * *'
 
 permissions:
   contents: read

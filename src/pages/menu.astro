@@ -1,19 +1,24 @@
 ---
-import { getCollection } from 'astro:content';
 import Layout from '~/components/Layout.astro';
 import Section from '~/components/Section.astro';
 import MenuCard from '~/components/MenuCard.astro';
 import MenuFilter from '~/components/islands/MenuFilter.tsx';
+import menuRows from '~/data/mockMenuData.json';
 
-const all = await getCollection('menu', ({ data }) => data.available !== false);
-all.sort((a, b) => a.data.order - b.data.order);
+// Derive unique categories in the order they first appear in the sheet.
+// This means the café owner adds a new category by simply adding rows —
+// no code change needed.
+const categories: string[] = [];
+for (const row of menuRows) {
+  if (!categories.includes(row.category)) categories.push(row.category);
+}
 
-const groups: { key: 'tea' | 'coffee' | 'snack' | 'quick-bite'; label: string; bn?: string; note?: string }[] = [
-  { key: 'tea', label: 'Teas', bn: 'চা', note: 'The heart of the room.' },
-  { key: 'coffee', label: 'Coffees', note: 'Beans from Coorg and Chikmagalur.' },
-  { key: 'snack', label: 'Snacks', note: 'For the longer conversations.' },
-  { key: 'quick-bite', label: 'Quick Bites', note: 'For the late-night crowd.' },
-];
+// Group rows by category, preserving sheet order within each group.
+const grouped = new Map<string, typeof menuRows>();
+for (const row of menuRows) {
+  if (!grouped.has(row.category)) grouped.set(row.category, []);
+  grouped.get(row.category)!.push(row);
+}
 
 const rotateFor = (i: number) => ((i % 5) - 2) * 0.5;
 ---
@@ -28,33 +33,34 @@ const rotateFor = (i: number) => ((i % 5) - 2) * 0.5;
     </p>
   </header>
 
-  <div class="mt-10">
-    <MenuFilter client:visible />
-  </div>
+  {menuRows.length > 0 && (
+    <div class="mt-10">
+      <MenuFilter categories={categories} client:visible />
+    </div>
+  )}
 
   <div class="ink-divider mt-16" aria-hidden="true" />
 
-  {groups.map(group => {
-    const items = all.filter(item => item.data.category === group.key);
-    if (items.length === 0) return null;
+  {categories.length === 0 ? (
+    <Section>
+      <p class="font-hand text-2xl text-tea-500 text-center py-12">
+        Nothing on the menu yet — ask us what's brewing.
+      </p>
+    </Section>
+  ) : categories.map(cat => {
+    const items = grouped.get(cat) ?? [];
     return (
-      <Section id={group.key}>
+      <Section id={cat.toLowerCase().replace(/\s+/g, '-')}>
         <header class="mb-8 max-w-prose">
-          <div class="flex items-baseline gap-3">
-            <h2 class="font-serif text-display-md font-medium text-tea-900">{group.label}</h2>
-            {group.bn && <span class="font-bn text-2xl text-tea-500">{group.bn}</span>}
-          </div>
-          {group.note && <p class="mt-2 font-hand text-base text-tea-500">{group.note}</p>}
+          <h2 class="font-serif text-display-md font-medium text-tea-900">{cat}</h2>
         </header>
         <div class="grid gap-5 sm:grid-cols-2 md:gap-6">
           {items.map((item, i) => (
             <MenuCard
-              name={item.data.name}
-              price={item.data.price}
-              description={item.data.description}
-              note={item.data.note}
-              category={item.data.category}
-              highlight={item.data.highlight}
+              name={item.itemName}
+              price={item.price}
+              description={item.description}
+              category={item.category}
               rotate={rotateFor(i)}
             />
           ))}
