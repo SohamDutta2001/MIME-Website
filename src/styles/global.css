@@ -201,6 +201,21 @@
   90%        { transform: translate(-8%, 7%); }
 }
 
+/* ─── Mobile / reduced-motion performance ───────────────────────────────────
+   `background-attachment: fixed` forces the browser to repaint the whole
+   page on every scroll frame — the single biggest cause of scroll jank on
+   touch devices. Pin the background only on larger screens; let it scroll
+   normally on phones. The animated film-grain is a full-screen fixed overlay
+   that repaints continuously, so drop it on mobile and whenever the OS asks
+   for reduced motion. */
+@media (max-width: 768px) {
+  html { background-attachment: scroll; }
+  .film-grain { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .film-grain { animation: none; display: none; }
+}
+
 /* View Transitions — restrained ink-fade */
 ::view-transition-old(root),
 ::view-transition-new(root) {

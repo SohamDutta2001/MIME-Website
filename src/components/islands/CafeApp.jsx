@@ -166,6 +166,26 @@ const titleLetter = {
   },
 };
 
+// ─── motion budget ────────────────────────────────────────────────────────────
+// On phones — and whenever the OS asks for reduced motion — we drop the
+// continuous, always-repainting flourishes (parallax, Ken Burns zoom, projector
+// flicker, blinking REC dot, steam, the ticker crawl). The layout and one-shot
+// scroll-reveal animations stay, so the cinematic feel survives on desktop
+// without the scroll jank on a handset.
+function useCalmMotion() {
+  const reduce = useReducedMotion();
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    const mq = window.matchMedia('(max-width: 767px)');
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return reduce || isMobile;
+}
+
 // ─── ScrollProgress ───────────────────────────────────────────────────────────
 // A hair-thin copper strip across the very top — fills as the page plays out,
 // like the progress of a reel through a projector. Sits above the nav (z-50).
@@ -186,8 +206,8 @@ function ScrollProgress() {
 // Pure transform/opacity, removed entirely under prefers-reduced-motion.
 
 function Steam({ className = '' }) {
-  const reduce = useReducedMotion();
-  if (reduce) return null;
+  const calm = useCalmMotion();
+  if (calm) return null;
   return (
     <span
       className={`pointer-events-none inline-flex items-end gap-[5px] ${className}`}
@@ -331,10 +351,14 @@ function HeroCarousel() {
   const [isPaused, setIsPaused] = useState(false);
   const reduceMotion = useRef(false);
 
-  // Capture the reduced-motion preference once on mount.
+  // Capture the "calm motion" preference once on mount — reduced-motion OR a
+  // phone-sized viewport. When true we skip the Ken Burns zoom and the
+  // auto-advance timer; the strip is still swipeable and arrow/dot driven.
   useEffect(() => {
     if (typeof window === 'undefined') return;
-    reduceMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    reduceMotion.current =
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      window.matchMedia('(max-width: 767px)').matches;
   }, []);
 
   // Track the selected slide, and pause the auto-advance the moment the
@@ -449,14 +473,17 @@ function HeroCarousel() {
 function Hero() {
   // Cinematic parallax — the photo layer drifts slower than the page so the
   // hero recedes like a backdrop on rails. Scale hides the travelling edge.
+  // Disabled on mobile/reduced-motion: a full-screen image moving on every
+  // scroll frame is the worst offender for handset jank.
+  const calm = useCalmMotion();
   const { scrollY } = useScroll();
-  const photoY = useTransform(scrollY, [0, 900], [0, 180]);
+  const photoY = useTransform(scrollY, [0, 900], calm ? [0, 0] : [0, 180]);
   const reduceTitleMotion = useReducedMotion();
 
   return (
     <section id="home" className="relative min-h-[100dvh] overflow-hidden bg-[#1C1208]">
       {/* Auto-advancing photo carousel — replaces the previous single image */}
-      <motion.div className="absolute inset-0" style={{ y: photoY, scale: 1.12 }}>
+      <motion.div className="absolute inset-0" style={{ y: photoY, scale: calm ? 1 : 1.12 }}>
         <HeroCarousel />
       </motion.div>
 
@@ -597,8 +624,9 @@ const TICKER_ITEMS = [
 
 function Ticker() {
   // One "reel" of items; rendered twice so the -50% translate loops cleanly.
-  // Holds still under prefers-reduced-motion.
-  const reduce = useReducedMotion();
+  // Holds still on mobile / under prefers-reduced-motion so the compositor
+  // isn't kept awake by a never-ending crawl on a handset.
+  const calm = useCalmMotion();
   const reel = [...TICKER_ITEMS, ...TICKER_ITEMS];
   return (
     <div
@@ -607,7 +635,7 @@ function Ticker() {
     >
       <motion.div
         className="flex w-max items-center whitespace-nowrap"
-        animate={reduce ? undefined : { x: ['0%', '-50%'] }}
+        animate={calm ? undefined : { x: ['0%', '-50%'] }}
         transition={{ repeat: Infinity, duration: 48, ease: 'linear' }}
       >
         {[...reel, ...reel].map((item, i) => (
@@ -813,6 +841,9 @@ function Reel() {
   const [active, setActive] = useState(0);
   const frame = REEL_FRAMES[active];
   const total = REEL_FRAMES.length;
+  // Skip the continuously-looping projector flicker + blinking REC dot on
+  // mobile/reduced-motion — they repaint every frame for the whole section.
+  const calm = useCalmMotion();
 
   return (
     <section
@@ -928,20 +959,22 @@ function Reel() {
               />
 
               {/* Projector flicker — an uneven lamp behind the gate. Barely
-                  perceptible opacity wobble, never above 6%. */}
-              <motion.div
-                aria-hidden="true"
-                className="pointer-events-none absolute inset-0 bg-[#F5F0E6] mix-blend-overlay"
-                animate={{ opacity: [0.015, 0.05, 0.02, 0.06, 0.01, 0.04, 0.015] }}
-                transition={{ repeat: Infinity, duration: 1.1, ease: 'linear' }}
-              />
+                  perceptible opacity wobble, never above 6%. Skipped when calm. */}
+              {!calm && (
+                <motion.div
+                  aria-hidden="true"
+                  className="pointer-events-none absolute inset-0 bg-[#F5F0E6] mix-blend-overlay"
+                  animate={{ opacity: [0.015, 0.05, 0.02, 0.06, 0.01, 0.04, 0.015] }}
+                  transition={{ repeat: Infinity, duration: 1.1, ease: 'linear' }}
+                />
+              )}
 
               {/* HUD — top row */}
               <div className="pointer-events-none absolute inset-x-3 top-3 flex items-center justify-between font-typewriter text-[10px] uppercase tracking-[0.22em] text-[#C9A87A]/85 sm:inset-x-4 sm:top-4">
                 <div className="flex items-center gap-2">
                   <motion.div
-                    animate={{ opacity: [1, 0.25, 1] }}
-                    transition={{ repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
+                    animate={calm ? undefined : { opacity: [1, 0.25, 1] }}
+                    transition={calm ? undefined : { repeat: Infinity, duration: 1.4, ease: 'easeInOut' }}
                     className="h-2 w-2 rounded-full bg-[#C73A2D] shadow-[0_0_8px_rgba(199,58,45,0.7)]"
                   />
                   <span>REC</span>
