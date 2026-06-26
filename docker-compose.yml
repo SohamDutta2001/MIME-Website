@@ -1,0 +1,44 @@
+services:
+  # Re-syncs the Google Sheets and rebuilds the static site on an interval,
+  # publishing into the shared `site` volume. Edit the Sheet → live within
+  # REBUILD_INTERVAL seconds, no manual deploy.
+  builder:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mime-website-builder:latest
+    # Sheet IDs (MENU_SHEET_ID, MENU_SHEET_GID, EVENTS_SHEET_ID,
+    # EVENTS_SHEET_GID) are read from .env at runtime so the sync can reach
+    # the sheets. Copy .env.example → .env and fill these in.
+    env_file:
+      - .env
+    environment:
+      # How often to re-sync + rebuild, in seconds. Override in .env or here.
+      REBUILD_INTERVAL: "${REBUILD_INTERVAL:-300}"
+      PUBLISH_DIR: /srv/site
+    volumes:
+      - site:/srv/site
+    restart: unless-stopped
+    healthcheck:
+      # Healthy once the first build has published a `current` release.
+      test: ["CMD", "test", "-d", "/srv/site/current"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
+      start_period: 120s
+
+  # Serves whatever the builder has most recently published.
+  web:
+    image: nginx:1.27-alpine
+    ports:
+      - "3000:80"
+    volumes:
+      - site:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      builder:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  site:

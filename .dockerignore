@@ -1,0 +1,22 @@
+# deps & build artifacts — reinstalled / regenerated inside the image
+node_modules
+dist
+.astro
+
+# secrets & local env — injected at runtime via compose env_file, never baked in
+.env
+.env.*
+!.env.example
+
+# vcs & os cruft
+.git
+.gitignore
+*.log
+.DS_Store
+Thumbs.db
+
+# editor / tooling
+.vscode
+.idea
+.claude
+plans
