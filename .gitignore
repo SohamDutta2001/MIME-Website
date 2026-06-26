@@ -29,3 +29,9 @@ desktop.ini
 
 # misc
 *.tsbuildinfo
+
+# local Claude Code tooling (skills, fonts, scripts) — not part of the site
+.claude/
+
+# docker
+.env.override
