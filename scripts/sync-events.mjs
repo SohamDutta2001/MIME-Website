@@ -25,6 +25,12 @@
 // retired events never reach the public bundle. Only active rows are
 // validated — a half-filled draft row with active=FALSE can't break deploys.
 //
+// Category aliases: the sheet may use plain names (Drama, Music, Eating…)
+// which are mapped to the canonical templates (Performance / Workshop /
+// Exhibition) via CATEGORY_ALIASES. Add new names there as needed.
+//
+// Date formats accepted: YYYY-MM-DD (canonical) and M/D/YYYY or MM/DD/YYYY.
+//
 // Usage:
 //   node --env-file=.env scripts/sync-events.mjs   (local with .env)
 //   node scripts/sync-events.mjs                   (CI — vars from environment)
@@ -90,6 +96,52 @@ if (missing.length) {
 const idx = Object.fromEntries(header.map((h, i) => [h, i]));
 
 const CATEGORIES = ['Performance', 'Workshop', 'Exhibition'];
+
+// Map your sheet's category names to the canonical templates above.
+// Keys are case-insensitive; add any new names here as needed.
+const CATEGORY_ALIASES = {
+  'drama':          'Performance',
+  'music':          'Performance',
+  'standup comedy': 'Performance',
+  'stand-up comedy':'Performance',
+  'stand up comedy':'Performance',
+  'poetry':         'Performance',
+  'storytelling':   'Performance',
+  'eating':         'Exhibition',
+  'food':           'Exhibition',
+  'tasting':        'Exhibition',
+  'art':            'Exhibition',
+  'photography':    'Exhibition',
+  'acting workshop':'Workshop',
+  'cooking workshop':'Workshop',
+};
+
+// Accept YYYY-MM-DD (canonical) and slash dates. Slash dates are read as
+// D/M/YYYY — the day-first convention used in India (this is a Kolkata café),
+// so "1/7/2026" means 1 July 2026, not 7 January. When one component is > 12
+// it can only be the day, so we disambiguate automatically and tolerate a
+// sheet typed the other way round. Always stored as YYYY-MM-DD.
+function parseDate(raw) {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw; // already canonical
+  const slash = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})$/);
+  if (slash) {
+    const a = Number(slash[1]);
+    const b = Number(slash[2]);
+    const year = slash[3];
+    let day, month;
+    if (a > 12) {        // first part can't be a month → D/M/YYYY
+      day = a; month = b;
+    } else if (b > 12) { // second part can't be a month → M/D/YYYY
+      month = a; day = b;
+    } else {             // ambiguous → day-first (Indian convention)
+      day = a; month = b;
+    }
+    if (month < 1 || month > 12 || day < 1 || day > 31) return null;
+    return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+  }
+  return null; // unparseable
+}
+
 const problems = [];
 const events = [];
 
@@ -104,29 +156,30 @@ rows
 
     const title = cell('title');
     const rawCategory = cell('category');
-    // Accept any casing in the sheet; store canonical capitalised form.
-    const category = CATEGORIES.find(
-      (c) => c.toLowerCase() === rawCategory.toLowerCase(),
-    );
-    const date = cell('date');
+    // Resolve canonical name: exact match first, then alias map.
+    const category =
+      CATEGORIES.find((c) => c.toLowerCase() === rawCategory.toLowerCase()) ??
+      CATEGORY_ALIASES[rawCategory.toLowerCase()];
+    const rawDate = cell('date');
+    const date = parseDate(rawDate);
 
     if (!title) problems.push(`row ${rowNum}: missing title`);
     if (!category) {
       problems.push(
-        `row ${rowNum}: category "${rawCategory}" is not one of ${CATEGORIES.join(' / ')}`,
+        `row ${rowNum}: category "${rawCategory}" is not one of ${CATEGORIES.join(' / ')} and has no alias — add it to CATEGORY_ALIASES in scripts/sync-events.mjs`,
       );
     }
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-      problems.push(`row ${rowNum}: date "${date}" must look like 2026-07-04 (YYYY-MM-DD)`);
+    if (!date) {
+      problems.push(`row ${rowNum}: date "${rawDate}" could not be parsed — use YYYY-MM-DD or D/M/YYYY`);
     }
-    if (!title || !category) return;
+    if (!title || !category || !date) return;
 
     events.push({
       slug: slugify(title),
       active: true,
       category,
       title,
-      date,
+      date, // already YYYY-MM-DD after parseDate()
       time: cell('time'),
       venue: cell('venue'),
       bannerUrl: cell('bannerurl'),

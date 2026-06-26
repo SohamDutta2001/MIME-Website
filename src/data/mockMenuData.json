@@ -1,79 +1,415 @@
 [
   {
     "id": 1,
-    "category": "Tea",
-    "itemName": "Bharer Cha",
-    "price": 25,
-    "description": "Milky roadside tea, cardamom warmth, served in the spirit of a clay cup."
+    "category": "First Bell",
+    "itemName": "Beetroot Kanji",
+    "price": 57,
+    "description": "Tangy fermented beetroot, deep red and bracing — the first bell before the show."
   },
   {
     "id": 2,
-    "category": "Tea",
-    "itemName": "Lebu Cha",
-    "price": 30,
-    "description": "Black tea with lemon, salt, and the sharp lift of a rainy College Street evening."
+    "category": "First Bell",
+    "itemName": "Amla Kanji",
+    "price": 57,
+    "description": "Sour-salt amla ferment, a sharp opening note."
   },
   {
     "id": 3,
-    "category": "Tea",
-    "itemName": "Adrak Cha",
-    "price": 35,
-    "description": "Ginger-heavy tea for long conversations and monsoon throats."
+    "category": "First Bell",
+    "itemName": "Ginger Honey",
+    "price": 77,
+    "description": "Warm ginger steeped with honey, soothing and clear."
   },
   {
     "id": 4,
-    "category": "Tea",
-    "itemName": "Tulsi Malai Cha",
-    "price": 45,
-    "description": "Holy basil, slow milk, and a soft cream finish."
+    "category": "First Bell",
+    "itemName": "Jeera Shikanji",
+    "price": 77,
+    "description": "Roasted cumin lemonade, cooling and salty-sweet."
   },
   {
     "id": 5,
-    "category": "Coffee",
-    "itemName": "Filter Coffee",
-    "price": 70,
-    "description": "South Indian decoction, foamed high, strong enough for a second act."
+    "category": "First Bell",
+    "itemName": "Sauf Thandai",
+    "price": 77,
+    "description": "Fennel-laced thandai, fragrant and cold."
   },
   {
     "id": 6,
-    "category": "Coffee",
-    "itemName": "Adda Cold Brew",
-    "price": 95,
-    "description": "Steeped overnight, mellow and dark, with a jaggery note."
+    "category": "First Bell",
+    "itemName": "Dates Milkshake",
+    "price": 87,
+    "description": "Blended dates and milk, naturally sweet."
   },
   {
     "id": 7,
-    "category": "Coffee",
-    "itemName": "Cinnamon Cappuccino",
-    "price": 110,
-    "description": "A small café classic with cinnamon dust and a warm brown crema."
+    "category": "First Bell",
+    "itemName": "Butterscotch Splash",
+    "price": 77,
+    "description": "Cold butterscotch shake with a buttery finish."
   },
   {
     "id": 8,
-    "category": "Quick Bites",
-    "itemName": "Singara",
-    "price": 30,
-    "description": "Crisp pastry, spiced potato, best eaten before the first argument cools."
+    "category": "First Bell",
+    "itemName": "Aam Panna",
+    "price": 77,
+    "description": "Raw mango cooler, tart and summer-green."
   },
   {
     "id": 9,
-    "category": "Quick Bites",
-    "itemName": "Buttered Toast",
-    "price": 45,
-    "description": "Thick toast with salted butter, the old reliable companion to tea."
+    "category": "First Bell",
+    "itemName": "Lassi",
+    "price": 97,
+    "description": "Thick churned yoghurt, sweet and chilled."
   },
   {
     "id": 10,
-    "category": "Quick Bites",
-    "itemName": "Telebhaja Plate",
-    "price": 65,
-    "description": "Seasonal fritters wrapped in paper-menu nostalgia."
+    "category": "First Bell",
+    "itemName": "Indie Mojito",
+    "price": 107,
+    "description": "Mint, lime and fizz — the desi mojito."
   },
   {
     "id": 11,
-    "category": "Quick Bites",
-    "itemName": "Banana Cake",
-    "price": 80,
-    "description": "Soft, dark, not too sweet, baked for late afternoon readers."
+    "category": "First Bell",
+    "itemName": "Oreo Shake",
+    "price": 137,
+    "description": "Cookies-and-cream shake, thick and dark."
+  },
+  {
+    "id": 12,
+    "category": "First Bell",
+    "itemName": "Mineral Water",
+    "price": 20,
+    "description": "Sealed bottle."
+  },
+  {
+    "id": 13,
+    "category": "Second Bell",
+    "itemName": "Ayurvedic Tea",
+    "price": 37,
+    "description": "Herb-steeped brew. Black ₹37/47 · Milk ₹47/57."
+  },
+  {
+    "id": 14,
+    "category": "Second Bell",
+    "itemName": "Ginger Tea",
+    "price": 37,
+    "description": "Ginger-forward and warming. Black ₹37/47 · Milk ₹47/57."
+  },
+  {
+    "id": 15,
+    "category": "Second Bell",
+    "itemName": "Earl Grey",
+    "price": 47,
+    "description": "Bergamot-scented black tea. Black ₹47 · Milk ₹57."
+  },
+  {
+    "id": 16,
+    "category": "Second Bell",
+    "itemName": "Darjeeling Tea",
+    "price": 37,
+    "description": "Light, muscatel hill tea. Black ₹37 · Milk ₹47."
+  },
+  {
+    "id": 17,
+    "category": "Second Bell",
+    "itemName": "Kolkata Street",
+    "price": 37,
+    "description": "Roadside-style cha. Black ₹37/47 · Milk ₹47/57."
+  },
+  {
+    "id": 18,
+    "category": "Second Bell",
+    "itemName": "Bombay Cutting",
+    "price": 37,
+    "description": "Strong, sweet cutting chai. Black ₹37/47 · Milk ₹47/67."
+  },
+  {
+    "id": 19,
+    "category": "Second Bell",
+    "itemName": "Kashmiri Saffron",
+    "price": 47,
+    "description": "Saffron kahwa warmth. Black ₹47/57 · Milk ₹47/67."
+  },
+  {
+    "id": 20,
+    "category": "Second Bell",
+    "itemName": "Punjabi Masala",
+    "price": 47,
+    "description": "Spiced masala chai. Black ₹47/57 · Milk ₹47/67."
+  },
+  {
+    "id": 21,
+    "category": "Second Bell",
+    "itemName": "Nagpur Jashn",
+    "price": 37,
+    "description": "Festive spiced brew. Black ₹37/47 · Milk ₹47/67."
+  },
+  {
+    "id": 22,
+    "category": "Second Bell",
+    "itemName": "Nizam Cardamom",
+    "price": 47,
+    "description": "Cardamom-rich tea. Black ₹47/57 · Milk ₹47/57."
+  },
+  {
+    "id": 23,
+    "category": "Second Bell",
+    "itemName": "Awesome Assam",
+    "price": 47,
+    "description": "Bold, malty Assam. Black ₹47/67 · Milk ₹47/67."
+  },
+  {
+    "id": 24,
+    "category": "Second Bell",
+    "itemName": "Iced Tea",
+    "price": 87,
+    "description": "Chilled and refreshing."
+  },
+  {
+    "id": 25,
+    "category": "Second Bell",
+    "itemName": "Lemon Green Tea",
+    "price": 67,
+    "description": "Green tea with a squeeze of lemon."
+  },
+  {
+    "id": 26,
+    "category": "Coffee",
+    "itemName": "Original Coffee",
+    "price": 67,
+    "description": "House coffee. Black ₹67 / Milk ₹87 · Flavoured +₹20."
+  },
+  {
+    "id": 27,
+    "category": "Coffee",
+    "itemName": "Original Cold Coffee",
+    "price": 127,
+    "description": "Iced house coffee. Black ₹127 / Milk ₹147 · Flavoured +₹20."
+  },
+  {
+    "id": 28,
+    "category": "Third Bell",
+    "itemName": "Cookies",
+    "price": 15,
+    "description": "Fresh-baked cookies. ₹15 / ₹20 / ₹25 by size."
+  },
+  {
+    "id": 29,
+    "category": "Third Bell",
+    "itemName": "French Fries",
+    "price": 117,
+    "description": "Crisp golden fries, the third bell snack."
+  },
+  {
+    "id": 30,
+    "category": "Third Bell",
+    "itemName": "Nuggets",
+    "price": 177,
+    "description": "Hot, crunchy nuggets."
+  },
+  {
+    "id": 31,
+    "category": "Third Bell",
+    "itemName": "Sauce Surge",
+    "price": 177,
+    "description": "Loaded with our house sauces."
+  },
+  {
+    "id": 32,
+    "category": "Lead Role",
+    "itemName": "Paneer Kebab",
+    "price": 127,
+    "description": "Char-grilled paneer skewers."
+  },
+  {
+    "id": 33,
+    "category": "Lead Role",
+    "itemName": "Chicken Malai Kebab",
+    "price": 137,
+    "description": "Creamy, mild malai kebab."
+  },
+  {
+    "id": 34,
+    "category": "Lead Role",
+    "itemName": "Chicken Hariyali Kebab",
+    "price": 137,
+    "description": "Green herb-marinated kebab."
+  },
+  {
+    "id": 35,
+    "category": "Lead Role",
+    "itemName": "Chicken Masala Kebab",
+    "price": 137,
+    "description": "Spiced, smoky kebab."
+  },
+  {
+    "id": 36,
+    "category": "Lead Role",
+    "itemName": "Fish Masala Kebab",
+    "price": 167,
+    "description": "Spiced grilled fish."
+  },
+  {
+    "id": 37,
+    "category": "Chicken in Cameo Role",
+    "itemName": "Chicken Maggi",
+    "price": 147,
+    "description": "Maggi tossed with chicken."
+  },
+  {
+    "id": 38,
+    "category": "Chicken in Cameo Role",
+    "itemName": "Chicken Wrap",
+    "price": 157,
+    "description": "Rolled chicken wrap."
+  },
+  {
+    "id": 39,
+    "category": "Chicken in Cameo Role",
+    "itemName": "Chicken Sandwich",
+    "price": 187,
+    "description": "Toasted chicken sandwich."
+  },
+  {
+    "id": 40,
+    "category": "Chicken in Cameo Role",
+    "itemName": "Chicken Pasta",
+    "price": 177,
+    "description": "Creamy chicken pasta."
+  },
+  {
+    "id": 41,
+    "category": "Chicken in Cameo Role",
+    "itemName": "Chicken Crystal Wrap",
+    "price": 187,
+    "description": "Crisp crystal chicken wrap."
+  },
+  {
+    "id": 42,
+    "category": "Paneer in Cameo Role",
+    "itemName": "Paneer Tikka Wrap",
+    "price": 147,
+    "description": "Tikka paneer rolled in a wrap."
+  },
+  {
+    "id": 43,
+    "category": "Paneer in Cameo Role",
+    "itemName": "Paneer Sandwich",
+    "price": 187,
+    "description": "Toasted paneer sandwich."
+  },
+  {
+    "id": 44,
+    "category": "Mushroom in Cameo Role",
+    "itemName": "Butter Garlic Mushroom",
+    "price": 157,
+    "description": "Mushrooms tossed in butter and garlic."
+  },
+  {
+    "id": 45,
+    "category": "Mushroom in Cameo Role",
+    "itemName": "Garlic Mushroom Wrap",
+    "price": 167,
+    "description": "Garlic mushroom rolled in a wrap."
+  },
+  {
+    "id": 46,
+    "category": "Mushroom in Cameo Role",
+    "itemName": "Mushroom Pasta",
+    "price": 157,
+    "description": "Creamy mushroom pasta."
+  },
+  {
+    "id": 47,
+    "category": "Egg as Omelette",
+    "itemName": "Omelette with Vegetables",
+    "price": 117,
+    "description": "Fluffy omelette folded with vegetables."
+  },
+  {
+    "id": 48,
+    "category": "Egg as Omelette",
+    "itemName": "Omelette with Maggi",
+    "price": 127,
+    "description": "Omelette served over Maggi."
+  },
+  {
+    "id": 49,
+    "category": "Egg as Omelette",
+    "itemName": "Omelette with Wrap",
+    "price": 137,
+    "description": "Omelette rolled in a wrap."
+  },
+  {
+    "id": 50,
+    "category": "Egg as Omelette",
+    "itemName": "Omelette with Mushroom",
+    "price": 147,
+    "description": "Omelette with sautéed mushroom."
+  },
+  {
+    "id": 51,
+    "category": "Egg as Omelette",
+    "itemName": "Omelette with Chicken",
+    "price": 157,
+    "description": "Omelette with seasoned chicken."
+  },
+  {
+    "id": 52,
+    "category": "Veggies as Chorus",
+    "itemName": "Veggie Maggi",
+    "price": 97,
+    "description": "Maggi loaded with garden vegetables."
+  },
+  {
+    "id": 53,
+    "category": "Veggies as Chorus",
+    "itemName": "Veggie Wrap",
+    "price": 127,
+    "description": "Mixed vegetable wrap."
+  },
+  {
+    "id": 54,
+    "category": "Veggies as Chorus",
+    "itemName": "Veggie Pasta",
+    "price": 137,
+    "description": "Garden vegetable pasta."
+  },
+  {
+    "id": 55,
+    "category": "Special Act",
+    "itemName": "Big Brother's Special",
+    "price": 0,
+    "description": "A surprise dish — on request. Ask your server."
+  },
+  {
+    "id": 56,
+    "category": "Curtain Call",
+    "itemName": "Chocolate Popsicles",
+    "price": 67,
+    "description": "Homemade, no preservatives. Ask for the flavour."
+  },
+  {
+    "id": 57,
+    "category": "Curtain Call",
+    "itemName": "Choco Mug Cake",
+    "price": 157,
+    "description": "Warm homemade chocolate mug cake."
+  },
+  {
+    "id": 58,
+    "category": "Curtain Call",
+    "itemName": "Ice Cream",
+    "price": 157,
+    "description": "Homemade, no preservatives. Ask for the flavour."
+  },
+  {
+    "id": 59,
+    "category": "Curtain Call",
+    "itemName": "Masala Cola",
+    "price": 77,
+    "description": "Spiced homemade cola."
   }
 ]
