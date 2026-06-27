@@ -173,6 +173,7 @@ export function CoasterStamp({
   className = '',
   label = 'adda · est.',
   bn = 'আড্ডা',
+  curvedLabel = '',
   style,
 }) {
   return (
@@ -191,6 +192,8 @@ export function CoasterStamp({
             <stop offset="0%" stopColor="#EDE2CB" />
             <stop offset="100%" stopColor="#C9A87A" />
           </radialGradient>
+          {/* arc path always present so textPath can reference it */}
+          <path id="coasterArc" d="M 11 50 A 39 39 0 0 0 89 50" />
         </defs>
 
         {/* card body — slightly off-round */}
@@ -204,6 +207,23 @@ export function CoasterStamp({
           <circle cx="50" cy="50" r="34" strokeWidth="1.1" />
           <circle cx="50" cy="50" r="26" strokeWidth="0.6" strokeDasharray="3 2" />
         </g>
+
+        {/* curved label arcing around the top ring */}
+        {curvedLabel && (
+          <text
+            fill="#3B2418"
+            fillOpacity="0.75"
+            fontSize="6.5"
+            letterSpacing="1.5"
+            fontFamily="'Courier New', Courier, monospace"
+            textAnchor="middle"
+          >
+            {/* eslint-disable-next-line react/no-unknown-property */}
+            <textPath xlinkHref="#coasterArc" href="#coasterArc" startOffset="50%">
+              {curvedLabel.toUpperCase()}
+            </textPath>
+          </text>
+        )}
 
         {/* tiny corner crack */}
         <path d="M 8 56 L 14 52 L 12 60 Z" fill="#1C1410" opacity="0.18" />

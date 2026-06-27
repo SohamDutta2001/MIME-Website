@@ -16,6 +16,8 @@
 //
 // The expected sheet columns (header row, case-insensitive):
 //   id, category, itemName, price, description
+//   addMilk  — optional numeric; upcharge for adding milk (e.g. 10 → renders "Milk +10")
+//   addLarge — optional numeric; upcharge for large size  (e.g. 10 → renders "Large +10")
 //
 // Usage:
 //   node --env-file=.env scripts/sync-menu.mjs    (local with .env)
@@ -78,12 +80,21 @@ const items = rows
   .map((r, n) => {
     const rawPrice = r[idx.price]?.trim() ?? '';
     const priceNum = Number(rawPrice.replace(/[^\d.]/g, ''));
+
+    const addLarge = Number(r[idx.addlarge]?.trim());
+    const addMilk  = Number(r[idx.addmilk]?.trim());
+    const modifiers = [];
+    if (!isNaN(addLarge) && addLarge > 0) modifiers.push({ label: 'Large', priceString: `+${addLarge}` });
+    if (!isNaN(addMilk)  && addMilk  > 0) modifiers.push({ label: 'Milk',  priceString: `+${addMilk}`  });
+    const sizes = modifiers.length > 0 ? modifiers : null;
+
     return {
       id: Number(r[idx.id]?.trim()) || n + 1,
       category: r[idx.category]?.trim() || 'Uncategorised',
       itemName: r[idx.itemname]?.trim() || '(unnamed)',
       price: Number.isFinite(priceNum) ? priceNum : 0,
       description: r[idx.description]?.trim() || '',
+      sizes,
     };
   });
 

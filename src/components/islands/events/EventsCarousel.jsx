@@ -48,6 +48,18 @@ export default function EventsCarousel() {
     };
   }, [emblaApi, onSelect]);
 
+  useEffect(() => {
+    if (!emblaApi) return undefined;
+    const id = setInterval(() => {
+      if (emblaApi.canScrollNext()) {
+        emblaApi.scrollNext();
+      } else {
+        emblaApi.scrollTo(0);
+      }
+    }, 3000);
+    return () => clearInterval(id);
+  }, [emblaApi]);
+
   return (
     <motion.section
       id="events"
@@ -70,7 +82,7 @@ export default function EventsCarousel() {
               Events · pinned to the board this season
             </p>
             <h2 className="mt-3 font-serif text-5xl font-medium leading-tight text-[#1C1410] sm:text-6xl">
-              The notice board.
+              Events board.
             </h2>
           </div>
 

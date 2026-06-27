@@ -25,17 +25,35 @@
   html {
     @apply font-body text-ink antialiased;
     background-color: theme('colors.cream');
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+
+  body {
+    @apply min-h-screen;
+    position: relative;
+  }
+
+  /* GPU-composited background — position:fixed on a pseudo-element puts it on
+     its own compositor layer, so the browser never repaints it during scroll. */
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    background-color: theme('colors.cream');
     background-image:
       url('../paper-texture.svg'),
       radial-gradient(ellipse at top, rgba(201, 168, 122, 0.18), transparent 60%),
       radial-gradient(ellipse at bottom, rgba(122, 74, 42, 0.10), transparent 70%);
     background-size: 600px 600px, 100% 100%, 100% 100%;
-    background-attachment: fixed, fixed, fixed;
     background-blend-mode: multiply, normal, normal;
-  }
-
-  body {
-    @apply min-h-screen;
   }
 
   h1, h2, h3, h4 {
@@ -87,6 +105,7 @@
     font-weight: 600;
     font-style: italic;
   }
+
 
   .ink-divider {
     @apply mx-auto max-w-[18rem] my-12;
@@ -174,7 +193,7 @@
     opacity: 0.03;
     background-image: url('../grain.svg');
     background-size: 220px 220px;
-    animation: filmGrain 10s steps(10) infinite;
+    animation: filmGrain 20s steps(6) infinite;
     will-change: transform;
   }
 
@@ -202,15 +221,15 @@
 }
 
 /* ─── Mobile / reduced-motion performance ───────────────────────────────────
-   `background-attachment: fixed` forces the browser to repaint the whole
-   page on every scroll frame — the single biggest cause of scroll jank on
-   touch devices. Pin the background only on larger screens; let it scroll
-   normally on phones. The animated film-grain is a full-screen fixed overlay
-   that repaints continuously, so drop it on mobile and whenever the OS asks
-   for reduced motion. */
+   The background is handled by body::before on an isolated GPU compositor
+   layer (see above). The animated film-grain is a full-screen fixed overlay
+   that repaints continuously — drop it on mobile viewports and whenever the
+   OS requests reduced motion to free GPU cycles on lower-end devices. */
 @media (max-width: 768px) {
-  html { background-attachment: scroll; }
-  .film-grain { display: none; }
+  .film-grain {
+    display: none !important;
+    animation: none !important;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .film-grain { animation: none; display: none; }

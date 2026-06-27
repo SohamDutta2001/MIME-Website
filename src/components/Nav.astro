@@ -3,6 +3,7 @@ import { navLinks, site } from '~/data/site';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base === '/' ? '' : base.replace(/\/$/, '');
+const assetBase = base.endsWith('/') ? base : `${base}/`;
 // Always emit a trailing slash so links point straight at the directory's
 // index.html (e.g. /MIME-Website/events/). Without it GitHub Pages 301-
 // redirects /events → /events/, and the ViewTransitions client router fails
@@ -19,11 +20,18 @@ const path = Astro.url.pathname
     class="mx-auto flex max-w-editorial flex-col gap-2.5 px-gutter py-4 md:flex-row md:items-center md:justify-between md:py-5"
     aria-label="Primary"
   >
-    <a href={withBase('/')} class="group flex items-baseline gap-2 transition-opacity hover:opacity-80">
-      <span class="whitespace-nowrap font-serif text-xl font-semibold tracking-tight text-tea-900 sm:text-2xl">
-        {site.name}
+    <a href={withBase('/')} class="group flex items-center gap-3 transition-opacity hover:opacity-80">
+      <img
+        src="/images/mime_logo.webp"
+        alt="Art-Teas-Tree Cafe logo"
+        class="h-10 w-10 shrink-0 rounded-full object-cover"
+      />
+      <span class="flex items-baseline gap-2">
+        <span class="whitespace-nowrap font-serif text-xl font-semibold tracking-tight text-tea-900 sm:text-2xl">
+          {site.name}
+        </span>
+        <span class="hidden font-hand text-base text-tea-600 sm:inline">— {site.accent}</span>
       </span>
-      <span class="hidden font-hand text-base text-tea-600 sm:inline">— {site.accent}</span>
     </a>
     <ul class="-mx-1.5 flex flex-wrap items-center gap-1 text-sm md:mx-0 md:gap-2">
       {navLinks.map(link => {

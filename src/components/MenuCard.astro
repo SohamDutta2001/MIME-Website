@@ -1,16 +1,21 @@
 ---
+interface SizeOption {
+  label: string;
+  priceString: string;
+}
+
 interface Props {
   name: string;
-  price: number;
+  price: number | null;
   description?: string;
   note?: string;
   category: string;
   rotate?: number;
   highlight?: boolean;
+  sizes?: SizeOption[] | null;
 }
 
-const { name, price, description, note, category, rotate = 0, highlight = false } = Astro.props;
-const formattedPrice = `₹${price}`;
+const { name, price, description, note, category, rotate = 0, highlight = false, sizes } = Astro.props;
 ---
 
 <article
@@ -23,7 +28,16 @@ const formattedPrice = `₹${price}`;
 >
   <header class="flex items-baseline justify-between gap-4">
     <h3 class="font-serif text-xl font-medium text-tea-900">{name}</h3>
-    <span class="font-body tabular-nums text-base text-tea-700">{formattedPrice}</span>
+    <div class="ml-4 shrink-0 text-right">
+      {price != null && <span class="font-body tabular-nums text-base text-tea-700">₹{price}</span>}
+      {sizes && (
+        <div class="mt-1 flex flex-col items-end font-typewriter text-[9px] uppercase tracking-[0.2em] text-[#5A6B3E]/70">
+          {sizes.map(({ label, priceString }) => (
+            <span>{label} {priceString}</span>
+          ))}
+        </div>
+      )}
+    </div>
   </header>
   {description && (
     <p class="mt-1.5 font-body italic text-[15px] leading-snug text-tea-700">{description}</p>

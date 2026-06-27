@@ -299,21 +299,28 @@ function Nav() {
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-8">
-        <a href="#home" className="flex flex-col leading-none">
-          <span
-            className={`font-serif text-xl font-semibold transition-colors duration-500 sm:text-2xl ${
-              scrolled ? 'text-[#1C1410]' : 'text-[#F5F0E6]'
-            }`}
-          >
-            Art-Teas-Tree
-          </span>
-          <span
-            className={`font-hand text-sm transition-colors duration-500 sm:text-base ${
-              scrolled ? 'text-[#5A6B3E]' : 'text-[#C9A87A]'
-            }`}
-          >
-            Mime Institute of Calcutta &mdash;{' '}
-            <span className="font-bn">কলকাতা</span>
+        <a href="#home" className="flex items-center gap-3 leading-none">
+          <img
+            src="/images/mime_logo.webp"
+            alt="Art-Teas-Tree Cafe logo"
+            className="h-10 w-10 shrink-0 rounded-full object-cover"
+          />
+          <span className="flex flex-col">
+            <span
+              className={`font-serif text-xl font-semibold transition-colors duration-500 sm:text-2xl ${
+                scrolled ? 'text-[#1C1410]' : 'text-[#F5F0E6]'
+              }`}
+            >
+              Art-Teas-Tree
+            </span>
+            <span
+              className={`font-hand text-sm transition-colors duration-500 sm:text-base ${
+                scrolled ? 'text-[#5A6B3E]' : 'text-[#C9A87A]'
+              }`}
+            >
+              Mime Institute of Calcutta &mdash;{' '}
+              <span className="font-bn">কলকাতা</span>
+            </span>
           </span>
         </a>
 
@@ -1204,18 +1211,26 @@ function Menu() {
             size={108}
             label="cha · 2024"
             bn="চা"
+            curvedLabel="Art-Teas-Tree · Cafe"
             style={{ transform: 'rotate(-8deg)' }}
           />
 
           {/* Torn top edge — cream paper appearing from the dark bg */}
           <TornEdge fill="#F5EDD6" />
 
-          <div className="bg-[#F5EDD6] bg-paper px-5 py-8 text-[#1C1410] shadow-[0_22px_65px_rgba(0,0,0,0.42)] sm:px-8 sm:py-10">
+          <div className="relative bg-[#F5EDD6] bg-paper px-5 py-8 text-[#1C1410] shadow-[0_22px_65px_rgba(0,0,0,0.42)] sm:px-8 sm:py-10">
+
+            {/* Absolute top alignment mimics an official physical letterhead watermark layout */}
+            <div className="pointer-events-none absolute inset-x-0 top-6 z-10 select-none text-center">
+              <p className="font-typewriter text-[9px] uppercase tracking-[0.45em] text-[#5E3820]/40 whitespace-nowrap">
+                Art-Teas-Tree · Café
+              </p>
+            </div>
 
             {/* Category filters — ink-stamped labels with item counts.
                 Counts let the cafe grow the menu indefinitely without the chips
                 becoming opaque. */}
-            <div className="mb-8 flex gap-2 overflow-x-auto border-b border-[#7A4A2A]/18 pb-5">
+            <div className="mb-8 flex flex-wrap gap-2 border-b border-[#7A4A2A]/18 pb-5">
               {CATEGORIES.map((cat) => {
                 const count = counts[cat] ?? 0;
                 const isActive = active === cat;
@@ -1225,7 +1240,7 @@ function Menu() {
                     type="button"
                     onClick={() => setActive(cat)}
                     aria-pressed={isActive}
-                    className={`group flex shrink-0 items-baseline gap-2 rounded-none border px-4 py-2 font-typewriter text-xs uppercase tracking-[0.2em] transition-colors ${
+                    className={`group flex items-baseline gap-2 rounded-none border px-4 py-2 font-typewriter text-xs uppercase tracking-[0.2em] transition-colors ${
                       isActive
                         ? 'border-[#3B2418] bg-[#3B2418] text-[#F5EDD6]'
                         : 'border-[#7A4A2A]/30 bg-transparent text-[#3B2418] hover:bg-[#7A4A2A]/10'
@@ -1290,16 +1305,25 @@ function Menu() {
                             className="border-b border-[#7A4A2A]/14 py-5 last:border-b-0"
                           >
                             <div className="flex items-start justify-between gap-4">
-                              <h4 className="font-serif text-2xl text-[#1C1410]">
-                                {item.itemName}
-                              </h4>
-                              <p className="shrink-0 font-typewriter text-xl text-[#7A4A2A]">
-                                ₹{item.price}
-                              </p>
+                              <div>
+                                <h4 className="font-serif text-2xl text-[#1C1410]">
+                                  {item.itemName}
+                                </h4>
+                                <p className="mt-1 font-body text-sm leading-6 text-[#5E3820]">
+                                  {item.description}
+                                </p>
+                              </div>
+                              <div className="shrink-0 ml-4 text-right">
+                                {item.price != null && <span className="font-typewriter text-xl text-[#7A4A2A]">₹{item.price}</span>}
+                                {item.sizes && (
+                                  <div className="mt-1 flex flex-col items-end font-typewriter text-[9px] uppercase tracking-[0.2em] text-[#5A6B3E]/70">
+                                    {item.sizes.map(({ label, priceString }) => (
+                                      <span key={label}>{label} {priceString}</span>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
                             </div>
-                            <p className="mt-2 font-body text-sm leading-6 text-[#5E3820]">
-                              {item.description}
-                            </p>
                           </motion.article>
                         ))}
                       </div>
@@ -1326,6 +1350,14 @@ function Menu() {
             {/* Handwritten footer note — pastel chalk, soaked into the paper */}
             <p className="chalk-pencil mt-8 inline-block font-hand text-xl text-chalk-ink">
               আজকের বিশেষ ✦ ask us what's fresh today
+            </p>
+
+            {/* Margin-note cross-link to the events section */}
+            <p className="mt-4 font-hand text-lg text-[#5A6B3E]/70">
+              catching a show this week?{' '}
+              <a href="#events" className="underline decoration-dotted underline-offset-2 hover:text-[#5A6B3E]">
+                see what's on →
+              </a>
             </p>
           </div>
 
