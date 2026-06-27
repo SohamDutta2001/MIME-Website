@@ -9,6 +9,8 @@ import EventMeta from './EventMeta.astro';
 import RegistrationCTA from './RegistrationCTA.astro';
 import EventGallery from './EventGallery.astro';
 import { paragraphs } from '~/lib/events/utils.js';
+import { resolveEventImage } from '~/lib/events/images.js';
+import { site } from '~/data/site';
 import type { CafeEvent } from '~/types/event';
 
 interface Props {
@@ -22,9 +24,39 @@ const description = paragraphs(event.description);
 
 const base = import.meta.env.BASE_URL;
 const basePath = base === '/' ? '' : base.replace(/\/$/, '');
+
+// Per-event Open Graph image + Event structured data so each event is
+// shareable and eligible for Google's event rich results.
+const banner = event.bannerUrl ? resolveEventImage(event.bannerUrl, { width: 1200 }) : undefined;
+const eventSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: event.title,
+  startDate: event.date,
+  eventStatus: 'https://schema.org/EventScheduled',
+  eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+  description: event.description?.slice(0, 300),
+  ...(banner ? { image: [banner] } : {}),
+  url: new URL(`/events/${event.slug}/`, Astro.site).toString(),
+  location: {
+    '@type': 'Place',
+    name: site.name,
+    address: {
+      '@type': 'PostalAddress',
+      streetAddress: site.location.streetAddress,
+      addressLocality: site.location.locality,
+      addressRegion: site.location.region,
+      postalCode: site.location.postalCode,
+      addressCountry: site.location.country,
+    },
+  },
+  organizer: { '@type': 'Organization', name: site.affiliation.name },
+};
 ---
 
-<Layout title={event.title} description={event.description.slice(0, 150)} variant="wide">
+<Layout title={event.title} description={event.description.slice(0, 150)} image={banner} variant="wide">
+  <script type="application/ld+json" set:html={JSON.stringify(eventSchema)} />
+
   <article class="py-10 sm:py-14">
     <EventHero event={event} kicker={kicker} kickerBn={kickerBn} />
 

@@ -3,7 +3,7 @@ export const site = {
   tagline: 'Where conversations steep slowly.',
   accent: 'Adda. Art. Tea.',
   description:
-    'A Kolkata café reimagining the roadside cha er dokan as an artistic social space. Books, tea, conversation, and the slow art of adda. Associated with the Mime Institute of Calcutta.',
+    'A cosy cafe in Salt Lake, Kolkata reimagining the roadside cha er dokan as an artistic social space — tea, coffee, books, and the slow art of adda. Associated with the Mime Institute of Calcutta.',
   philosophy: 'Human connection over digital isolation.',
   bengali: {
     adda: 'আড্ডা',
@@ -11,9 +11,15 @@ export const site = {
     closing: 'শেষ নোয়... আরো এক কাপ চা?',
   },
   location: {
-    line1: '14B College Street',
-    line2: 'Kolkata, West Bengal 700073',
-    note: 'Three minutes from Presidency, ten minutes from Coffee House.',
+    line1: 'CK-7, CK Block, Sector II',
+    line2: 'Salt Lake City, Bidhannagar, Kolkata, West Bengal 700091',
+    note: 'In the heart of Salt Lake — Sector II, Bidhannagar.',
+    // Structured fields for local SEO / schema.org PostalAddress.
+    streetAddress: 'CK-7, CK Block, Sector II, Salt Lake City',
+    locality: 'Bidhannagar, Kolkata',
+    region: 'West Bengal',
+    postalCode: '700091',
+    country: 'IN',
   },
   hours: [
     { days: 'Mon — Thu', time: '10:00 — 22:00' },

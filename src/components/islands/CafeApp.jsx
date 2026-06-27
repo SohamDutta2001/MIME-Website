@@ -1485,7 +1485,7 @@ function Footer() {
         <div className="space-y-3 font-body text-sm leading-7 text-[#F5F0E6]/68">
           <p className="flex items-start gap-3">
             <MapPin size={16} className="mt-1 shrink-0" />
-            Bidhan Nagar, Kolkata, West Bengal
+            CK-7, CK Block, Sector II, Salt Lake City, Bidhannagar, Kolkata 700091
           </p>
           <p className="flex items-start gap-3">
             <Clock size={16} className="mt-1 shrink-0" />
