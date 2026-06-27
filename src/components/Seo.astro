@@ -22,22 +22,27 @@ const fullTitle = title
   : `${site.name} — Cafe in Salt Lake, Kolkata | Tea, Coffee, Books & Adda`;
 const desc = description ?? site.description;
 
-// Astro.site is the configured origin (https://artteastreecafe.com). Building
-// URLs against it yields the absolute, canonical links search engines want.
-const canonical = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(image ?? '/og-image.jpg', Astro.site);
+// Astro.site is the configured origin; BASE_URL is the path prefix the site is
+// served under ('/MIME-Website/' on the Pages demo, '/' on a root domain).
+// `abs` resolves a root-relative path to a full, base-aware absolute URL —
+// what search engines and social scrapers need. Astro.url.pathname already
+// includes the base, so canonical can use it directly.
+const base = import.meta.env.BASE_URL;
+const abs = (path: string) => new URL(path.replace(/^\//, base), Astro.site).toString();
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const ogImage = image ? new URL(image, Astro.site).toString() : abs('/og-image.jpg');
 
 const business = {
   '@context': 'https://schema.org',
   '@graph': [
     {
       '@type': 'CafeOrCoffeeShop',
-      '@id': `${Astro.site}#cafe`,
+      '@id': `${abs('/')}#cafe`,
       name: site.name,
       alternateName: 'Art Teas Tree Cafe',
       description: site.description,
-      url: Astro.site?.toString(),
-      image: new URL('/og-image.jpg', Astro.site).toString(),
+      url: abs('/'),
+      image: abs('/og-image.jpg'),
       email: site.contact.email,
       priceRange: '₹₹',
       servesCuisine: ['Tea', 'Coffee', 'Cafe', 'Snacks', 'Indian'],
@@ -51,7 +56,7 @@ const business = {
       },
       areaServed: ['Salt Lake City', 'Bidhannagar', 'Kolkata'],
       sameAs: [site.contact.instagramUrl],
-      hasMenu: new URL('/menu/', Astro.site).toString(),
+      hasMenu: abs('/menu/'),
       // NOTE: add a real "telephone" here once the cafe phone is live — it is
       // a strong local-SEO signal and is required for Google Business Profile.
       openingHoursSpecification: [
@@ -77,12 +82,12 @@ const business = {
     },
     {
       '@type': 'WebSite',
-      '@id': `${Astro.site}#website`,
-      url: Astro.site?.toString(),
+      '@id': `${abs('/')}#website`,
+      url: abs('/'),
       name: site.name,
       description: site.description,
       inLanguage: 'en-IN',
-      publisher: { '@id': `${Astro.site}#cafe` },
+      publisher: { '@id': `${abs('/')}#cafe` },
     },
   ],
 };

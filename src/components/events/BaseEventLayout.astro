@@ -37,7 +37,7 @@ const eventSchema = {
   eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
   description: event.description?.slice(0, 300),
   ...(banner ? { image: [banner] } : {}),
-  url: new URL(`/events/${event.slug}/`, Astro.site).toString(),
+  url: new URL(`${basePath}/events/${event.slug}/`, Astro.site).toString(),
   location: {
     '@type': 'Place',
     name: site.name,
