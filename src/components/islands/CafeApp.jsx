@@ -42,11 +42,18 @@ const CATEGORIES = ['All', ...Array.from(new Set(menuRows.map((r) => r.category)
 // above each grouped category section when viewing "All". Categories without
 // a Bengali entry fall back to the English name (see CATEGORY_BN[cat] ?? cat).
 const CATEGORY_BN = {
-  Tea: 'চা',
+  'Chicken in Cameo Role': 'ক্যামিও চরিত্রে চিকেন',
   Coffee: 'কফি',
-  'Quick Bites': 'টা',
-  Sweets: 'মিষ্টি',
-  'Cold Drinks': 'ঠাণ্ডা',
+  'Curtain Call': 'পর্দা নামার অভিবাদন',
+  'Egg as Omelette': 'ওমলেটের ভূমিকায় ডিম',
+  'First Bell': 'প্রথম ঘণ্টা',
+  'Lead Role': 'প্রধান চরিত্র',
+  'Mushroom in Cameo Role': 'ক্যামিও চরিত্রে মাশরুম',
+  'Paneer in Cameo Role': 'ক্যামিও চরিত্রে পনির',
+  'Second Bell': 'দ্বিতীয় ঘণ্টা',
+  'Third Act': 'তৃতীয় অঙ্ক',
+  'Veggies as Chorus': 'কোরাসের ভূমিকায় সবজি',
+  'Special Act': 'বিশেষ পরিবেশনা',
 };
 
 // When the visible item count crosses this, the menu body switches to an
