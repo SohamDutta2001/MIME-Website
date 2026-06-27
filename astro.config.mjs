@@ -8,6 +8,10 @@ export default defineConfig({
   site: isGitHubPages ? 'https://sohamdutta2001.github.io' : 'https://artteastreecafe.com',
   base: isGitHubPages ? '/MIME-Website' : undefined,
   output: 'static',
+  // Pages build as directories (/events/index.html), so canonicalise links to
+  // the trailing-slash form. Keeps the ViewTransitions client router from
+  // tripping over GitHub Pages' /events → /events/ redirects.
+  trailingSlash: 'always',
   integrations: [
     tailwind({ applyBaseStyles: false }),
     react(),

@@ -3,7 +3,12 @@ import { navLinks, site } from '~/data/site';
 
 const base = import.meta.env.BASE_URL;
 const basePath = base === '/' ? '' : base.replace(/\/$/, '');
-const withBase = (path: string) => `${basePath}${path}`;
+// Always emit a trailing slash so links point straight at the directory's
+// index.html (e.g. /MIME-Website/events/). Without it GitHub Pages 301-
+// redirects /events → /events/, and the ViewTransitions client router fails
+// to follow that redirect — which broke the Events/Menu nav links.
+const withBase = (path: string) =>
+  `${basePath}${path === '/' ? '/' : `${path.replace(/\/$/, '')}/`}`;
 const path = Astro.url.pathname
   .replace(basePath, '')
   .replace(/\/$/, '') || '/';
