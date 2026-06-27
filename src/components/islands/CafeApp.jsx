@@ -740,7 +740,6 @@ function Philosophy() {
           {/* Final line — handwritten, slightly tilted */}
           <p
             className="mt-10 inline-block font-hand text-3xl text-[#3B2418] sm:text-4xl"
-            style={{ transform: 'rotate(-1.2deg)' }}
           >
             Stay for one cup. Leave after the third conversation."
           </p>
@@ -1109,7 +1108,6 @@ function Reel() {
         {/* Closing margin scribble — pastel chalk on dark, faded as if pencilled */}
         <p
           className="chalk-pencil-dark mt-10 inline-block font-hand text-xl text-chalk-butter"
-          style={{ transform: 'rotate(-1.2deg)' }}
         >
           ↑ developed in-house. processed with chai and patience.
         </p>
@@ -1175,7 +1173,7 @@ function Menu() {
         {/* Section heading — Bengali layered above English */}
         <div className="mb-10">
           <p className="font-bn text-2xl text-[#C9A87A]/80">চা ও টা</p>
-          <SectionKicker className="mt-0.5" style={{ transform: 'rotate(-0.7deg)' }}>
+          <SectionKicker className="mt-0.5">
             Cha, Ta, and Menu
           </SectionKicker>
           <h2 className="mt-3 font-serif text-5xl font-medium text-[#F5F0E6] sm:text-6xl">
@@ -1319,10 +1317,7 @@ function Menu() {
             )}
 
             {/* Handwritten footer note — pastel chalk, soaked into the paper */}
-            <p
-              className="chalk-pencil mt-8 inline-block font-hand text-xl text-chalk-ink"
-              style={{ transform: 'rotate(-1.1deg)' }}
-            >
+            <p className="chalk-pencil mt-8 inline-block font-hand text-xl text-chalk-ink">
               আজকের বিশেষ ✦ ask us what's fresh today
             </p>
           </div>
@@ -1470,10 +1465,7 @@ function Footer() {
         {/* Identity */}
         <div>
           <p className="font-serif text-3xl font-medium text-[#F5F0E6]">Art-Teas-Tree</p>
-          <p
-            className="mt-2 inline-block font-hand text-2xl text-[#C9A87A]"
-            style={{ transform: 'rotate(-1deg)' }}
-          >
+          <p className="mt-2 inline-block font-hand text-2xl text-[#C9A87A]">
             where conversations steep slowly
           </p>
           <p className="mt-4 font-bn text-base text-[#F5F0E6]/40">
@@ -1503,10 +1495,7 @@ function Footer() {
 
         {/* Sign-off */}
         <div className="md:text-right">
-          <p
-            className="inline-block font-hand text-4xl text-[#C9A87A]"
-            style={{ transform: 'rotate(-1.5deg)' }}
-          >
+          <p className="inline-block font-hand text-4xl text-[#C9A87A]">
             আবার দেখা হবে
           </p>
           <p className="mt-2 font-hand text-xl text-[#F5F0E6]/50">abar dekha hobe</p>

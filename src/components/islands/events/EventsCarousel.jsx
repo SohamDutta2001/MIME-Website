@@ -85,7 +85,7 @@ export default function EventsCarousel() {
         {upcomingEvents.length === 0 ? (
           /* Empty board — the café still talks to you */
           <div className="mt-14 border border-dashed border-[#7A4A2A]/40 px-8 py-16 text-center">
-            <p className="font-hand text-3xl text-[#6B2D2D]" style={{ transform: 'rotate(-1.5deg)' }}>
+            <p className="font-hand text-3xl text-[#6B2D2D]">
               এখন কিছু নেই — the board is bare, the kettle is not.
             </p>
             <p className="mt-4 font-typewriter text-[10px] uppercase tracking-[0.35em] text-[#5E3820]/60">
