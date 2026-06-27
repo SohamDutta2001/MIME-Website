@@ -6,7 +6,12 @@ on:
   pull_request:
     branches: [main]
   workflow_dispatch:
-  # Rebuild daily at 07:00 IST (01:30 UTC) so sheet edits go live automatically.
+  # Fired by the Google Sheet's Apps Script the moment the menu/events sheet is
+  # edited (POST /dispatches with event_type "sheet-edit"), so edits go live in
+  # ~2-3 minutes without a manual rebuild. See docs/SHEET_AUTO_REBUILD.md.
+  repository_dispatch:
+    types: [sheet-edit]
+  # Safety-net daily rebuild at 07:00 IST (01:30 UTC) in case a dispatch is missed.
   schedule:
     - cron: '30 1 * * *'
 
