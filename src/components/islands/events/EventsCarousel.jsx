@@ -2,12 +2,17 @@
 // owner's sheet, rendered as playbill cards in an Embla carousel. With no
 // upcoming events the board doesn't disappear: it leaves a handwritten note.
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
+import AutoScroll from 'embla-carousel-auto-scroll';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { upcomingEvents } from '../../../lib/events/events';
 import EventCard from './EventCard.jsx';
+
+// How long the marquee waits after the pointer/focus leaves before it starts
+// gliding again — long enough that a quick mouse-out doesn't restart it under you.
+const RESUME_DELAY_MS = 1200;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -30,35 +35,93 @@ function ArrowButton({ onClick, disabled, direction, label }) {
 }
 
 export default function EventsCarousel() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ align: 'start', containScroll: 'trimSnaps' });
-  const [canPrev, setCanPrev] = useState(false);
-  const [canNext, setCanNext] = useState(false);
+  // Continuous marquee: a slow, constant glide that loops seamlessly. Started
+  // manually (playOnInit:false) so it stays still until we know motion is allowed,
+  // and so all stop/play is ours — the carousel owns pause, never the cards.
+  const autoScroll = useRef(
+    AutoScroll({
+      playOnInit: false,
+      speed: 1.2,
+      startDelay: 0,
+      stopOnInteraction: false,
+      stopOnMouseEnter: false,
+      stopOnFocusIn: false,
+    }),
+  );
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' }, [autoScroll.current]);
 
-  const onSelect = useCallback((api) => {
-    setCanPrev(api.canScrollPrev());
-    setCanNext(api.canScrollNext());
-  }, []);
+  // The viewport element, shared with cards so they can measure their distance to
+  // the edges (for the inward expansion). Composed with Embla's own ref callback.
+  const viewportRef = useRef(null);
+  const setViewportRef = useCallback(
+    (node) => {
+      viewportRef.current = node;
+      emblaRef(node);
+    },
+    [emblaRef],
+  );
 
+  const resumeTimerRef = useRef(null);
+  const hoveringRef = useRef(false);
+  const getAutoScroll = useCallback(() => emblaApi?.plugins()?.autoScroll, [emblaApi]);
+
+  const pause = useCallback(() => {
+    if (resumeTimerRef.current) {
+      clearTimeout(resumeTimerRef.current);
+      resumeTimerRef.current = null;
+    }
+    getAutoScroll()?.stop();
+  }, [getAutoScroll]);
+
+  const scheduleResume = useCallback(() => {
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    resumeTimerRef.current = setTimeout(() => {
+      resumeTimerRef.current = null;
+      if (!hoveringRef.current) getAutoScroll()?.play();
+    }, RESUME_DELAY_MS);
+  }, [getAutoScroll]);
+
+  // Start the glide once mounted — unless the visitor prefers reduced motion, in
+  // which case the board stays still and only the arrows move it.
   useEffect(() => {
     if (!emblaApi) return undefined;
-    onSelect(emblaApi);
-    emblaApi.on('select', onSelect).on('reInit', onSelect);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduce) getAutoScroll()?.play();
     return () => {
-      emblaApi.off('select', onSelect).off('reInit', onSelect);
+      if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
     };
-  }, [emblaApi, onSelect]);
+  }, [emblaApi, getAutoScroll]);
 
-  useEffect(() => {
-    if (!emblaApi) return undefined;
-    const id = setInterval(() => {
-      if (emblaApi.canScrollNext()) {
-        emblaApi.scrollNext();
-      } else {
-        emblaApi.scrollTo(0);
-      }
-    }, 3000);
-    return () => clearInterval(id);
-  }, [emblaApi]);
+  // Carousel-level pause: hovering or focusing anywhere inside the board stops the
+  // marquee; leaving resumes it after a beat. Cards never touch this.
+  const onMouseEnter = useCallback(() => {
+    hoveringRef.current = true;
+    pause();
+  }, [pause]);
+  const onMouseLeave = useCallback(() => {
+    hoveringRef.current = false;
+    scheduleResume();
+  }, [scheduleResume]);
+  const onFocusCapture = useCallback(() => {
+    pause();
+  }, [pause]);
+  const onBlurCapture = useCallback(
+    (event) => {
+      if (!event.currentTarget.contains(event.relatedTarget)) scheduleResume();
+    },
+    [scheduleResume],
+  );
+
+  // Manual nav shouldn't fight the marquee: nudge, then resume after the delay.
+  const handleArrow = useCallback(
+    (direction) => {
+      pause();
+      if (direction === 'prev') emblaApi?.scrollPrev();
+      else emblaApi?.scrollNext();
+      if (!hoveringRef.current) scheduleResume();
+    },
+    [emblaApi, pause, scheduleResume],
+  );
 
   return (
     <motion.section
@@ -88,8 +151,8 @@ export default function EventsCarousel() {
 
           {upcomingEvents.length > 1 && (
             <div className="flex items-center gap-2">
-              <ArrowButton direction="prev" label="Previous events" onClick={() => emblaApi?.scrollPrev()} disabled={!canPrev} />
-              <ArrowButton direction="next" label="More events" onClick={() => emblaApi?.scrollNext()} disabled={!canNext} />
+              <ArrowButton direction="prev" label="Previous events" onClick={() => handleArrow('prev')} />
+              <ArrowButton direction="next" label="More events" onClick={() => handleArrow('next')} />
             </div>
           )}
         </div>
@@ -105,12 +168,23 @@ export default function EventsCarousel() {
             </p>
           </div>
         ) : (
-          <div className="mt-14 overflow-hidden pb-2 pt-4" ref={emblaRef}>
+          /* Extra vertical room (pt/pb) so a pulled-forward poster — lifted and
+             scaled — is never clipped by the viewport's overflow-hidden. */
+          <div
+            className="mt-12 overflow-hidden pb-7 pt-6"
+            ref={setViewportRef}
+            onMouseEnter={onMouseEnter}
+            onMouseLeave={onMouseLeave}
+            onFocusCapture={onFocusCapture}
+            onBlurCapture={onBlurCapture}
+          >
             <div className="flex touch-pan-y gap-7">
               {upcomingEvents.map((event, i) => (
                 <div
                   key={event.slug}
-                  className="min-w-0 flex-[0_0_86%] sm:flex-[0_0_46%] lg:flex-[0_0_31.5%]"
+                  /* z-lift lives on the slide (the real sibling) so the expanded
+                     poster stacks above its neighbours, not just within itself. */
+                  className="relative z-0 min-w-0 flex-[0_0_86%] hover:z-30 focus-within:z-30 sm:flex-[0_0_46%] lg:flex-[0_0_31.5%]"
                 >
                   {/* Posters settle onto the board one after another */}
                   <motion.div
@@ -121,7 +195,7 @@ export default function EventsCarousel() {
                     viewport={{ once: true, margin: '-60px' }}
                     transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 0.61, 0.36, 1] }}
                   >
-                    <EventCard event={event} index={i} />
+                    <EventCard event={event} index={i} viewportRef={viewportRef} />
                   </motion.div>
                 </div>
               ))}

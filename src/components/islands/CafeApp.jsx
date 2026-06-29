@@ -301,7 +301,7 @@ function Nav() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-8">
         <a href="#home" className="flex items-center gap-3 leading-none">
           <img
-            src="/images/mime_logo.webp"
+            src="/images/mime_logo.png"
             alt="Art-Teas-Tree Cafe logo"
             className="h-10 w-10 shrink-0 rounded-full object-cover"
           />

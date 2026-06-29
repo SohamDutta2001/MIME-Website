@@ -2,11 +2,16 @@
 // small theatre poster pinned to the wall: washi tape, sepia photo, rubber
 // category stamp, typewriter date line.
 
+import { useCallback, useRef } from 'react';
 import { Clock, MapPin } from 'lucide-react';
 import { WashiTape } from '../Scraps.jsx';
 import { assetPath } from '../../../lib/img.js';
 import { resolveEventImage } from '../../../lib/events/images.js';
 import { formatEventDate } from '../../../lib/events/utils.js';
+
+// A poster this close to the viewport edge should grow *inward* instead of off the
+// side, so the expanded card is never clipped by the carousel's overflow-hidden.
+const EDGE_THRESHOLD_PX = 24;
 
 // Rubber-stamp ink per category — maroon for performances, moss for
 // workshops, tea-brown for exhibitions. Matches the site palette.
@@ -22,16 +27,34 @@ const CATEGORY_BN = {
   Exhibition: 'প্রদর্শনী',
 };
 
-export default function EventCard({ event, index }) {
+export default function EventCard({ event, index, viewportRef }) {
   const ink = CATEGORY_INK[event.category] ?? '#6B2D2D';
   // Alternate the pin-up tilt so the board reads hand-arranged, not printed.
   const tilt = [-1.4, 1.1, -0.7, 1.6][index % 4];
+  const cardRef = useRef(null);
+
+  // Before the poster is pulled forward, decide which way it should grow. Measured
+  // once per hover/focus (ref-only, no React state) against the live viewport rect.
+  const setOriginFromEdge = useCallback(() => {
+    const el = cardRef.current;
+    const viewport = viewportRef?.current;
+    if (!el || !viewport) return;
+    const card = el.getBoundingClientRect();
+    const vp = viewport.getBoundingClientRect();
+    let originX = 'center';
+    if (card.left - vp.left < EDGE_THRESHOLD_PX) originX = 'left';
+    else if (vp.right - card.right < EDGE_THRESHOLD_PX) originX = 'right';
+    el.style.transformOrigin = `${originX} center`;
+  }, [viewportRef]);
 
   return (
     <a
+      ref={cardRef}
       href={assetPath(`/events/${event.slug}/`)}
-      className="group relative block h-full border border-[#5E3820]/25 bg-[#F5F0E6] shadow-polaroid transition-transform duration-500 ease-ink hover:-translate-y-1.5 hover:rotate-0"
-      style={{ transform: `rotate(${tilt}deg)` }}
+      onMouseEnter={setOriginFromEdge}
+      onFocus={setOriginFromEdge}
+      style={{ '--rest-rotate': `${tilt}deg` }}
+      className="group relative block h-full border border-[#5E3820]/25 bg-[#F5F0E6] shadow-polaroid transition-[transform,box-shadow] duration-500 ease-ink [transform:rotate(var(--rest-rotate))] hover:shadow-[0_22px_44px_-16px_rgba(28,20,16,0.5)] focus-visible:shadow-[0_22px_44px_-16px_rgba(28,20,16,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7A4A2A]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB] motion-safe:hover:will-change-transform motion-safe:hover:[transform:rotate(0deg)_translateY(-10px)_scale(1.07)] motion-safe:focus-visible:will-change-transform motion-safe:focus-visible:[transform:rotate(0deg)_translateY(-10px)_scale(1.07)]"
     >
       <WashiTape className="-top-3 left-1/2 -translate-x-1/2" rotate={index % 2 ? 2.5 : -3} width={96} />
 

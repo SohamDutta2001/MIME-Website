@@ -11,7 +11,9 @@
     "description": "Experience a captivating drama performance filled with powerful emotions, compelling storytelling, unforgettable characters, and thought-provoking moments.",
     "additionalInfo": "Sponsored by Sponsor",
     "galleryUrls": [
-      "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
+      "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing",
+      "https://drive.google.com/file/d/1vMT4WpGp6ZAViSrIejdKMhe-gBLuLg_w/view?usp=sharing",
+      "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=sharing"
     ],
     "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
   },
@@ -64,26 +66,10 @@
     "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
   },
   {
-    "slug": "eating-soham",
+    "slug": "tathu-tasting-event",
     "active": true,
     "category": "Exhibition",
-    "title": "Eating Soham",
-    "date": "2026-07-01",
-    "time": "7:30 PM",
-    "venue": "Art-Teas-Tree Cafe",
-    "bannerUrl": "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=drive_link",
-    "description": "Enjoy an evening of laughter with hilarious stand-up performances, sharp wit, relatable humor, and unforgettable comedic moments",
-    "additionalInfo": "Sponsored by Sponsor",
-    "galleryUrls": [
-      "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
-    ],
-    "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
-  },
-  {
-    "slug": "eating-soham-2",
-    "active": true,
-    "category": "Exhibition",
-    "title": "Eating Soham",
+    "title": "Tathu Tasting Event",
     "date": "2026-07-01",
     "time": "7:30 PM",
     "venue": "Art-Teas-Tree Cafe",
