@@ -365,4 +365,4 @@ Add the `sizes` column to the owner's guide in `docs/sheets-template.md` with a 
 | `scripts/sync-menu.mjs` | Parse `sizes` column from CSV |
 | `src/data/mockMenuData.json` | Automatically updated by sync script |
 | `src/components/MenuCard.astro` | Sizes rendering on `/menu` page |
-| `docs/sheets-template.md` | Document new `sizes` column for owner |
+| `docs/sheets-template.md` | Document new `sizes` column for owner |x₹
