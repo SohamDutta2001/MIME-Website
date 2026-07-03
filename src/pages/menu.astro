@@ -5,19 +5,27 @@ import MenuCard from '~/components/MenuCard.astro';
 import MenuFilter from '~/components/islands/MenuFilter.tsx';
 import menuRows from '~/data/mockMenuData.json';
 
+// Category-level notes shown beneath the section heading.
+const CATEGORY_NOTES: Record<string, string> = {
+  'Second Bell': 'Add Milk  +₹10',
+  'Curtain Call': 'Homemade · No Preservatives',
+};
+
 // Derive unique categories in the order they first appear in the sheet.
-// This means the café owner adds a new category by simply adding rows —
-// no code change needed.
 const categories: string[] = [];
 for (const row of menuRows) {
   if (!categories.includes(row.category)) categories.push(row.category);
 }
 
-// Group rows by category, preserving sheet order within each group.
-const grouped = new Map<string, typeof menuRows>();
+// Group rows by category → subcategory, preserving sheet order throughout.
+type MenuItem = typeof menuRows[number];
+const grouped = new Map<string, Map<string, MenuItem[]>>();
 for (const row of menuRows) {
-  if (!grouped.has(row.category)) grouped.set(row.category, []);
-  grouped.get(row.category)!.push(row);
+  if (!grouped.has(row.category)) grouped.set(row.category, new Map());
+  const sub = row.subcategory || '';
+  const subMap = grouped.get(row.category)!;
+  if (!subMap.has(sub)) subMap.set(sub, []);
+  subMap.get(sub)!.push(row);
 }
 
 const rotateFor = (i: number) => ((i % 5) - 2) * 0.5;
@@ -48,24 +56,37 @@ const rotateFor = (i: number) => ((i % 5) - 2) * 0.5;
       </p>
     </Section>
   ) : categories.map(cat => {
-    const items = grouped.get(cat) ?? [];
+    const subMap = grouped.get(cat)!;
+    const note = CATEGORY_NOTES[cat];
+    let cardIndex = 0;
     return (
       <Section id={cat.toLowerCase().replace(/\s+/g, '-')}>
         <header class="mb-8 max-w-prose">
           <h2 class="font-serif text-display-md font-medium text-tea-900">{cat}</h2>
+          {note && <p class="mt-1 font-typewriter text-xs uppercase tracking-[0.2em] text-tea-500">{note}</p>}
         </header>
-        <div class="grid gap-5 sm:grid-cols-2 md:gap-6">
-          {items.map((item, i) => (
-            <MenuCard
-              name={item.itemName}
-              price={item.price}
-              description={item.description}
-              category={item.category}
-              rotate={rotateFor(i)}
-              sizes={item.sizes}
-            />
-          ))}
-        </div>
+        {Array.from(subMap.entries()).map(([sub, items]) => (
+          <div class="mb-8">
+            {sub && (
+              <h3 class="mb-4 font-serif text-xl italic text-tea-700 border-b border-tea-500/20 pb-2">{sub}</h3>
+            )}
+            <div class="grid gap-5 sm:grid-cols-2 md:gap-6">
+              {items.map((item) => {
+                const rotate = rotateFor(cardIndex++);
+                return (
+                  <MenuCard
+                    name={item.itemName}
+                    price={item.price}
+                    priceDisplay={item.priceDisplay}
+                    description={item.description}
+                    category={item.category}
+                    rotate={rotate}
+                  />
+                );
+              })}
+            </div>
+          </div>
+        ))}
       </Section>
     );
   })}

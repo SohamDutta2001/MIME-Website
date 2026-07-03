@@ -10,9 +10,18 @@ const assetBase = base.endsWith('/') ? base : `${base}/`;
 // to follow that redirect — which broke the Events/Menu nav links.
 const withBase = (path: string) =>
   `${basePath}${path === '/' ? '/' : `${path.replace(/\/$/, '')}/`}`;
-const path = Astro.url.pathname
-  .replace(basePath, '')
-  .replace(/\/$/, '') || '/';
+
+// Hash-fragment links (e.g. /#menu) must not get a trailing slash inserted
+// before the `#`. Prepend basePath only.
+const resolveHref = (href: string) =>
+  href.includes('#') ? `${basePath}${href}` : withBase(href);
+
+// Hash links target a section on another page — they are never "active".
+const isLinkActive = (href: string) => {
+  if (href.includes('#')) return false;
+  const p = Astro.url.pathname.replace(basePath, '').replace(/\/$/, '') || '/';
+  return p === href || (href !== '/' && p.startsWith(href));
+};
 ---
 
 <header class="border-b border-tea-500/15 bg-cream/40 backdrop-blur-[2px]">
@@ -35,15 +44,15 @@ const path = Astro.url.pathname
     </a>
     <ul class="-mx-1.5 flex flex-wrap items-center gap-1 text-sm md:mx-0 md:gap-2">
       {navLinks.map(link => {
-        const isActive = path === link.href || (link.href !== '/' && path.startsWith(link.href));
+        const active = isLinkActive(link.href);
         return (
           <li>
             <a
-              href={withBase(link.href)}
-              aria-current={isActive ? 'page' : undefined}
+              href={resolveHref(link.href)}
+              aria-current={active ? 'page' : undefined}
               class:list={[
                 'nav-pill',
-                isActive
+                active
                   ? 'bg-tea-700 text-cream'
                   : 'text-tea-700 hover:bg-tea-500/10 hover:text-tea-900',
               ]}

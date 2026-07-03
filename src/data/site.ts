@@ -3,7 +3,7 @@ export const site = {
   tagline: 'Where conversations steep slowly.',
   accent: 'Adda. Art. Tea.',
   description:
-    'A cosy cafe in Salt Lake, Kolkata reimagining the roadside cha er dokan as an artistic social space — tea, coffee, books, and the slow art of adda. Associated with the Mime Institute of Calcutta.',
+    'A cosy cafe in Salt Lake, Kolkata reimagining the roadside cha er dokan as an artistic social space — tea, coffee, books, and the slow art of adda. Associated with the National Mime Institute.',
   philosophy: 'Human connection over digital isolation.',
   bengali: {
     adda: 'আড্ডা',
@@ -33,7 +33,7 @@ export const site = {
     instagramUrl: 'https://instagram.com/artteastree',
   },
   affiliation: {
-    name: 'Mime Institute of Calcutta',
+    name: 'National Mime Institute',
     note: 'A long shared lineage of theatre, performance, and the slow ritual of adda.',
   },
 } as const;
@@ -41,5 +41,5 @@ export const site = {
 export const navLinks = [
   { href: '/', label: 'Home' },
   { href: '/events', label: 'Events' },
-  { href: '/menu', label: 'Menu' },
+  { href: '/#menu', label: 'Menu' },
 ] as const;

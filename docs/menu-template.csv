@@ -1,12 +1,62 @@
-id,category,itemName,price,description
-1,Tea,Bharer Cha,25,"Milky roadside tea, cardamom warmth, served in the spirit of a clay cup."
-2,Tea,Lebu Cha,30,"Black tea with lemon, salt, and the sharp lift of a rainy College Street evening."
-3,Tea,Adrak Cha,35,"Ginger-heavy tea for long conversations and monsoon throats."
-4,Tea,Tulsi Malai Cha,45,"Holy basil, slow milk, and a soft cream finish."
-5,Coffee,Filter Coffee,70,"South Indian decoction, foamed high, strong enough for a second act."
-6,Coffee,Adda Cold Brew,95,"Steeped overnight, mellow and dark, with a jaggery note."
-7,Coffee,Cinnamon Cappuccino,110,"A small café classic with cinnamon dust and a warm brown crema."
-8,Quick Bites,Singara,30,"Crisp pastry, spiced potato, best eaten before the first argument cools."
-9,Quick Bites,Buttered Toast,45,"Thick toast with salted butter, the old reliable companion to tea."
-10,Quick Bites,Telebhaja Plate,65,"Seasonal fritters wrapped in paper-menu nostalgia."
-11,Quick Bites,Banana Cake,80,"Soft, dark, not too sweet, baked for late afternoon readers."
+id,category,subcategory,itemName,price,description
+1,First Bell,Coolers,Beetroot Kanji,₹44,"Fermented beetroot kanji with a tangy, earthy opening note."
+2,First Bell,Coolers,Amla Kanji,₹44,"Sharp amla kanji, sour and refreshing."
+3,First Bell,Coolers,Ginger Honey,₹55,"Ginger and honey, warm in spirit even when served cool."
+4,First Bell,Coolers,Jeera Shikhanji,₹55,"Roasted jeera, lemon, salt, and a bright street-side lift."
+5,First Bell,Coolers,Sauf Thandaai,₹55,"Fennel-led thandaai, fragrant and cooling."
+6,First Bell,Coolers,Dates Milkshake,₹55,A naturally sweet shake with the depth of dates.
+7,First Bell,Coolers,Butterscotch Splash,₹66,"Buttery, cold, and a little indulgent."
+8,First Bell,Coolers,Aam Panna,₹77,"Raw mango cooler with salt, spice, and summer tang."
+9,First Bell,Coolers,Lassi,₹77,"Thick yoghurt lassi, churned for a slow afternoon."
+10,First Bell,Coolers,Indie Mojito,₹88,"Mint, lime, fizz, and a desi nudge."
+11,First Bell,Coolers,Oreo Shake,₹111,"Cookies-and-cream shake, dark and thick."
+12,First Bell,Coolers,Mineral Water,₹10 / ₹20,"Sealed water, available in two bottle sizes."
+13,Second Bell,Tea,Ayurvedic Tea,₹27,Herbal tea with a quiet medicinal warmth.
+14,Second Bell,Tea,Lemon Green Tea,₹47 / ₹67,Green tea brightened with lemon.
+15,Second Bell,Tea,Earl Grey Tea,₹67 / ₹87,Bergamot-scented black tea.
+16,Second Bell,Tea,Darjeeling Tea,₹37 / ₹57,Light hill tea with a clean muscatel edge.
+17,Second Bell,Tea,Kolkata Street,₹27 / ₹37,"Roadside-style cha, strong and familiar."
+18,Second Bell,Tea,Bombay Cutting,₹27 / ₹37,Sweet cutting chai for a quick interval.
+19,Second Bell,Tea,Kashmir Saffron Rose,₹27 / ₹37,"Saffron and rose in a soft, aromatic cup."
+20,Second Bell,Tea,Punjabi Masala,₹27 / ₹37,Spiced masala tea with a bold finish.
+21,Second Bell,Tea,Jaipur Jashn,₹27 / ₹37,A festive spiced cup with a warm perfume.
+22,Second Bell,Tea,Wayanad Cardamom,₹27 / ₹37,"Cardamom-forward tea, fragrant and steady."
+23,Second Bell,Tea,Awesome Assam,₹27 / ₹37,"Malty Assam tea, strong enough for long adda."
+24,Second Bell,Tea,Ice Tea,₹67,Cold tea for the warmer acts of the day.
+25,Second Bell,Coffee,Original Coffee,Black ₹47 / Milk ₹67,"House coffee, black or softened with milk."
+26,Second Bell,Coffee,Original Cold Coffee,₹97,"Cold house coffee, smooth and easy."
+27,Second Bell,Coffee,Flavoured Coffee,+₹10,Ask for the flavour and add it to your coffee.
+28,Second Bell,Coffee,Mojo Coffee,₹107,A stronger house pour for the next scene.
+29,Third Bell,Snacks,Cookies,₹8 / ₹10 / ₹15 / ₹20,Ask for the options at the counter.
+30,Third Bell,Snacks,French Fries,₹87,Crisp fries for the table.
+31,Third Bell,Snacks,Nuggets,₹157,"Hot nuggets, crisp outside and soft within."
+32,Third Bell,Snacks,Sausages,₹157,Sausages served hot for sharing.
+33,Performance,Lead Role,Paneer Kebab,₹107,Paneer kebab with a smoky lead-role presence.
+34,Performance,Lead Role,Chicken Malai Kebab,₹117,"Creamy chicken malai kebab, mild and rich."
+35,Performance,Lead Role,Chicken Hariyali Kebab,₹117,Green herb-marinated chicken kebab.
+36,Performance,Lead Role,Chicken Masala Kebab,₹117,Spiced chicken kebab with a fuller masala note.
+37,Performance,Lead Role,Fish Masala Kebab,₹137,Fish kebab in a warm masala coat.
+38,Performance,Chicken in Cameo Role,Chicken Envelope,₹97,A compact chicken bite folded for the interval.
+39,Performance,Chicken in Cameo Role,Chicken Maggi,₹117,Maggi with a chicken cameo.
+40,Performance,Chicken in Cameo Role,Chicken Wrap,₹127,Chicken rolled into a quick wrap.
+41,Performance,Chicken in Cameo Role,Chicken Sandwich,₹157,Toasted sandwich with a chicken filling.
+42,Performance,Chicken in Cameo Role,Chicken Pasta,₹157,Pasta with chicken in the supporting cast.
+43,Performance,Paneer in Cameo Role,Paneer Tikka Wrap,₹107,Paneer tikka folded into a wrap.
+44,Performance,Paneer in Cameo Role,Paneer Sandwich,₹127,Toasted sandwich with paneer.
+45,Performance,Mushroom in Cameo Role,Butter Garlic Mushroom,₹107,Mushroom tossed with butter and garlic.
+46,Performance,Mushroom in Cameo Role,Garlic Mushroom Wrap,₹107,Garlic mushroom rolled into a wrap.
+47,Performance,Mushroom in Cameo Role,Mushroom Pasta,₹137,Pasta with a mushroom cameo.
+48,Performance,Egg as Omelette,with Vegetables,₹87,Omelette folded with vegetables.
+49,Performance,Egg as Omelette,with Maggi,₹87,Omelette served with Maggi.
+50,Performance,Egg as Omelette,with Wrap,₹97,Omelette tucked into a wrap.
+51,Performance,Egg as Omelette,with Mushroom,₹107,Omelette with mushroom.
+52,Performance,Egg as Omelette,with Chicken,₹127,Omelette with chicken.
+53,Performance,Veggies as Chorus,with Maggi,₹77,Vegetables joining Maggi as the chorus.
+54,Performance,Veggies as Chorus,with Wrap,₹117,Vegetables rolled into a wrap.
+55,Performance,Veggies as Chorus,with Pasta,₹117,Vegetables tossed with pasta.
+56,Performance,Special Act,"Special Act by Big Brother, Pork",₹177,On request.
+57,Curtain Call,Homemade Sweets,Chocolate,₹10 / ₹20 / ₹30 / ₹50,"Ask for the varieties. Homemade, no preservatives."
+58,Curtain Call,Homemade Sweets,Popsicles,₹57,"Ask for the flavour. Homemade, no preservatives."
+59,Curtain Call,Homemade Sweets,Choco Mug Cake,₹107,"Warm chocolate mug cake, made in-house."
+60,Curtain Call,Homemade Sweets,Kulfi,₹97,"Ask for the flavour. Homemade, no preservatives."
+61,Curtain Call,Homemade Sweets,Ice Cream,₹157,"Ask for the flavour. Homemade, no preservatives."

@@ -1,505 +1,73 @@
 [
-  {
-    "id": 1,
-    "category": "First Bell",
-    "itemName": "Beetroot Kanji",
-    "price": 57,
-    "description": "Tangy fermented beetroot, deep red and bracing — the first bell before the show.",
-    "sizes": null
-  },
-  {
-    "id": 2,
-    "category": "First Bell",
-    "itemName": "Amla Kanji",
-    "price": 57,
-    "description": "Sour-salt amla ferment, a sharp opening note.",
-    "sizes": null
-  },
-  {
-    "id": 3,
-    "category": "First Bell",
-    "itemName": "Ginger Honey",
-    "price": 77,
-    "description": "Warm ginger steeped with honey, soothing and clear.",
-    "sizes": null
-  },
-  {
-    "id": 4,
-    "category": "First Bell",
-    "itemName": "Jeera Shikanji",
-    "price": 77,
-    "description": "Roasted cumin lemonade, cooling and salty-sweet.",
-    "sizes": null
-  },
-  {
-    "id": 5,
-    "category": "First Bell",
-    "itemName": "Sauf Thandai",
-    "price": 77,
-    "description": "Fennel-laced thandai, fragrant and cold.",
-    "sizes": null
-  },
-  {
-    "id": 6,
-    "category": "First Bell",
-    "itemName": "Dates Milkshake",
-    "price": 87,
-    "description": "Blended dates and milk, naturally sweet.",
-    "sizes": null
-  },
-  {
-    "id": 7,
-    "category": "First Bell",
-    "itemName": "Butterscotch Splash",
-    "price": 77,
-    "description": "Cold butterscotch shake with a buttery finish.",
-    "sizes": null
-  },
-  {
-    "id": 8,
-    "category": "First Bell",
-    "itemName": "Aam Panna",
-    "price": 77,
-    "description": "Raw mango cooler, tart and summer-green.",
-    "sizes": null
-  },
-  {
-    "id": 9,
-    "category": "First Bell",
-    "itemName": "Lassi",
-    "price": 97,
-    "description": "Thick churned yoghurt, sweet and chilled.",
-    "sizes": null
-  },
-  {
-    "id": 10,
-    "category": "First Bell",
-    "itemName": "Indie Mojito",
-    "price": 107,
-    "description": "Mint, lime and fizz — the desi mojito.",
-    "sizes": null
-  },
-  {
-    "id": 11,
-    "category": "First Bell",
-    "itemName": "Oreo Shake",
-    "price": 137,
-    "description": "Cookies-and-cream shake, thick and dark.",
-    "sizes": null
-  },
-  {
-    "id": 12,
-    "category": "First Bell",
-    "itemName": "Mineral Water",
-    "price": 20,
-    "description": "Sealed bottle.",
-    "sizes": null
-  },
-  {
-    "id": 13,
-    "category": "Second Bell",
-    "itemName": "Ayurvedic Tea",
-    "price": 37,
-    "description": "Herb-steeped brew.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" },
-      { "label": "Milk", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 14,
-    "category": "Second Bell",
-    "itemName": "Ginger Tea",
-    "price": 37,
-    "description": "Ginger-forward and warming.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" },
-      { "label": "Milk", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 15,
-    "category": "Second Bell",
-    "itemName": "Earl Grey",
-    "price": 47,
-    "description": "Bergamot-scented black tea.",
-    "sizes": [
-      { "label": "Milk", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 16,
-    "category": "Second Bell",
-    "itemName": "Darjeeling Tea",
-    "price": 37,
-    "description": "Light, muscatel hill tea.",
-    "sizes": [
-      { "label": "Milk", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 17,
-    "category": "Second Bell",
-    "itemName": "Kolkata Street",
-    "price": 37,
-    "description": "Roadside-style cha.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" },
-      { "label": "Milk", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 18,
-    "category": "Second Bell",
-    "itemName": "Bombay Cutting",
-    "price": 37,
-    "description": "Strong, sweet cutting chai.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" },
-      { "label": "Milk", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 19,
-    "category": "Second Bell",
-    "itemName": "Kashmiri Saffron",
-    "price": 47,
-    "description": "Saffron kahwa warmth.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 20,
-    "category": "Second Bell",
-    "itemName": "Punjabi Masala",
-    "price": 47,
-    "description": "Spiced masala chai.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 21,
-    "category": "Second Bell",
-    "itemName": "Nagpur Jashn",
-    "price": 37,
-    "description": "Festive spiced brew.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" },
-      { "label": "Milk", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 22,
-    "category": "Second Bell",
-    "itemName": "Nizam Cardamom",
-    "price": 47,
-    "description": "Cardamom-rich tea.",
-    "sizes": [
-      { "label": "Large", "priceString": "+10" }
-    ]
-  },
-  {
-    "id": 23,
-    "category": "Second Bell",
-    "itemName": "Awesome Assam",
-    "price": 47,
-    "description": "Bold, malty Assam.",
-    "sizes": [
-      { "label": "Large", "priceString": "+20" }
-    ]
-  },
-  {
-    "id": 24,
-    "category": "Second Bell",
-    "itemName": "Iced Tea",
-    "price": 87,
-    "description": "Chilled and refreshing.",
-    "sizes": null
-  },
-  {
-    "id": 25,
-    "category": "Second Bell",
-    "itemName": "Lemon Green Tea",
-    "price": 67,
-    "description": "Green tea with a squeeze of lemon.",
-    "sizes": null
-  },
-  {
-    "id": 26,
-    "category": "Coffee",
-    "itemName": "Original Coffee",
-    "price": 67,
-    "description": "House coffee.",
-    "sizes": [
-      { "label": "Milk", "priceString": "+20" }
-    ]
-  },
-  {
-    "id": 27,
-    "category": "Coffee",
-    "itemName": "Original Cold Coffee",
-    "price": 127,
-    "description": "Iced house coffee.",
-    "sizes": [
-      { "label": "Milk", "priceString": "+20" }
-    ]
-  },
-  {
-    "id": 28,
-    "category": "Third Bell",
-    "itemName": "Cookies",
-    "price": 15,
-    "description": "Fresh-baked cookies. Ask us for the size.",
-    "sizes": null
-  },
-  {
-    "id": 29,
-    "category": "Third Bell",
-    "itemName": "French Fries",
-    "price": 117,
-    "description": "Crisp golden fries, the third bell snack.",
-    "sizes": null
-  },
-  {
-    "id": 30,
-    "category": "Third Bell",
-    "itemName": "Nuggets",
-    "price": 177,
-    "description": "Hot, crunchy nuggets.",
-    "sizes": null
-  },
-  {
-    "id": 31,
-    "category": "Third Bell",
-    "itemName": "Sauce Surge",
-    "price": 177,
-    "description": "Loaded with our house sauces.",
-    "sizes": null
-  },
-  {
-    "id": 32,
-    "category": "Lead Role",
-    "itemName": "Paneer Kebab",
-    "price": 127,
-    "description": "Char-grilled paneer skewers.",
-    "sizes": null
-  },
-  {
-    "id": 33,
-    "category": "Lead Role",
-    "itemName": "Chicken Malai Kebab",
-    "price": 137,
-    "description": "Creamy, mild malai kebab.",
-    "sizes": null
-  },
-  {
-    "id": 34,
-    "category": "Lead Role",
-    "itemName": "Chicken Hariyali Kebab",
-    "price": 137,
-    "description": "Green herb-marinated kebab.",
-    "sizes": null
-  },
-  {
-    "id": 35,
-    "category": "Lead Role",
-    "itemName": "Chicken Masala Kebab",
-    "price": 137,
-    "description": "Spiced, smoky kebab.",
-    "sizes": null
-  },
-  {
-    "id": 36,
-    "category": "Lead Role",
-    "itemName": "Fish Masala Kebab",
-    "price": 167,
-    "description": "Spiced grilled fish.",
-    "sizes": null
-  },
-  {
-    "id": 37,
-    "category": "Chicken in Cameo Role",
-    "itemName": "Chicken Maggi",
-    "price": 147,
-    "description": "Maggi tossed with chicken.",
-    "sizes": null
-  },
-  {
-    "id": 38,
-    "category": "Chicken in Cameo Role",
-    "itemName": "Chicken Wrap",
-    "price": 157,
-    "description": "Rolled chicken wrap.",
-    "sizes": null
-  },
-  {
-    "id": 39,
-    "category": "Chicken in Cameo Role",
-    "itemName": "Chicken Sandwich",
-    "price": 187,
-    "description": "Toasted chicken sandwich.",
-    "sizes": null
-  },
-  {
-    "id": 40,
-    "category": "Chicken in Cameo Role",
-    "itemName": "Chicken Pasta",
-    "price": 177,
-    "description": "Creamy chicken pasta.",
-    "sizes": null
-  },
-  {
-    "id": 41,
-    "category": "Chicken in Cameo Role",
-    "itemName": "Chicken Crystal Wrap",
-    "price": 187,
-    "description": "Crisp crystal chicken wrap.",
-    "sizes": null
-  },
-  {
-    "id": 42,
-    "category": "Paneer in Cameo Role",
-    "itemName": "Paneer Tikka Wrap",
-    "price": 147,
-    "description": "Tikka paneer rolled in a wrap.",
-    "sizes": null
-  },
-  {
-    "id": 43,
-    "category": "Paneer in Cameo Role",
-    "itemName": "Paneer Sandwich",
-    "price": 187,
-    "description": "Toasted paneer sandwich.",
-    "sizes": null
-  },
-  {
-    "id": 44,
-    "category": "Mushroom in Cameo Role",
-    "itemName": "Butter Garlic Mushroom",
-    "price": 157,
-    "description": "Mushrooms tossed in butter and garlic.",
-    "sizes": null
-  },
-  {
-    "id": 45,
-    "category": "Mushroom in Cameo Role",
-    "itemName": "Garlic Mushroom Wrap",
-    "price": 167,
-    "description": "Garlic mushroom rolled in a wrap.",
-    "sizes": null
-  },
-  {
-    "id": 46,
-    "category": "Mushroom in Cameo Role",
-    "itemName": "Mushroom Pasta",
-    "price": 157,
-    "description": "Creamy mushroom pasta.",
-    "sizes": null
-  },
-  {
-    "id": 47,
-    "category": "Egg as Omelette",
-    "itemName": "Omelette with Vegetables",
-    "price": 117,
-    "description": "Fluffy omelette folded with vegetables.",
-    "sizes": null
-  },
-  {
-    "id": 48,
-    "category": "Egg as Omelette",
-    "itemName": "Omelette with Maggi",
-    "price": 127,
-    "description": "Omelette served over Maggi.",
-    "sizes": null
-  },
-  {
-    "id": 49,
-    "category": "Egg as Omelette",
-    "itemName": "Omelette with Wrap",
-    "price": 137,
-    "description": "Omelette rolled in a wrap.",
-    "sizes": null
-  },
-  {
-    "id": 50,
-    "category": "Egg as Omelette",
-    "itemName": "Omelette with Mushroom",
-    "price": 147,
-    "description": "Omelette with sautéed mushroom.",
-    "sizes": null
-  },
-  {
-    "id": 51,
-    "category": "Egg as Omelette",
-    "itemName": "Omelette with Chicken",
-    "price": 157,
-    "description": "Omelette with seasoned chicken.",
-    "sizes": null
-  },
-  {
-    "id": 52,
-    "category": "Veggies as Chorus",
-    "itemName": "Veggie Maggi",
-    "price": 97,
-    "description": "Maggi loaded with garden vegetables.",
-    "sizes": null
-  },
-  {
-    "id": 53,
-    "category": "Veggies as Chorus",
-    "itemName": "Veggie Wrap",
-    "price": 127,
-    "description": "Mixed vegetable wrap.",
-    "sizes": null
-  },
-  {
-    "id": 54,
-    "category": "Veggies as Chorus",
-    "itemName": "Veggie Pasta",
-    "price": 137,
-    "description": "Garden vegetable pasta.",
-    "sizes": null
-  },
-  {
-    "id": 55,
-    "category": "Special Act",
-    "itemName": "Big Brother's Special",
-    "price": 0,
-    "description": "A surprise dish — on request. Ask your server.",
-    "sizes": null
-  },
-  {
-    "id": 56,
-    "category": "Curtain Call",
-    "itemName": "Chocolate Popsicles",
-    "price": 67,
-    "description": "Homemade, no preservatives. Ask for the flavour.",
-    "sizes": null
-  },
-  {
-    "id": 57,
-    "category": "Curtain Call",
-    "itemName": "Choco Mug Cake",
-    "price": 157,
-    "description": "Warm homemade chocolate mug cake.",
-    "sizes": null
-  },
-  {
-    "id": 58,
-    "category": "Curtain Call",
-    "itemName": "Ice Cream",
-    "price": 157,
-    "description": "Homemade, no preservatives. Ask for the flavour.",
-    "sizes": null
-  },
-  {
-    "id": 59,
-    "category": "Curtain Call",
-    "itemName": "Masala Cola",
-    "price": 77,
-    "description": "Spiced homemade cola.",
-    "sizes": null
-  }
+  { "id": 1,  "category": "First Bell",   "subcategory": "", "itemName": "Beetroot Kanji",                   "price": 44,  "priceDisplay": "₹44",                                    "description": "" },
+  { "id": 2,  "category": "First Bell",   "subcategory": "", "itemName": "Amla Kanji",                       "price": 44,  "priceDisplay": "₹44",                                    "description": "" },
+  { "id": 3,  "category": "First Bell",   "subcategory": "", "itemName": "Ginger Honey",                     "price": 55,  "priceDisplay": "₹55",                                    "description": "" },
+  { "id": 4,  "category": "First Bell",   "subcategory": "", "itemName": "Jeera Shikhanji",                  "price": 55,  "priceDisplay": "₹55",                                    "description": "" },
+  { "id": 5,  "category": "First Bell",   "subcategory": "", "itemName": "Sauf Thandaai",                    "price": 55,  "priceDisplay": "₹55",                                    "description": "" },
+  { "id": 6,  "category": "First Bell",   "subcategory": "", "itemName": "Dates Milkshake",                  "price": 55,  "priceDisplay": "₹55",                                    "description": "" },
+  { "id": 7,  "category": "First Bell",   "subcategory": "", "itemName": "Butterscotch Splash",              "price": 66,  "priceDisplay": "₹66",                                    "description": "" },
+  { "id": 8,  "category": "First Bell",   "subcategory": "", "itemName": "Aam Panna",                        "price": 77,  "priceDisplay": "₹77",                                    "description": "" },
+  { "id": 9,  "category": "First Bell",   "subcategory": "", "itemName": "Lassi",                            "price": 77,  "priceDisplay": "₹77",                                    "description": "" },
+  { "id": 10, "category": "First Bell",   "subcategory": "", "itemName": "Indie Mojito",                     "price": 88,  "priceDisplay": "₹88",                                    "description": "" },
+  { "id": 11, "category": "First Bell",   "subcategory": "", "itemName": "Oreo Shake",                       "price": 111, "priceDisplay": "₹111",                                   "description": "" },
+  { "id": 12, "category": "First Bell",   "subcategory": "", "itemName": "Mineral Water",                    "price": 10,  "priceDisplay": "₹10 | ₹20",                             "description": "" },
+
+  { "id": 13, "category": "Second Bell",  "subcategory": "", "itemName": "Ayurvedic Tea",                    "price": 27,  "priceDisplay": "₹27",                                    "description": "" },
+  { "id": 14, "category": "Second Bell",  "subcategory": "", "itemName": "Lemon Green Tea",                  "price": 47,  "priceDisplay": "₹47 | ₹67",                             "description": "" },
+  { "id": 15, "category": "Second Bell",  "subcategory": "", "itemName": "Earl Gray Tea",                    "price": 67,  "priceDisplay": "₹67 | ₹87",                             "description": "" },
+  { "id": 16, "category": "Second Bell",  "subcategory": "", "itemName": "Darjeeling Tea",                   "price": 37,  "priceDisplay": "₹37 | ₹57",                             "description": "" },
+  { "id": 17, "category": "Second Bell",  "subcategory": "", "itemName": "Kolkata Street",                   "price": 27,  "priceDisplay": "₹27 | ₹37",                             "description": "" },
+  { "id": 18, "category": "Second Bell",  "subcategory": "", "itemName": "Bombay Cutting",                   "price": 27,  "priceDisplay": "₹27 | ₹37",                             "description": "" },
+  { "id": 19, "category": "Second Bell",  "subcategory": "", "itemName": "Kashmir Saffron Rose",             "price": 27,  "priceDisplay": "₹27 | ₹37",                             "description": "" },
+  { "id": 20, "category": "Second Bell",  "subcategory": "", "itemName": "Punjabi Masala",                   "price": 27,  "priceDisplay": "₹27 | ₹37",                             "description": "" },
+  { "id": 21, "category": "Second Bell",  "subcategory": "", "itemName": "Jaipur Jashn",                     "price": 27,  "priceDisplay": "₹27 | ₹37",                             "description": "" },
+  { "id": 22, "category": "Second Bell",  "subcategory": "", "itemName": "Wayanad Cardamom",                 "price": 27,  "priceDisplay": "₹27 | ₹37",                             "description": "" },
+  { "id": 23, "category": "Second Bell",  "subcategory": "", "itemName": "Awesome Assam",                    "price": 27,  "priceDisplay": "₹27 | ₹37",                             "description": "" },
+  { "id": 24, "category": "Second Bell",  "subcategory": "", "itemName": "Ice Tea",                          "price": 67,  "priceDisplay": "₹67",                                    "description": "" },
+  { "id": 25, "category": "Second Bell",  "subcategory": "", "itemName": "Original Coffee",                  "price": 47,  "priceDisplay": "Black ₹47 | Milk ₹67",                  "description": "" },
+  { "id": 26, "category": "Second Bell",  "subcategory": "", "itemName": "Original Cold Coffee",             "price": 97,  "priceDisplay": "₹97",                                    "description": "" },
+  { "id": 27, "category": "Second Bell",  "subcategory": "", "itemName": "Flavoured Coffee",                 "price": null,"priceDisplay": "+₹10  ·  Ask for the flavour",           "description": "" },
+  { "id": 28, "category": "Second Bell",  "subcategory": "", "itemName": "Mojo Coffee",                      "price": 107, "priceDisplay": "₹107",                                   "description": "" },
+
+  { "id": 29, "category": "Third Bell",   "subcategory": "", "itemName": "Cookies",                          "price": 8,   "priceDisplay": "₹8 | ₹10 | ₹15 | ₹20  ·  Ask for the options", "description": "" },
+  { "id": 30, "category": "Third Bell",   "subcategory": "", "itemName": "French Fries",                     "price": 87,  "priceDisplay": "₹87",                                    "description": "" },
+  { "id": 31, "category": "Third Bell",   "subcategory": "", "itemName": "Nuggets",                          "price": 157, "priceDisplay": "₹157",                                   "description": "" },
+  { "id": 32, "category": "Third Bell",   "subcategory": "", "itemName": "Sausages",                         "price": 157, "priceDisplay": "₹157",                                   "description": "" },
+
+  { "id": 33, "category": "Curtain Call", "subcategory": "", "itemName": "Chocolate",                        "price": 10,  "priceDisplay": "₹10 | ₹20 | ₹30 | ₹50  ·  Ask for the varieties", "description": "" },
+  { "id": 34, "category": "Curtain Call", "subcategory": "", "itemName": "Popsicles",                        "price": 57,  "priceDisplay": "₹57  ·  Ask for the flavour",            "description": "" },
+  { "id": 35, "category": "Curtain Call", "subcategory": "", "itemName": "Choco Mug Cake",                   "price": 107, "priceDisplay": "₹107",                                   "description": "" },
+  { "id": 36, "category": "Curtain Call", "subcategory": "", "itemName": "Kulfi",                            "price": 97,  "priceDisplay": "₹97  ·  Ask for the flavour",            "description": "" },
+  { "id": 37, "category": "Curtain Call", "subcategory": "", "itemName": "Ice Cream",                        "price": 157, "priceDisplay": "₹157  ·  Ask for the flavour",           "description": "" },
+
+  { "id": 38, "category": "Performance",  "subcategory": "Lead Role",              "itemName": "Paneer Kebab",            "price": 107, "priceDisplay": "₹107", "description": "" },
+  { "id": 39, "category": "Performance",  "subcategory": "Lead Role",              "itemName": "Chicken Malai Kebab",     "price": 117, "priceDisplay": "₹117", "description": "" },
+  { "id": 40, "category": "Performance",  "subcategory": "Lead Role",              "itemName": "Chicken Hariyali Kebab",  "price": 117, "priceDisplay": "₹117", "description": "" },
+  { "id": 41, "category": "Performance",  "subcategory": "Lead Role",              "itemName": "Chicken Masala Kebab",    "price": 117, "priceDisplay": "₹117", "description": "" },
+  { "id": 42, "category": "Performance",  "subcategory": "Lead Role",              "itemName": "Fish Masala Kebab",       "price": 137, "priceDisplay": "₹137", "description": "" },
+
+  { "id": 43, "category": "Performance",  "subcategory": "Chicken in Cameo Role",  "itemName": "Chicken Envelope",        "price": 97,  "priceDisplay": "₹97",  "description": "" },
+  { "id": 44, "category": "Performance",  "subcategory": "Chicken in Cameo Role",  "itemName": "Chicken Maggie",          "price": 117, "priceDisplay": "₹117", "description": "" },
+  { "id": 45, "category": "Performance",  "subcategory": "Chicken in Cameo Role",  "itemName": "Chicken Wrap",            "price": 127, "priceDisplay": "₹127", "description": "" },
+  { "id": 46, "category": "Performance",  "subcategory": "Chicken in Cameo Role",  "itemName": "Chicken Sandwich",        "price": 157, "priceDisplay": "₹157", "description": "" },
+  { "id": 47, "category": "Performance",  "subcategory": "Chicken in Cameo Role",  "itemName": "Chicken Pasta",           "price": 157, "priceDisplay": "₹157", "description": "" },
+
+  { "id": 48, "category": "Performance",  "subcategory": "Mushroom in Cameo Role", "itemName": "Butter Garlic Mushroom",  "price": 107, "priceDisplay": "₹107", "description": "" },
+  { "id": 49, "category": "Performance",  "subcategory": "Mushroom in Cameo Role", "itemName": "Garlic Mushroom Wrap",    "price": 107, "priceDisplay": "₹107", "description": "" },
+  { "id": 50, "category": "Performance",  "subcategory": "Mushroom in Cameo Role", "itemName": "Mushroom Pasta",          "price": 137, "priceDisplay": "₹137", "description": "" },
+
+  { "id": 51, "category": "Performance",  "subcategory": "Paneer in Cameo Role",   "itemName": "Paneer Tikka Wrap",       "price": 107, "priceDisplay": "₹107", "description": "" },
+  { "id": 52, "category": "Performance",  "subcategory": "Paneer in Cameo Role",   "itemName": "Paneer Sandwich",         "price": 127, "priceDisplay": "₹127", "description": "" },
+
+  { "id": 53, "category": "Performance",  "subcategory": "Veggies as Chorus",      "itemName": "with Maggie",             "price": 77,  "priceDisplay": "₹77",  "description": "" },
+  { "id": 54, "category": "Performance",  "subcategory": "Veggies as Chorus",      "itemName": "with Wrap",               "price": 117, "priceDisplay": "₹117", "description": "" },
+  { "id": 55, "category": "Performance",  "subcategory": "Veggies as Chorus",      "itemName": "with Pasta",              "price": 117, "priceDisplay": "₹117", "description": "" },
+
+  { "id": 56, "category": "Performance",  "subcategory": "Egg as Omelette",        "itemName": "with Vegetables",         "price": 87,  "priceDisplay": "₹87",  "description": "" },
+  { "id": 57, "category": "Performance",  "subcategory": "Egg as Omelette",        "itemName": "with Maggie",             "price": 87,  "priceDisplay": "₹87",  "description": "" },
+  { "id": 58, "category": "Performance",  "subcategory": "Egg as Omelette",        "itemName": "with Wrap",               "price": 97,  "priceDisplay": "₹97",  "description": "" },
+  { "id": 59, "category": "Performance",  "subcategory": "Egg as Omelette",        "itemName": "with Mushroom",           "price": 107, "priceDisplay": "₹107", "description": "" },
+  { "id": 60, "category": "Performance",  "subcategory": "Egg as Omelette",        "itemName": "with Chicken",            "price": 127, "priceDisplay": "₹127", "description": "" },
+
+  { "id": 61, "category": "Performance",  "subcategory": "Special Act",            "itemName": "PORK — Special Act by Big Brother", "price": 177, "priceDisplay": "₹177  ·  On request", "description": "" }
 ]

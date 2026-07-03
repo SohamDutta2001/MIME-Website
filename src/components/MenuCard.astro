@@ -7,6 +7,7 @@ interface SizeOption {
 interface Props {
   name: string;
   price: number | null;
+  priceDisplay?: string;
   description?: string;
   note?: string;
   category: string;
@@ -15,7 +16,9 @@ interface Props {
   sizes?: SizeOption[] | null;
 }
 
-const { name, price, description, note, category, rotate = 0, highlight = false, sizes } = Astro.props;
+const { name, price, priceDisplay, description, note, category, rotate = 0, highlight = false, sizes } = Astro.props;
+const pd = priceDisplay ?? (price != null ? `₹${price}` : '');
+const longPrice = pd.length > 15;
 ---
 
 <article
@@ -26,19 +29,21 @@ const { name, price, description, note, category, rotate = 0, highlight = false,
   ]}
   style={rotate !== 0 ? `transform: rotate(${rotate}deg);` : undefined}
 >
-  <header class="flex items-baseline justify-between gap-4">
-    <h3 class="font-serif text-xl font-medium text-tea-900">{name}</h3>
-    <div class="ml-4 shrink-0 text-right">
-      {price != null && <span class="font-body tabular-nums text-base text-tea-700">₹{price}</span>}
-      {sizes && (
-        <div class="mt-1 flex flex-col items-end font-typewriter text-[9px] uppercase tracking-[0.2em] text-[#5A6B3E]/70">
-          {sizes.map(({ label, priceString }) => (
-            <span>{label} {priceString}</span>
-          ))}
+  {longPrice ? (
+    <header>
+      <h3 class="font-serif text-xl font-medium text-tea-900">{name}</h3>
+      {pd && <p class="mt-0.5 font-body text-sm text-tea-600">{pd}</p>}
+    </header>
+  ) : (
+    <header class="flex items-baseline justify-between gap-4">
+      <h3 class="font-serif text-xl font-medium text-tea-900">{name}</h3>
+      {pd && (
+        <div class="ml-4 shrink-0 text-right">
+          <span class="font-body tabular-nums text-base text-tea-700">{pd}</span>
         </div>
       )}
-    </div>
-  </header>
+    </header>
+  )}
   {description && (
     <p class="mt-1.5 font-body italic text-[15px] leading-snug text-tea-700">{description}</p>
   )}

@@ -1,23 +1,34 @@
-// Build-time menu sync — pulls the live menu from a Google Sheet (CSV
-// export of a public sheet) and rewrites src/data/mockMenuData.json so the
-// React island bundles the fresh data into the static site.
+// Build-time sheet sync — pulls live data from Google Sheets (CSV export of
+// public sheets) and rewrites JSON files that React islands import at build time.
 //
-// Configured via environment variables:
-//   MENU_SHEET_ID   — required, the sheet's id from its URL
-//                     (https://docs.google.com/spreadsheets/d/THIS_BIT/edit...)
-//   MENU_SHEET_GID  — optional, the tab/gid (default: 0 = first tab)
+// ─── Environment variables ────────────────────────────────────────────────────
 //
-// Behaviour:
-//   - no env vars set      → log, exit 0, leave the existing JSON alone.
-//                            Lets local dev work without any setup.
-//   - env vars set + ok    → overwrite the JSON, exit 0.
-//   - env vars set + fail  → log error, exit 1 (so the build fails loudly
-//                            instead of silently deploying stale data).
+//   MENU_SHEET_ID        — required for menu sync; the sheet's id from its URL
+//   MENU_SHEET_GID       — optional; tab gid for the menu tab (default: 0)
 //
-// The expected sheet columns (header row, case-insensitive):
-//   id, category, itemName, price, description
-//   addMilk  — optional numeric; upcharge for adding milk (e.g. 10 → renders "Milk +10")
-//   addLarge — optional numeric; upcharge for large size  (e.g. 10 → renders "Large +10")
+//   INSTITUTE_SHEET_GID  — optional; tab gid for the "Institute Programmes" tab
+//                          in the same sheet (MENU_SHEET_ID). If omitted, the
+//                          institute sync is skipped and the existing JSON is kept.
+//
+// ─── Behaviour ────────────────────────────────────────────────────────────────
+//
+//   - env var missing / not set → skip that tab, exit 0, keep existing JSON.
+//   - env var set + fetch ok    → overwrite the JSON, exit 0.
+//   - env var set + fetch fails → log error, exit 1 (build fails loudly).
+//
+// ─── Sheet column expectations ────────────────────────────────────────────────
+//
+//   Menu tab (id, category, itemName, price — required):
+//     id, category, subcategory, itemName, price, priceDisplay, description
+//
+//   Institute Programmes tab (title — required):
+//     title, shortDesc, fullDesc, type
+//
+// ─── Adding a new tab ─────────────────────────────────────────────────────────
+//
+//   1. Add a new entry to the TABS array below.
+//   2. Set the corresponding env var in CI / .env.
+//   3. Done — no other code changes needed.
 //
 // Usage:
 //   node --env-file=.env scripts/sync-menu.mjs    (local with .env)
@@ -27,81 +38,125 @@ import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { parseCsv } from './lib/parse-csv.mjs';
 
-const OUT_PATH = resolve(process.cwd(), 'src/data/mockMenuData.json');
+// ─── helpers ─────────────────────────────────────────────────────────────────
+
+function sheetCsvUrl(sheetId, gid) {
+  return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${gid}`;
+}
+
+async function fetchCsv(url, label) {
+  const res = await fetch(url, { redirect: 'follow' });
+  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
+  return res.text();
+}
+
+function buildIndex(headerRow) {
+  return Object.fromEntries(headerRow.map((h, i) => [h.trim().toLowerCase(), i]));
+}
+
+function cell(row, idx, key) {
+  return row[idx[key]]?.trim() ?? '';
+}
+
+// ─── tab definitions ──────────────────────────────────────────────────────────
+//
+// Each entry describes one Sheet tab → JSON file mapping. Add new tabs here.
 
 const sheetId = process.env.MENU_SHEET_ID?.trim();
-const sheetGid = process.env.MENU_SHEET_GID?.trim() || '0';
 
-if (!sheetId) {
-  console.log(
-    '• menu sync: MENU_SHEET_ID not set — keeping existing src/data/mockMenuData.json',
-  );
-  process.exit(0);
-}
+const TABS = [
+  // ── Menu ──────────────────────────────────────────────────────────────────
+  {
+    label: 'menu',
+    enabled: !!sheetId,
+    url: sheetId
+      ? sheetCsvUrl(sheetId, process.env.MENU_SHEET_GID?.trim() || '0')
+      : null,
+    outPath: resolve(process.cwd(), 'src/data/mockMenuData.json'),
+    required: ['id', 'category', 'itemname', 'price'],
+    parse(rows) {
+      const header = rows[0].map((h) => h.trim().toLowerCase());
+      const idx = buildIndex(rows[0]);
+      const required = ['id', 'category', 'itemname', 'price'];
+      const missing = required.filter((c) => !header.includes(c));
+      if (missing.length) throw new Error(`missing required columns: ${missing.join(', ')}`);
 
-const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${sheetGid}`;
-console.log(`• menu sync: fetching ${url}`);
+      return rows
+        .slice(1)
+        .filter((r) => r.some((c) => c.trim() !== ''))
+        .map((r, n) => {
+          const rawPrice = cell(r, idx, 'price');
+          const priceNum = Number(rawPrice.replace(/[^\d.]/g, ''));
+          const price = Number.isFinite(priceNum) && rawPrice !== '' ? priceNum : null;
+          const rawDisplay = cell(r, idx, 'pricedisplay');
+          return {
+            id: Number(cell(r, idx, 'id')) || n + 1,
+            category: cell(r, idx, 'category') || 'Uncategorised',
+            subcategory: cell(r, idx, 'subcategory'),
+            itemName: cell(r, idx, 'itemname') || '(unnamed)',
+            price,
+            priceDisplay: rawDisplay || (price != null ? `₹${price}` : ''),
+            description: cell(r, idx, 'description'),
+          };
+        });
+    },
+  },
 
-let csv;
-try {
-  const res = await fetch(url, { redirect: 'follow' });
-  if (!res.ok) {
-    throw new Error(`HTTP ${res.status} ${res.statusText}`);
+  // ── Institute Programmes (Our Roots) ──────────────────────────────────────
+  {
+    label: 'institute programmes',
+    enabled: !!(sheetId && process.env.INSTITUTE_SHEET_GID?.trim()),
+    url:
+      sheetId && process.env.INSTITUTE_SHEET_GID?.trim()
+        ? sheetCsvUrl(sheetId, process.env.INSTITUTE_SHEET_GID.trim())
+        : null,
+    outPath: resolve(process.cwd(), 'src/data/instituteData.json'),
+    parse(rows) {
+      const idx = buildIndex(rows[0]);
+      if (!('title' in idx)) throw new Error('missing required column: title');
+
+      return rows
+        .slice(1)
+        .filter((r) => r.some((c) => c.trim() !== ''))
+        .map((r) => ({
+          title: cell(r, idx, 'title'),
+          shortDesc: cell(r, idx, 'shortdesc'),
+          fullDesc: cell(r, idx, 'fulldesc'),
+          type: cell(r, idx, 'type'),
+        }))
+        .filter((p) => p.title);
+    },
+  },
+];
+
+// ─── sync runner ──────────────────────────────────────────────────────────────
+
+let anyFailed = false;
+
+for (const tab of TABS) {
+  if (!tab.enabled) {
+    const reason =
+      tab.label === 'menu' ? 'MENU_SHEET_ID not set' : 'INSTITUTE_SHEET_GID not set';
+    console.log(`• ${tab.label} sync: ${reason} — keeping existing JSON`);
+    continue;
   }
-  csv = await res.text();
-} catch (err) {
-  console.error(`✗ menu sync failed: ${err.message}`);
-  console.error('  (sheet must be shared as "Anyone with the link can view")');
-  process.exit(1);
+
+  console.log(`• ${tab.label} sync: fetching ${tab.url}`);
+  try {
+    const csv = await fetchCsv(tab.url, tab.label);
+    const rows = parseCsv(csv);
+    if (rows.length < 2) throw new Error('sheet has no data rows');
+
+    const items = tab.parse(rows);
+    if (items.length === 0) throw new Error('no valid items found after parsing');
+
+    await writeFile(tab.outPath, JSON.stringify(items, null, 2) + '\n');
+    console.log(`✓ ${tab.label} sync: wrote ${items.length} items`);
+  } catch (err) {
+    console.error(`✗ ${tab.label} sync failed: ${err.message}`);
+    console.error('  (sheet must be shared as "Anyone with the link can view")');
+    anyFailed = true;
+  }
 }
 
-const rows = parseCsv(csv);
-if (rows.length < 2) {
-  console.error('✗ menu sync: sheet has no data rows');
-  process.exit(1);
-}
-
-const header = rows[0].map((h) => h.trim().toLowerCase());
-const required = ['id', 'category', 'itemname', 'price', 'description'];
-const missing = required.filter((c) => !header.includes(c));
-if (missing.length) {
-  console.error(`✗ menu sync: sheet missing required columns: ${missing.join(', ')}`);
-  console.error(`  expected: ${required.join(', ')}`);
-  console.error(`  found:    ${header.join(', ')}`);
-  process.exit(1);
-}
-
-const idx = Object.fromEntries(header.map((h, i) => [h, i]));
-
-const items = rows
-  .slice(1)
-  // drop fully-empty rows (Sheets often emits trailing blanks)
-  .filter((r) => r.some((cell) => cell.trim() !== ''))
-  .map((r, n) => {
-    const rawPrice = r[idx.price]?.trim() ?? '';
-    const priceNum = Number(rawPrice.replace(/[^\d.]/g, ''));
-
-    const addLarge = Number(r[idx.addlarge]?.trim());
-    const addMilk  = Number(r[idx.addmilk]?.trim());
-    const modifiers = [];
-    if (!isNaN(addLarge) && addLarge > 0) modifiers.push({ label: 'Large', priceString: `+${addLarge}` });
-    if (!isNaN(addMilk)  && addMilk  > 0) modifiers.push({ label: 'Milk',  priceString: `+${addMilk}`  });
-    const sizes = modifiers.length > 0 ? modifiers : null;
-
-    return {
-      id: Number(r[idx.id]?.trim()) || n + 1,
-      category: r[idx.category]?.trim() || 'Uncategorised',
-      itemName: r[idx.itemname]?.trim() || '(unnamed)',
-      price: Number.isFinite(priceNum) ? priceNum : 0,
-      description: r[idx.description]?.trim() || '',
-      sizes,
-    };
-  });
-
-if (items.length === 0) {
-  console.error('✗ menu sync: no valid items found after parsing');
-  process.exit(1);
-}
-
-await writeFile(OUT_PATH, JSON.stringify(items, null, 2) + '\n');
-console.log(`✓ menu sync: wrote ${items.length} items to src/data/mockMenuData.json`);
+if (anyFailed) process.exit(1);

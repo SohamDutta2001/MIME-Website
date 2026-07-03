@@ -28,7 +28,7 @@ import {
   PencilUnderline,
 } from './Scraps.jsx';
 import { assetPath, cldImg } from '../../lib/img.js';
-import EventsCarousel from './events/EventsCarousel.jsx';
+import EventsSection from './events/EventsSection.jsx';
 
 // ─── constants ───────────────────────────────────────────────────────────────
 
@@ -42,18 +42,28 @@ const CATEGORIES = ['All', ...Array.from(new Set(menuRows.map((r) => r.category)
 // above each grouped category section when viewing "All". Categories without
 // a Bengali entry fall back to the English name (see CATEGORY_BN[cat] ?? cat).
 const CATEGORY_BN = {
-  'Chicken in Cameo Role': 'ক্যামিও চরিত্রে চিকেন',
-  Coffee: 'কফি',
-  'Curtain Call': 'পর্দা নামার অভিবাদন',
-  'Egg as Omelette': 'ওমলেটের ভূমিকায় ডিম',
-  'First Bell': 'প্রথম ঘণ্টা',
-  'Lead Role': 'প্রধান চরিত্র',
-  'Mushroom in Cameo Role': 'ক্যামিও চরিত্রে মাশরুম',
-  'Paneer in Cameo Role': 'ক্যামিও চরিত্রে পনির',
+  'First Bell':  'প্রথম ঘণ্টা',
   'Second Bell': 'দ্বিতীয় ঘণ্টা',
-  'Third Act': 'তৃতীয় অঙ্ক',
-  'Veggies as Chorus': 'কোরাসের ভূমিকায় সবজি',
-  'Special Act': 'বিশেষ পরিবেশনা',
+  'Third Bell':  'তৃতীয় ঘণ্টা',
+  'Curtain Call':'পর্দা নামার অভিবাদন',
+  'Performance': 'পরিবেশনা',
+};
+
+// Bengali labels for subcategories shown inside Performance.
+const SUBCATEGORY_BN = {
+  'Lead Role':              'প্রধান চরিত্র',
+  'Chicken in Cameo Role':  'ক্যামিও চরিত্রে চিকেন',
+  'Mushroom in Cameo Role': 'ক্যামিও চরিত্রে মাশরুম',
+  'Paneer in Cameo Role':   'ক্যামিও চরিত্রে পনির',
+  'Veggies as Chorus':      'কোরাসের ভূমিকায় সবজি',
+  'Egg as Omelette':        'ওমলেটের ভূমিকায় ডিম',
+  'Special Act':            'বিশেষ পরিবেশনা',
+};
+
+// Category-level notes shown beside the section header.
+const CATEGORY_NOTES = {
+  'Second Bell':  'Add Milk +₹10',
+  'Curtain Call': 'Homemade · No Preservatives',
 };
 
 // When the visible item count crosses this, the menu body switches to an
@@ -276,10 +286,20 @@ function Nav() {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    const hero = document.getElementById('home');
+    if (!hero) {
+      const onScroll = () => setScrolled(window.scrollY > window.innerHeight * 0.8);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      return () => window.removeEventListener('scroll', onScroll);
+    }
+    const io = new IntersectionObserver(
+      ([entry]) => setScrolled(!entry.isIntersecting),
+      { threshold: 0 },
+    );
+    io.observe(hero);
+    setScrolled(hero.getBoundingClientRect().bottom <= 0);
+    return () => io.disconnect();
   }, []);
 
   const links = [
@@ -295,30 +315,42 @@ function Nav() {
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
         scrolled
           ? 'border-b border-[#5E3820]/15 bg-[#F5F0E6]/92 shadow-[0_10px_35px_rgba(28,18,8,0.10)] backdrop-blur-md'
-          : 'border-b border-transparent bg-gradient-to-b from-[#1C1208]/85 via-[#1C1208]/40 to-transparent'
+          : 'border-b border-transparent bg-gradient-to-b from-[#1C1208]/95 via-[#1C1208]/80 to-[#1C1208]/65'
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-8">
-        <a href="#home" className="flex items-center gap-3 leading-none">
+        <a href="#home" className="flex items-center gap-3">
           <img
             src="/images/mime_logo.png"
             alt="Art-Teas-Tree Cafe logo"
             className="h-10 w-10 shrink-0 rounded-full object-cover"
           />
-          <span className="flex flex-col">
+          <span className="flex flex-col gap-0.5">
             <span
-              className={`font-serif text-xl font-semibold transition-colors duration-500 sm:text-2xl ${
+              className={`font-serif text-xl font-semibold sm:text-2xl ${
                 scrolled ? 'text-[#1C1410]' : 'text-[#F5F0E6]'
               }`}
+              style={{
+                textShadow: scrolled
+                  ? '0 1px 4px rgba(10,6,4,0.18)'
+                  : '0 1px 16px rgba(10,6,4,0.95), 0 0 6px rgba(10,6,4,0.6)',
+                transition: 'color 500ms, text-shadow 500ms',
+              }}
             >
               Art-Teas-Tree
             </span>
             <span
-              className={`font-hand text-sm transition-colors duration-500 sm:text-base ${
+              className={`font-hand text-sm sm:text-base ${
                 scrolled ? 'text-[#5A6B3E]' : 'text-[#C9A87A]'
               }`}
+              style={{
+                textShadow: scrolled
+                  ? '0 1px 3px rgba(10,6,4,0.12)'
+                  : '0 1px 10px rgba(10,6,4,0.85)',
+                transition: 'color 500ms, text-shadow 500ms',
+              }}
             >
-              Mime Institute of Calcutta &mdash;{' '}
+              National Mime Institute &mdash;{' '}
               <span className="font-bn">কলকাতা</span>
             </span>
           </span>
@@ -521,7 +553,7 @@ function Hero() {
           <div className="mb-7 flex items-center gap-4">
             <div className="h-px w-10 bg-[#C9A87A]/55" />
             <p className="font-typewriter text-[9px] uppercase tracking-[0.48em] text-[#C9A87A]/70 sm:text-[10px]">
-              Mime Institute of Calcutta presents
+              National Mime Institute presents
             </p>
             <div className="h-px flex-1 bg-[#C9A87A]/55" />
           </div>
@@ -686,10 +718,10 @@ function Philosophy() {
         aria-hidden="true"
       >
         <p className="font-typewriter text-[9px] uppercase tracking-[0.35em] text-[#6B2D2D]/80">
-          Mime Institute
+          National Mime
         </p>
         <p className="font-typewriter text-[9px] uppercase tracking-[0.35em] text-[#6B2D2D]/80">
-          of Calcutta
+          Institute
         </p>
       </div>
 
@@ -726,7 +758,7 @@ function Philosophy() {
 
           <div className="mt-8 space-y-6 font-body text-base leading-8 text-[#5E3820] sm:text-lg sm:leading-9">
             <p>
-              Rooted in the spirit of the Mime Institute of Calcutta, this is a place where silence
+              Rooted in the spirit of the National Mime Institute, this is a place where silence
               is not emptiness, but attention.
             </p>
             <p className="relative">
@@ -791,7 +823,7 @@ function Philosophy() {
               "Silence is not emptiness. It is attention."
             </p>
             <p className="mt-4 font-typewriter text-[10px] text-[#F5F0E6]/38">
-              — Mime Institute of Calcutta, founding note
+              — National Mime Institute, founding note
             </p>
           </motion.div>
 
@@ -805,7 +837,7 @@ function Philosophy() {
                 Est. Bidhan Nagar, Kolkata
               </p>
               <p className="font-body text-sm text-[#5E3820]">
-                Associated with the Mime Institute of Calcutta
+                Associated with the National Mime Institute
               </p>
             </div>
           </div>
@@ -1135,32 +1167,34 @@ function Reel() {
 function Menu() {
   const [active, setActive] = useState('All');
 
-  // Per-category counts, computed once. Used to stamp counts on the filter
-  // chips ("Tea · 4") so a long menu still reads as scannable.
+  // Per-category counts for the filter chips.
   const counts = useMemo(() => {
     const c = { All: menuRows.length };
     for (const row of menuRows) c[row.category] = (c[row.category] || 0) + 1;
     return c;
   }, []);
 
+  // Flat item count per category (used in group headers).
+  const catCount = (cat) => Object.values(grouped[cat] ?? {}).flat().length;
+
   const filtered = useMemo(
     () => (active === 'All' ? menuRows : menuRows.filter((r) => r.category === active)),
     [active],
   );
 
-  // Group filtered items by their category so we can render section sub-headers
-  // when the user is viewing "All". Keys are ordered by the CATEGORIES array so
-  // the menu always reads top-to-bottom in the same order the chips appear in.
+  // Group filtered items by category → subcategory, preserving sheet order.
   const grouped = useMemo(() => {
     const groups = {};
     for (const item of filtered) {
-      if (!groups[item.category]) groups[item.category] = [];
-      groups[item.category].push(item);
+      if (!groups[item.category]) groups[item.category] = {};
+      const sub = item.subcategory || '';
+      if (!groups[item.category][sub]) groups[item.category][sub] = [];
+      groups[item.category][sub].push(item);
     }
     return groups;
   }, [filtered]);
 
-  const orderedGroupKeys = CATEGORIES.filter((c) => c !== 'All' && grouped[c]?.length);
+  const orderedGroupKeys = CATEGORIES.filter((c) => c !== 'All' && grouped[c]);
   const showGroupHeaders = active === 'All' && orderedGroupKeys.length > 1;
   const isLong = filtered.length > MENU_SCROLL_THRESHOLD;
 
@@ -1285,48 +1319,56 @@ function Menu() {
                           <p className="font-bn text-xl text-[#5E3820]">
                             {CATEGORY_BN[cat] ?? cat}
                           </p>
-                          <h3 className="font-serif text-2xl italic text-[#3B2418]">
-                            {cat}
-                          </h3>
+                          <h3 className="font-serif text-2xl italic text-[#3B2418]">{cat}</h3>
+                          {CATEGORY_NOTES[cat] && (
+                            <span className="font-typewriter text-[9px] uppercase tracking-[0.2em] text-[#5A6B3E]/80">
+                              {CATEGORY_NOTES[cat]}
+                            </span>
+                          )}
                           <p className="ml-auto font-typewriter text-[9px] uppercase tracking-[0.28em] text-[#7A4A2A]/60">
-                            {grouped[cat].length} {grouped[cat].length === 1 ? 'item' : 'items'}
+                            {catCount(cat)} {catCount(cat) === 1 ? 'item' : 'items'}
                           </p>
                         </header>
                       )}
-                      <div className="grid gap-0 sm:grid-cols-2 sm:gap-x-8">
-                        {grouped[cat].map((item) => (
-                          <motion.article
-                            layout
-                            key={item.id}
-                            initial={{ opacity: 0, y: 8 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -6 }}
-                            transition={{ duration: 0.3 }}
-                            className="border-b border-[#7A4A2A]/14 py-5 last:border-b-0"
-                          >
-                            <div className="flex items-start justify-between gap-4">
-                              <div>
-                                <h4 className="font-serif text-2xl text-[#1C1410]">
-                                  {item.itemName}
-                                </h4>
-                                <p className="mt-1 font-body text-sm leading-6 text-[#5E3820]">
-                                  {item.description}
-                                </p>
-                              </div>
-                              <div className="shrink-0 ml-4 text-right">
-                                {item.price != null && <span className="font-typewriter text-xl text-[#7A4A2A]">₹{item.price}</span>}
-                                {item.sizes && (
-                                  <div className="mt-1 flex flex-col items-end font-typewriter text-[9px] uppercase tracking-[0.2em] text-[#5A6B3E]/70">
-                                    {item.sizes.map(({ label, priceString }) => (
-                                      <span key={label}>{label} {priceString}</span>
-                                    ))}
+                      {Object.entries(grouped[cat]).map(([sub, items]) => (
+                        <div key={sub} className="mb-4">
+                          {sub && (
+                            <div className="mb-2 flex items-baseline gap-2 border-b border-[#7A4A2A]/12 pb-1">
+                              <p className="font-bn text-base text-[#5E3820]/70">{SUBCATEGORY_BN[sub] ?? ''}</p>
+                              <h4 className="font-serif text-lg italic text-[#7A4A2A]">{sub}</h4>
+                            </div>
+                          )}
+                          <div className="grid gap-0 sm:grid-cols-2 sm:gap-x-8">
+                            {items.map((item) => {
+                              const pd = item.priceDisplay ?? (item.price != null ? `₹${item.price}` : '');
+                              const longPrice = pd.length > 15;
+                              return (
+                              <motion.article
+                                layout
+                                key={item.id}
+                                initial={{ opacity: 0, y: 8 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: -6 }}
+                                transition={{ duration: 0.3 }}
+                                className="border-b border-[#7A4A2A]/14 py-4 last:border-b-0"
+                              >
+                                {longPrice ? (
+                                  <div>
+                                    <h5 className="font-serif text-xl text-[#1C1410]">{item.itemName}</h5>
+                                    <p className="mt-0.5 font-typewriter text-sm text-[#7A4A2A]">{pd}</p>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-start justify-between gap-4">
+                                    <h5 className="font-serif text-xl text-[#1C1410]">{item.itemName}</h5>
+                                    {pd && <span className="shrink-0 ml-4 font-typewriter text-base text-[#7A4A2A]">{pd}</span>}
                                   </div>
                                 )}
-                              </div>
-                            </div>
-                          </motion.article>
-                        ))}
-                      </div>
+                              </motion.article>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
                     </motion.section>
                   ))}
                 </motion.div>
@@ -1376,7 +1418,7 @@ function Books() {
   const features = [
     { label: 'Little library', Icon: BookOpen },
     { label: 'Evening readings', Icon: Sparkles },
-    { label: 'Bidhan Nagar', Icon: MapPin },
+    { label: 'Bidhan Nagar, Sector-II', Icon: MapPin },
   ];
 
   return (
@@ -1479,6 +1521,27 @@ function Books() {
           </p>
         </motion.div>
 
+        {/* Book donation callout */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.9, delay: 0.3 }}
+          className="mt-10 border-l-2 border-[#F5F0E6]/30 pl-6"
+        >
+          <p className="font-hand text-2xl leading-snug text-[#F5F0E6]/90">
+            Have a book looking for a new reader?
+          </p>
+          <p className="mt-2 font-body text-base leading-7 text-[#F5F0E6]/68">
+            Bring it in. The shelf is always open to a new arrival — leave it at the counter and it
+            finds its place.
+          </p>
+          <p className="mt-3 font-typewriter text-[10px] uppercase tracking-[0.28em] text-[#F5F0E6]/45">
+            Walk in · Sector-II, Salt Lake City, Kolkata
+          </p>
+        </motion.div>
+
         {/* Café photo */}
         <motion.img
           variants={fadeUp}
@@ -1528,7 +1591,7 @@ function Footer() {
           </p>
           <p className="flex items-start gap-3">
             <Theater size={16} className="mt-1 shrink-0" />
-            Associated with the Mime Institute of Calcutta
+            Associated with the National Mime Institute
           </p>
         </div>
 
@@ -1563,7 +1626,7 @@ export default function CafeApp() {
         <Ticker />
         {/* Notice board first — what's on at the café matters more to a
             visitor than the manifesto. */}
-        <EventsCarousel />
+        <EventsSection />
         <Philosophy />
         <Reel />
         <Menu />
