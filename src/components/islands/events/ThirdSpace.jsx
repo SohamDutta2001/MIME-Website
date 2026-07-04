@@ -2,6 +2,8 @@
 // Fully static — no Sheet dependency.
 
 import { motion } from 'framer-motion';
+import EventsCarousel from './EventsCarousel.jsx';
+import { thirdSpaceUpcomingEvents } from '../../../lib/events/events';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -136,6 +138,32 @@ export default function ThirdSpace({ onBack }) {
             </div>
           </motion.div>
         </div>
+
+        {thirdSpaceUpcomingEvents.length > 0 && (
+          <motion.div
+            variants={fadeUp}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-60px' }}
+            transition={{ duration: 0.9, delay: 0.15 }}
+            className="mt-20 border-t border-[#C9A87A]/20 pt-14"
+          >
+            <p className="font-typewriter text-[9px] uppercase tracking-[0.38em] text-[#F5F0E6]/40">
+              Upcoming in the Third Space
+            </p>
+            <h3 className="mt-2 font-serif text-3xl font-medium text-[#F5F0E6] sm:text-4xl">
+              What's on the stage.
+            </h3>
+            <div className="mt-10">
+              <EventsCarousel
+                events={thirdSpaceUpcomingEvents}
+                variant="dark"
+                showChrome={false}
+                ariaLabel="Upcoming events in The Third Space"
+              />
+            </div>
+          </motion.div>
+        )}
       </div>
     </section>
   );

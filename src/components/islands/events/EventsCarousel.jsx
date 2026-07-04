@@ -1,25 +1,53 @@
-// Homepage events section — "the notice board". Upcoming events from the
-// owner's sheet, rendered as playbill cards in an Embla carousel. With no
-// upcoming events the board doesn't disappear: it leaves a handwritten note.
+// Reusable events carousel — playbill cards in an Embla marquee that pauses on
+// hover/focus and pulls the hovered poster forward. Driven by the `events` prop so
+// it can back both the Café Events board (light) and The Third Space (dark).
 
 import { useCallback, useEffect, useRef } from 'react';
 import useEmblaCarousel from 'embla-carousel-react';
 import AutoScroll from 'embla-carousel-auto-scroll';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { upcomingEvents } from '../../../lib/events/events';
 import EventCard from './EventCard.jsx';
 
 // How long the marquee waits after the pointer/focus leaves before it starts
 // gliding again — long enough that a quick mouse-out doesn't restart it under you.
 const RESUME_DELAY_MS = 1200;
 
+// embla-carousel-auto-scroll's loop math throws ("Cannot read properties of
+// undefined (reading 'seek')") when the slides don't add up to more than one
+// viewport width — at our widest slide (31.5% + gap), that's anything under 4
+// slides. Below this count we skip the plugin and loop mode entirely and fall
+// back to a plain, arrow-driven (non-looping) strip — a still board reads fine
+// when there are only a couple of posters anyway.
+const MIN_SLIDES_FOR_AUTOSCROLL = 4;
+
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
   visible: { opacity: 1, y: 0 },
 };
 
-function ArrowButton({ onClick, disabled, direction, label }) {
+const THEME = {
+  light: {
+    section: 'bg-[#EDE2CB] bg-paper',
+    arrow:
+      'border-[#7A4A2A]/35 bg-[#F5F0E6]/70 text-[#5E3820] hover:border-[#7A4A2A]/70 hover:bg-[#F5F0E6] disabled:hover:border-[#7A4A2A]/35',
+    note: 'text-[#5E3820]/50',
+    emptyBorder: 'border-[#7A4A2A]/40',
+    emptyText: 'text-[#6B2D2D]',
+    emptySub: 'text-[#5E3820]/60',
+  },
+  dark: {
+    section: 'bg-[#3B2418]',
+    arrow:
+      'border-[#C9A87A]/40 bg-[#2A1A10]/60 text-[#F5F0E6] hover:border-[#C9A87A]/80 hover:bg-[#2A1A10] disabled:hover:border-[#C9A87A]/40',
+    note: 'text-[#F5F0E6]/45',
+    emptyBorder: 'border-[#C9A87A]/30',
+    emptyText: 'text-[#C9A87A]',
+    emptySub: 'text-[#F5F0E6]/50',
+  },
+};
+
+function ArrowButton({ onClick, disabled, direction, label, theme }) {
   const Icon = direction === 'prev' ? ChevronLeft : ChevronRight;
   return (
     <button
@@ -27,14 +55,22 @@ function ArrowButton({ onClick, disabled, direction, label }) {
       aria-label={label}
       onClick={onClick}
       disabled={disabled}
-      className="grid place-content-center border border-[#7A4A2A]/35 bg-[#F5F0E6]/70 p-2.5 text-[#5E3820] transition-all hover:border-[#7A4A2A]/70 hover:bg-[#F5F0E6] disabled:cursor-default disabled:opacity-25 disabled:hover:border-[#7A4A2A]/35"
+      className={`grid place-content-center border p-2.5 transition-all disabled:cursor-default disabled:opacity-25 ${theme.arrow}`}
     >
       <Icon size={18} strokeWidth={1.5} />
     </button>
   );
 }
 
-export default function EventsCarousel() {
+export default function EventsCarousel({
+  events,
+  variant = 'light',
+  showChrome = true,
+  ariaLabel = 'Events',
+}) {
+  const theme = THEME[variant] ?? THEME.light;
+  const canAutoScroll = events.length >= MIN_SLIDES_FOR_AUTOSCROLL;
+
   // Continuous marquee: a slow, constant glide that loops seamlessly. Started
   // manually (playOnInit:false) so it stays still until we know motion is allowed,
   // and so all stop/play is ours — the carousel owns pause, never the cards.
@@ -48,7 +84,10 @@ export default function EventsCarousel() {
       stopOnFocusIn: false,
     }),
   );
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' }, [autoScroll.current]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: canAutoScroll, align: 'start' },
+    canAutoScroll ? [autoScroll.current] : [],
+  );
 
   // The viewport element, shared with cards so they can measure their distance to
   // the edges (for the inward expansion). Composed with Embla's own ref callback.
@@ -81,8 +120,7 @@ export default function EventsCarousel() {
     }, RESUME_DELAY_MS);
   }, [getAutoScroll]);
 
-  // Start the glide once mounted — unless the visitor prefers reduced motion, in
-  // which case the board stays still and only the arrows move it.
+  // Start the glide once mounted — unless the visitor prefers reduced motion.
   useEffect(() => {
     if (!emblaApi) return undefined;
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -92,8 +130,6 @@ export default function EventsCarousel() {
     };
   }, [emblaApi, getAutoScroll]);
 
-  // Carousel-level pause: hovering or focusing anywhere inside the board stops the
-  // marquee; leaving resumes it after a beat. Cards never touch this.
   const onMouseEnter = useCallback(() => {
     hoveringRef.current = true;
     pause();
@@ -112,7 +148,6 @@ export default function EventsCarousel() {
     [scheduleResume],
   );
 
-  // Manual nav shouldn't fight the marquee: nudge, then resume after the delay.
   const handleArrow = useCallback(
     (direction) => {
       pause();
@@ -123,6 +158,57 @@ export default function EventsCarousel() {
     [emblaApi, pause, scheduleResume],
   );
 
+  // The moving track + cards. Shared by both chrome and chrome-less layouts.
+  const track = (
+    <div
+      className="overflow-hidden pb-7 pt-6"
+      ref={setViewportRef}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onFocusCapture={onFocusCapture}
+      onBlurCapture={onBlurCapture}
+    >
+      <div className="flex touch-pan-y gap-7">
+        {events.map((event, i) => (
+          <div
+            key={event.slug}
+            className="relative z-0 min-w-0 flex-[0_0_86%] hover:z-30 focus-within:z-30 sm:flex-[0_0_46%] lg:flex-[0_0_31.5%]"
+          >
+            <motion.div
+              className="h-full"
+              variants={fadeUp}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 0.61, 0.36, 1] }}
+            >
+              <EventCard event={event} index={i} viewportRef={viewportRef} variant={variant} />
+            </motion.div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+
+  const arrows = events.length > 1 && (
+    <div className="flex items-center gap-2">
+      <ArrowButton direction="prev" label="Previous events" onClick={() => handleArrow('prev')} theme={theme} />
+      <ArrowButton direction="next" label="More events" onClick={() => handleArrow('next')} theme={theme} />
+    </div>
+  );
+
+  // Chrome-less (e.g. The Third Space): a bare, labelled region the host section wraps.
+  if (!showChrome) {
+    if (events.length === 0) return null;
+    return (
+      <div role="region" aria-roledescription="carousel" aria-label={ariaLabel}>
+        {arrows && <div className="mb-6 flex justify-end">{arrows}</div>}
+        {track}
+      </div>
+    );
+  }
+
+  // Full chrome (Café Events board): header + empty-state + arrows.
   return (
     <motion.section
       id="events"
@@ -131,7 +217,9 @@ export default function EventsCarousel() {
       whileInView="visible"
       viewport={{ once: true, margin: '-100px' }}
       transition={{ duration: 1, ease: [0.22, 0.61, 0.36, 1] }}
-      className="relative overflow-hidden bg-[#EDE2CB] bg-paper px-5 py-24 sm:px-8 lg:py-28"
+      className={`relative overflow-hidden ${theme.section} px-5 py-24 sm:px-8 lg:py-28`}
+      aria-roledescription="carousel"
+      aria-labelledby="events-heading"
     >
       {/* Cork-board shadow strip along the top edge */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-[#5E3820]/12 to-transparent" aria-hidden="true" />
@@ -144,67 +232,30 @@ export default function EventsCarousel() {
             <p className="mt-0.5 font-hand text-2xl leading-none text-[#5A6B3E] sm:text-3xl">
               Events · pinned to the board this season
             </p>
-            <h2 className="mt-3 font-serif text-5xl font-medium leading-tight text-[#1C1410] sm:text-6xl">
+            <h2 id="events-heading" className="mt-3 font-serif text-5xl font-medium leading-tight text-[#1C1410] sm:text-6xl">
               Events board.
             </h2>
           </div>
 
-          {upcomingEvents.length > 1 && (
-            <div className="flex items-center gap-2">
-              <ArrowButton direction="prev" label="Previous events" onClick={() => handleArrow('prev')} />
-              <ArrowButton direction="next" label="More events" onClick={() => handleArrow('next')} />
-            </div>
-          )}
+          {arrows}
         </div>
 
-        {upcomingEvents.length === 0 ? (
+        {events.length === 0 ? (
           /* Empty board — the café still talks to you */
-          <div className="mt-14 border border-dashed border-[#7A4A2A]/40 px-8 py-16 text-center">
-            <p className="font-hand text-3xl text-[#6B2D2D]">
+          <div className={`mt-14 border border-dashed ${theme.emptyBorder} px-8 py-16 text-center`}>
+            <p className={`font-hand text-3xl ${theme.emptyText}`}>
               এখন কিছু নেই — the board is bare, the kettle is not.
             </p>
-            <p className="mt-4 font-typewriter text-[10px] uppercase tracking-[0.35em] text-[#5E3820]/60">
+            <p className={`mt-4 font-typewriter text-[10px] uppercase tracking-[0.35em] ${theme.emptySub}`}>
               new performances · workshops · exhibitions appear here
             </p>
           </div>
         ) : (
-          /* Extra vertical room (pt/pb) so a pulled-forward poster — lifted and
-             scaled — is never clipped by the viewport's overflow-hidden. */
-          <div
-            className="mt-12 overflow-hidden pb-7 pt-6"
-            ref={setViewportRef}
-            onMouseEnter={onMouseEnter}
-            onMouseLeave={onMouseLeave}
-            onFocusCapture={onFocusCapture}
-            onBlurCapture={onBlurCapture}
-          >
-            <div className="flex touch-pan-y gap-7">
-              {upcomingEvents.map((event, i) => (
-                <div
-                  key={event.slug}
-                  /* z-lift lives on the slide (the real sibling) so the expanded
-                     poster stacks above its neighbours, not just within itself. */
-                  className="relative z-0 min-w-0 flex-[0_0_86%] hover:z-30 focus-within:z-30 sm:flex-[0_0_46%] lg:flex-[0_0_31.5%]"
-                >
-                  {/* Posters settle onto the board one after another */}
-                  <motion.div
-                    className="h-full"
-                    variants={fadeUp}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: '-60px' }}
-                    transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 0.61, 0.36, 1] }}
-                  >
-                    <EventCard event={event} index={i} viewportRef={viewportRef} />
-                  </motion.div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <div className="mt-12">{track}</div>
         )}
 
         {/* Margin note */}
-        <p className="mt-10 font-typewriter text-[9px] uppercase tracking-[0.4em] text-[#5E3820]/50">
+        <p className={`mt-10 font-typewriter text-[9px] uppercase tracking-[0.4em] ${theme.note}`}>
           drag the posters · every event ends with tea
         </p>
       </div>

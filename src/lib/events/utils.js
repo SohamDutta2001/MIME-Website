@@ -65,6 +65,16 @@ export function findBySlug(events, slug) {
 }
 
 /**
+ * Events belonging to a given section ("cafe" | "third-space").
+ * @param {CafeEvent[]} events
+ * @param {string} section
+ * @returns {CafeEvent[]}
+ */
+export function bySection(events, section) {
+  return events.filter((e) => e.section === section);
+}
+
+/**
  * Split sheet-cell text into paragraphs on blank lines.
  * "a\n\nb" → ["a", "b"]; whitespace-only text → [].
  *

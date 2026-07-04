@@ -4,7 +4,7 @@
 
 import rawEvents from '../../data/events.json';
 import type { CafeEvent } from '../../types/event';
-import { filterActive, findBySlug, splitUpcomingPast } from './utils.js';
+import { filterActive, findBySlug, splitUpcomingPast, bySection } from './utils.js';
 
 export const allEvents: CafeEvent[] = filterActive(rawEvents as CafeEvent[]);
 
@@ -15,6 +15,12 @@ export const upcomingEvents: CafeEvent[] = split.upcoming;
 
 /** Active events that have already happened, most recent first. */
 export const pastEvents: CafeEvent[] = split.past;
+
+/** Upcoming Café Events, soonest first. */
+export const cafeUpcomingEvents: CafeEvent[] = bySection(upcomingEvents, 'cafe');
+
+/** Upcoming Third Space events, soonest first. */
+export const thirdSpaceUpcomingEvents: CafeEvent[] = bySection(upcomingEvents, 'third-space');
 
 export function getEvent(slug: string): CafeEvent | undefined {
   return findBySlug(allEvents, slug);

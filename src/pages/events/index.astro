@@ -29,6 +29,9 @@ const eventHref = (slug: string) => `${basePath}/events/${slug}/`;
               <span class="font-typewriter text-xs uppercase tracking-[0.2em] text-tea-600 w-56">{formatEventDate(event.date)}</span>
               <span class="font-serif text-2xl text-tea-900 transition-colors group-hover:text-maroon">{event.title}</span>
               <span class="font-hand text-base text-tea-500">{event.category}</span>
+              {event.section === 'third-space' && (
+                <span class="font-typewriter text-[10px] uppercase tracking-[0.2em] text-tea-600">· The Third Space</span>
+              )}
             </a>
           </li>
         ))}
@@ -45,6 +48,9 @@ const eventHref = (slug: string) => `${basePath}/events/${slug}/`;
               <span class="font-typewriter text-xs uppercase tracking-[0.2em] text-tea-600 w-56">{formatEventDate(event.date)}</span>
               <span class="font-serif text-2xl text-tea-900 transition-colors group-hover:text-maroon">{event.title}</span>
               <span class="font-hand text-base text-tea-500">{event.category}</span>
+              {event.section === 'third-space' && (
+                <span class="font-typewriter text-[10px] uppercase tracking-[0.2em] text-tea-600">· The Third Space</span>
+              )}
             </a>
           </li>
         ))}

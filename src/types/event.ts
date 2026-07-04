@@ -15,12 +15,23 @@ export function isEventCategory(value: string): value is EventCategory {
   return (EVENT_CATEGORIES as readonly string[]).includes(value);
 }
 
+// Which carousel the event appears in. Absent/blank in the sheet → 'cafe'.
+export const EVENT_SECTIONS = ['cafe', 'third-space'] as const;
+
+export type EventSection = (typeof EVENT_SECTIONS)[number];
+
+export function isEventSection(value: string): value is EventSection {
+  return (EVENT_SECTIONS as readonly string[]).includes(value);
+}
+
 export interface CafeEvent {
   /** URL path segment under /events/, generated from the title. */
   slug: string;
   /** Hidden everywhere when false (sheet column `active` = FALSE). */
   active: boolean;
   category: EventCategory;
+  /** Which carousel it appears in (Café Events vs The Third Space). */
+  section: EventSection;
   title: string;
   /** ISO date, e.g. "2026-07-04". Drives sorting and the upcoming/past split. */
   date: string;

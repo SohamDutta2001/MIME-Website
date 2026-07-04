@@ -1,6 +1,5 @@
-// One playbill-style event card for the homepage notice board. Looks like a
-// small theatre poster pinned to the wall: washi tape, sepia photo, rubber
-// category stamp, typewriter date line.
+// One playbill-style event card for the notice board. Looks like a small theatre
+// poster pinned to the wall. `variant` themes it light (café) or dark (Third Space).
 
 import { useCallback, useRef } from 'react';
 import { Clock, MapPin } from 'lucide-react';
@@ -13,12 +12,19 @@ import { formatEventDate } from '../../../lib/events/utils.js';
 // side, so the expanded card is never clipped by the carousel's overflow-hidden.
 const EDGE_THRESHOLD_PX = 24;
 
-// Rubber-stamp ink per category — maroon for performances, moss for
-// workshops, tea-brown for exhibitions. Matches the site palette.
+// Rubber-stamp ink per category — deep inks for the light card.
 const CATEGORY_INK = {
   Performance: '#6B2D2D',
   Workshop: '#5A6B3E',
   Exhibition: '#7A4A2A',
+};
+
+// Chalky, lifted inks for the dark card so stamps read like chalk on a green-room
+// board rather than muddy badges.
+const CATEGORY_INK_DARK = {
+  Performance: '#D89B8F',
+  Workshop: '#9CAE7B',
+  Exhibition: '#D6B98C',
 };
 
 const CATEGORY_BN = {
@@ -27,8 +33,45 @@ const CATEGORY_BN = {
   Exhibition: 'প্রদর্শনী',
 };
 
-export default function EventCard({ event, index, viewportRef }) {
-  const ink = CATEGORY_INK[event.category] ?? '#6B2D2D';
+const CARD_THEME = {
+  light: {
+    surface: 'border-[#5E3820]/25 bg-[#F5F0E6]',
+    restShadow: 'shadow-polaroid',
+    hoverShadow:
+      'hover:shadow-[0_22px_44px_-16px_rgba(28,20,16,0.5)] focus-visible:shadow-[0_22px_44px_-16px_rgba(28,20,16,0.5)]',
+    ring: 'focus-visible:ring-[#7A4A2A]/50 focus-visible:ring-offset-[#EDE2CB]',
+    innerRule: 'border-[#5E3820]/15',
+    bannerBorder: 'border-[#5E3820]/20',
+    dateText: 'text-[#7A4A2A]',
+    title: 'text-[#1C1410]',
+    meta: 'text-[#3B2418]/75',
+    metaIcon: 'text-[#7A4A2A]',
+    nudge: 'text-[#6B2D2D] group-hover:text-[#8B4040]',
+    ink: CATEGORY_INK,
+    stampBg: 'rgba(245,240,230,0.82)',
+  },
+  dark: {
+    surface: 'border-[#C9A87A]/25 bg-[#2A1A10]',
+    // Rest + hover shadows go near-black so the lift reads on the dark panel.
+    restShadow: 'shadow-[0_10px_30px_-12px_rgba(0,0,0,0.7)]',
+    hoverShadow:
+      'hover:shadow-[0_26px_50px_-14px_rgba(0,0,0,0.75)] focus-visible:shadow-[0_26px_50px_-14px_rgba(0,0,0,0.75)]',
+    ring: 'focus-visible:ring-[#C9A87A]/70 focus-visible:ring-offset-[#3B2418]',
+    innerRule: 'border-[#C9A87A]/15',
+    bannerBorder: 'border-[#C9A87A]/20',
+    dateText: 'text-[#C9A87A]',
+    title: 'text-[#F5F0E6]',
+    meta: 'text-[#F5F0E6]/70',
+    metaIcon: 'text-[#C9A87A]',
+    nudge: 'text-[#C9A87A] group-hover:text-[#F5F0E6]',
+    ink: CATEGORY_INK_DARK,
+    stampBg: 'rgba(20,14,8,0.55)',
+  },
+};
+
+export default function EventCard({ event, index, viewportRef, variant = 'light' }) {
+  const theme = CARD_THEME[variant] ?? CARD_THEME.light;
+  const ink = theme.ink[event.category] ?? theme.ink.Performance;
   // Alternate the pin-up tilt so the board reads hand-arranged, not printed.
   const tilt = [-1.4, 1.1, -0.7, 1.6][index % 4];
   const cardRef = useRef(null);
@@ -54,15 +97,15 @@ export default function EventCard({ event, index, viewportRef }) {
       onMouseEnter={setOriginFromEdge}
       onFocus={setOriginFromEdge}
       style={{ '--rest-rotate': `${tilt}deg` }}
-      className="group relative block h-full border border-[#5E3820]/25 bg-[#F5F0E6] shadow-polaroid transition-[transform,box-shadow] duration-500 ease-ink [transform:rotate(var(--rest-rotate))] hover:shadow-[0_22px_44px_-16px_rgba(28,20,16,0.5)] focus-visible:shadow-[0_22px_44px_-16px_rgba(28,20,16,0.5)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7A4A2A]/50 focus-visible:ring-offset-2 focus-visible:ring-offset-[#EDE2CB] motion-safe:hover:will-change-transform motion-safe:hover:[transform:rotate(0deg)_translateY(-10px)_scale(1.07)] motion-safe:focus-visible:will-change-transform motion-safe:focus-visible:[transform:rotate(0deg)_translateY(-10px)_scale(1.07)]"
+      className={`group relative block h-full border ${theme.surface} ${theme.restShadow} transition-[transform,box-shadow] duration-500 ease-ink [transform:rotate(var(--rest-rotate))] ${theme.hoverShadow} focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 ${theme.ring} motion-safe:hover:will-change-transform motion-safe:hover:[transform:rotate(0deg)_translateY(-10px)_scale(1.07)] motion-safe:focus-visible:will-change-transform motion-safe:focus-visible:[transform:rotate(0deg)_translateY(-10px)_scale(1.07)]`}
     >
       <WashiTape className="-top-3 left-1/2 -translate-x-1/2" rotate={index % 2 ? 2.5 : -3} width={96} />
 
       {/* Playbill inner rule */}
-      <div className="pointer-events-none absolute inset-2 z-10 border border-[#5E3820]/15" />
+      <div className={`pointer-events-none absolute inset-2 z-10 border ${theme.innerRule}`} />
 
       {/* Banner photo — sepia at rest, colour breathes in on hover */}
-      <div className="relative aspect-[3/2] overflow-hidden border-b border-[#5E3820]/20 bg-[#1C1208]">
+      <div className={`relative aspect-[3/2] overflow-hidden border-b ${theme.bannerBorder} bg-[#1C1208]`}>
         {event.bannerUrl ? (
           <img
             src={resolveEventImage(event.bannerUrl, { width: 800 })}
@@ -82,7 +125,7 @@ export default function EventCard({ event, index, viewportRef }) {
           style={{
             color: ink,
             borderColor: ink,
-            backgroundColor: 'rgba(245,240,230,0.82)',
+            backgroundColor: theme.stampBg,
             transform: 'rotate(3deg)',
             opacity: 0.9,
           }}
@@ -93,29 +136,29 @@ export default function EventCard({ event, index, viewportRef }) {
 
       <div className="relative px-5 pb-6 pt-4">
         {/* Typewriter date line, like the corner of a playbill */}
-        <p className="font-typewriter text-[10px] uppercase tracking-[0.22em] text-[#7A4A2A]">
+        <p className={`font-typewriter text-[10px] uppercase tracking-[0.22em] ${theme.dateText}`}>
           {formatEventDate(event.date)}
         </p>
 
-        <h3 className="mt-2 font-serif text-2xl font-medium leading-snug text-[#1C1410]">
+        <h3 className={`mt-2 font-serif text-2xl font-medium leading-snug ${theme.title}`}>
           {event.title}
         </h3>
 
-        <div className="mt-3 space-y-1 font-body text-sm text-[#3B2418]/75">
+        <div className={`mt-3 space-y-1 font-body text-sm ${theme.meta}`}>
           {event.time && (
             <p className="flex items-center gap-2">
-              <Clock size={13} className="shrink-0 text-[#7A4A2A]" /> {event.time}
+              <Clock size={13} className={`shrink-0 ${theme.metaIcon}`} /> {event.time}
             </p>
           )}
           {event.venue && (
             <p className="flex items-center gap-2">
-              <MapPin size={13} className="shrink-0 text-[#7A4A2A]" /> {event.venue}
+              <MapPin size={13} className={`shrink-0 ${theme.metaIcon}`} /> {event.venue}
             </p>
           )}
         </div>
 
         {/* Hand-written nudge */}
-        <p className="mt-4 font-hand text-lg text-[#6B2D2D] transition-colors group-hover:text-[#8B4040]">
+        <p className={`mt-4 font-hand text-lg transition-colors ${theme.nudge}`}>
           the full story <span aria-hidden="true">↦</span>
         </p>
       </div>

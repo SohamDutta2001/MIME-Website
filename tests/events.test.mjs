@@ -10,12 +10,14 @@ import {
   findBySlug,
   paragraphs,
   formatEventDate,
+  bySection,
 } from '../src/lib/events/utils.js';
 
 const ev = (overrides) => ({
   slug: 'x',
   active: true,
   category: 'Performance',
+  section: 'cafe',
   title: 'X',
   date: '2026-01-01',
   time: '',
@@ -81,4 +83,14 @@ test('paragraphs: blank-line splitting, whitespace trimmed', () => {
 test('formatEventDate: readable date, invalid passthrough', () => {
   assert.equal(formatEventDate('2026-07-04'), 'Saturday 4 July 2026');
   assert.equal(formatEventDate('soon™'), 'soon™');
+});
+
+test('bySection: keeps only the matching section', () => {
+  const events = [
+    ev({ slug: 'a', section: 'cafe' }),
+    ev({ slug: 'b', section: 'third-space' }),
+    ev({ slug: 'c', section: 'cafe' }),
+  ];
+  assert.deepEqual(bySection(events, 'cafe').map((e) => e.slug), ['a', 'c']);
+  assert.deepEqual(bySection(events, 'third-space').map((e) => e.slug), ['b']);
 });

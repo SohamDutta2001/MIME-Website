@@ -21,6 +21,11 @@
 //   active, category, title, date, time, venue, bannerUrl, description,
 //   additionalInfo, galleryUrls, registrationUrl
 //
+// section (optional): "Café Events" or "Third Space" — which carousel the
+// event appears in. An absent column or a blank cell defaults to Café
+// Events, so existing sheets and historical rows need no changes; only a
+// misspelled non-empty value fails the build.
+//
 // Rows with active ≠ TRUE are dropped here, at build time, so draft or
 // retired events never reach the public bundle. Only active rows are
 // validated — a half-filled draft row with active=FALSE can't break deploys.
@@ -116,6 +121,15 @@ const CATEGORY_ALIASES = {
   'cooking workshop':'Workshop',
 };
 
+// Which carousel the event belongs to. Blank/absent → 'cafe' (the common case).
+const SECTIONS = ['cafe', 'third-space'];
+const SECTION_ALIASES = {
+  'cafe': 'cafe', 'cafe event': 'cafe', 'cafe events': 'cafe',
+  'café': 'cafe', 'café event': 'cafe', 'café events': 'cafe',
+  'third space': 'third-space', 'third-space': 'third-space',
+  'the third space': 'third-space',
+};
+
 // Accept YYYY-MM-DD (canonical) and slash dates. Slash dates are read as
 // D/M/YYYY — the day-first convention used in India (this is a Kolkata café),
 // so "1/7/2026" means 1 July 2026, not 7 January. When one component is > 12
@@ -163,6 +177,13 @@ rows
     const rawDate = cell('date');
     const date = parseDate(rawDate);
 
+    const rawSection = cell('section'); // '' when the column is absent or empty
+    const section =
+      rawSection === ''
+        ? 'cafe'
+        : SECTIONS.find((s) => s === rawSection.toLowerCase()) ??
+          SECTION_ALIASES[rawSection.toLowerCase()];
+
     if (!title) problems.push(`row ${rowNum}: missing title`);
     if (!category) {
       problems.push(
@@ -172,12 +193,18 @@ rows
     if (!date) {
       problems.push(`row ${rowNum}: date "${rawDate}" could not be parsed — use YYYY-MM-DD or D/M/YYYY`);
     }
-    if (!title || !category || !date) return;
+    if (rawSection !== '' && !section) {
+      problems.push(
+        `row ${rowNum}: section "${rawSection}" is not one of Café Events / Third Space — leave blank for a café event`,
+      );
+    }
+    if (!title || !category || !date || (rawSection !== '' && !section)) return;
 
     events.push({
       slug: slugify(title),
       active: true,
       category,
+      section,
       title,
       date, // already YYYY-MM-DD after parseDate()
       time: cell('time'),

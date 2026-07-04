@@ -15,6 +15,9 @@ const rows = [
   { label: 'Date', value: formatEventDate(event.date) },
   { label: 'Time', value: event.time || 'Drop in any time' },
   { label: 'Venue', value: event.venue || 'Art-Teas-Tree Cafe' },
+  ...(event.section === 'third-space'
+    ? [{ label: 'Location', value: 'The Third Space' }]
+    : []),
 ];
 ---
 

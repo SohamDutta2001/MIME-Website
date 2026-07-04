@@ -4,6 +4,7 @@
 
 import { motion } from 'framer-motion';
 import EventsCarousel from './EventsCarousel.jsx';
+import { cafeUpcomingEvents } from '../../../lib/events/events';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -26,7 +27,7 @@ export default function CafeEvents({ onBack }) {
           </div>
         </div>
       )}
-      <EventsCarousel />
+      <EventsCarousel events={cafeUpcomingEvents} variant="light" />
 
       {/* Collaboration invite — static strip that sits flush below the board */}
       <motion.div

@@ -32,6 +32,7 @@ Open the spreadsheet, go to the **Events** tab, and fill a new row:
 | **date** | Year-month-day, with dashes | `2026-07-04` |
 | **time** | Written however you like | `6:00 PM` |
 | **venue** | Where it happens | `Art-Teas-Tree Cafe` |
+| **section** | Where it shows: `Café Events` or `Third Space`. Leave blank for a normal café event | `Café Events` |
 | **bannerUrl** | Paste the banner image URL from Cloudinary | `https://res.cloudinary.com/…` |
 | **description** | The main text. Leave an empty line between paragraphs | |
 | **additionalInfo** | Performance → who is performing. Workshop → what people will learn. Exhibition → the curator's note | |
@@ -50,6 +51,11 @@ Save isn't a button in Google Sheets — it saves itself. The website picks the 
 > **Performance** — music, drama, stand-up, poetry, storytelling.
 > **Workshop** — classes and training sessions of any kind.
 > **Exhibition** — art, photography, installations, book shows.
+
+> **Which section do I pick?**
+> **Café Events** shows on the café's own board. **Third Space** shows in the black-box
+> venue's own carousel. A blank cell means Café Events. For a Third Space event, put only
+> the address in **venue** — the site adds a "The Third Space" label automatically.
 
 ---
 
@@ -74,6 +80,7 @@ Prefer `active = FALSE` over deleting the row. Deleted rows are gone; hidden row
 | Event doesn't appear | Is **active** exactly `TRUE`? Is the **date** written `2026-07-04` style? Has the site rebuilt since your edit? |
 | Image is broken | Open the URL from the sheet in a new browser tab. If it doesn't show the photo there, re-copy it from Cloudinary. |
 | Event shows under "already happened" | Its date is in the past — check the year. |
-| The update build failed | The error message names the exact row and column that's wrong — fix that cell. A half-filled draft row can't break anything as long as its **active** is `FALSE`. |
+| Event is in the wrong carousel | Check **section** — `Café Events` or `Third Space`, spelled exactly. A blank cell defaults to Café Events. |
+| The update build failed | The error message names the exact row and column that's wrong — fix that cell. A misspelled **section** (anything other than `Café Events` / `Third Space`, and not blank) will name the row too — fix it or leave the cell blank. A half-filled draft row can't break anything as long as its **active** is `FALSE`. |
 
 One habit prevents almost every problem: **keep a row's active set to FALSE until the row is finished.**
