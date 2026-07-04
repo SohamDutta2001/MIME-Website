@@ -44,6 +44,7 @@ export default {
         hand: ['"Caveat"', 'cursive'],
         bn: ['"Hind Siliguri"', '"Noto Serif Bengali"', 'serif'],
         typewriter: ['"Courier Prime"', '"Courier New"', 'Courier', 'monospace'],
+        meta: ['"Marcellus SC"', 'Georgia', 'serif'],
       },
       fontSize: {
         'display-2xl': ['clamp(3rem, 8vw, 6.5rem)', { lineHeight: '1.05', letterSpacing: '-0.015em' }],

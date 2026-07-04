@@ -38,28 +38,6 @@ import EventsSection from './events/EventsSection.jsx';
 // it first appears in the sheet.
 const CATEGORIES = ['All', ...Array.from(new Set(menuRows.map((r) => r.category)))];
 
-// Bengali rendering of menu categories — used as the small caligraphic label
-// above each grouped category section when viewing "All". Categories without
-// a Bengali entry fall back to the English name (see CATEGORY_BN[cat] ?? cat).
-const CATEGORY_BN = {
-  'First Bell':  'প্রথম ঘণ্টা',
-  'Second Bell': 'দ্বিতীয় ঘণ্টা',
-  'Third Bell':  'তৃতীয় ঘণ্টা',
-  'Curtain Call':'পর্দা নামার অভিবাদন',
-  'Performance': 'পরিবেশনা',
-};
-
-// Bengali labels for subcategories shown inside Performance.
-const SUBCATEGORY_BN = {
-  'Lead Role':              'প্রধান চরিত্র',
-  'Chicken in Cameo Role':  'ক্যামিও চরিত্রে চিকেন',
-  'Mushroom in Cameo Role': 'ক্যামিও চরিত্রে মাশরুম',
-  'Paneer in Cameo Role':   'ক্যামিও চরিত্রে পনির',
-  'Veggies as Chorus':      'কোরাসের ভূমিকায় সবজি',
-  'Egg as Omelette':        'ওমলেটের ভূমিকায় ডিম',
-  'Special Act':            'বিশেষ পরিবেশনা',
-};
-
 // Category-level notes shown beside the section header.
 const CATEGORY_NOTES = {
   'Second Bell':  'Add Milk +₹10',
@@ -1218,9 +1196,8 @@ function Menu() {
         transition={{ duration: 0.85 }}
         className="relative mx-auto max-w-5xl"
       >
-        {/* Section heading — Bengali layered above English */}
+        {/* Section heading */}
         <div className="mb-10">
-          <p className="font-bn text-2xl text-[#C9A87A]/80">চা ও টা</p>
           <SectionKicker className="mt-0.5">
             Cha, Ta, and Menu
           </SectionKicker>
@@ -1256,7 +1233,7 @@ function Menu() {
 
             {/* Absolute top alignment mimics an official physical letterhead watermark layout */}
             <div className="pointer-events-none absolute inset-x-0 top-6 z-10 select-none text-center">
-              <p className="font-typewriter text-[9px] uppercase tracking-[0.45em] text-[#5E3820]/40 whitespace-nowrap">
+              <p className="font-meta text-[9px] uppercase tracking-[0.45em] text-[#5E3820]/85 whitespace-nowrap">
                 Art-Teas-Tree · Café
               </p>
             </div>
@@ -1282,8 +1259,8 @@ function Menu() {
                   >
                     <span>{cat}</span>
                     <span
-                      className={`text-[9px] tracking-[0.15em] ${
-                        isActive ? 'text-[#C9A87A]' : 'text-[#7A4A2A]/55'
+                      className={`font-meta text-[9px] tracking-[0.15em] ${
+                        isActive ? 'text-[#C9A87A]' : 'text-[#7A4A2A]/85'
                       }`}
                     >
                       · {String(count).padStart(2, '0')}
@@ -1316,16 +1293,13 @@ function Menu() {
                     >
                       {showGroupHeaders && (
                         <header className="mb-2 flex items-baseline gap-3 border-b border-[#7A4A2A]/22 pb-2">
-                          <p className="font-bn text-xl text-[#5E3820]">
-                            {CATEGORY_BN[cat] ?? cat}
-                          </p>
                           <h3 className="font-serif text-2xl italic text-[#3B2418]">{cat}</h3>
                           {CATEGORY_NOTES[cat] && (
                             <span className="font-typewriter text-[9px] uppercase tracking-[0.2em] text-[#5A6B3E]/80">
                               {CATEGORY_NOTES[cat]}
                             </span>
                           )}
-                          <p className="ml-auto font-typewriter text-[9px] uppercase tracking-[0.28em] text-[#7A4A2A]/60">
+                          <p className="ml-auto font-meta text-[9px] uppercase tracking-[0.28em] text-[#7A4A2A]/85">
                             {catCount(cat)} {catCount(cat) === 1 ? 'item' : 'items'}
                           </p>
                         </header>
@@ -1334,7 +1308,6 @@ function Menu() {
                         <div key={sub} className="mb-4">
                           {sub && (
                             <div className="mb-2 flex items-baseline gap-2 border-b border-[#7A4A2A]/12 pb-1">
-                              <p className="font-bn text-base text-[#5E3820]/70">{SUBCATEGORY_BN[sub] ?? ''}</p>
                               <h4 className="font-serif text-lg italic text-[#7A4A2A]">{sub}</h4>
                             </div>
                           )}
@@ -1384,14 +1357,14 @@ function Menu() {
 
             {/* Soft scroll cue when the body is capped */}
             {isLong && (
-              <p className="mt-2 text-right font-typewriter text-[9px] uppercase tracking-[0.3em] text-[#7A4A2A]/50">
+              <p className="mt-2 text-right font-meta text-[9px] uppercase tracking-[0.3em] text-[#7A4A2A]/85">
                 scroll for more &darr;
               </p>
             )}
 
             {/* Handwritten footer note — pastel chalk, soaked into the paper */}
             <p className="chalk-pencil mt-8 inline-block font-hand text-xl text-chalk-ink">
-              আজকের বিশেষ ✦ ask us what's fresh today
+              ✦ ask us what's fresh today
             </p>
 
             {/* Margin-note cross-link to the events section */}
