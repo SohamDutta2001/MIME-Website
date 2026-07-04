@@ -292,8 +292,8 @@ function Nav() {
     <header
       className={`fixed inset-x-0 top-0 z-40 transition-all duration-500 ${
         scrolled
-          ? 'border-b border-[#5E3820]/15 bg-[#F5F0E6]/92 shadow-[0_10px_35px_rgba(28,18,8,0.10)] backdrop-blur-md'
-          : 'border-b border-transparent bg-gradient-to-b from-[#1C1208]/95 via-[#1C1208]/80 to-[#1C1208]/65'
+          ? 'border-b border-[#5E3820]/15 bg-[rgba(245,240,230,0.92)] shadow-[0_10px_35px_rgba(28,18,8,0.10)] backdrop-blur-md'
+          : 'border-b border-transparent bg-gradient-to-b from-[#1C1208]/95 via-[#1C1208]/80 to-[#1C1208]/65 backdrop-blur-sm'
       }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-8">
