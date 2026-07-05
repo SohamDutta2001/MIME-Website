@@ -15,11 +15,13 @@ import {
   ChevronRight,
   Clock,
   Coffee,
+  HeartHandshake,
   MapPin,
   Sparkles,
   Theater,
 } from 'lucide-react';
 import menuRows from '../../data/mockMenuData.json';
+import { site } from '../../data/site.ts';
 import {
   WashiTape,
   CoffeeRing,
@@ -56,20 +58,24 @@ const MENU_SCROLL_THRESHOLD = 20;
 // new image to Cloudinary with public_id matching the filename minus ext).
 const HERO_IMAGES = [
   {
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp',
-    alt: 'Warm interior of Art-Teas-Tree Café, Kolkata',
+    src: 'mime-cafe-neon-sign.webp',
+    alt: 'The glowing CAFÉ sign at the entrance of Art-Teas-Tree, Salt Lake, Kolkata',
   },
   {
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp',
-    alt: 'Books and tea on a wooden table at Art-Teas-Tree Café',
+    src: 'mime-cafe-evening-seating.webp',
+    alt: 'Warm evening seating under string lights at Art-Teas-Tree Café',
   },
   {
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg',
-    alt: 'Bhar of tea steaming on the café counter',
+    src: 'mime-cafe-lamplit-table.webp',
+    alt: 'A single lamp glowing over a quiet café table',
   },
   {
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp',
-    alt: 'Soft light through the café in the late afternoon',
+    src: 'mime-cafe-adda-reading.webp',
+    alt: 'A visitor reading at the table over an unhurried afternoon of adda',
+  },
+  {
+    src: 'mime-cafe-hanging-lamps.webp',
+    alt: 'Hand-woven ceiling with warm hanging lamps inside the café',
   },
 ];
 
@@ -98,8 +104,8 @@ const SHELF_BOOKS = [
 const REEL_FRAMES = [
   {
     id: 1,
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-riqhhggeu0.webp',
-    caption: 'The morning shift, before the doors swing open.',
+    src: 'mime-cafe-tea-cups.webp',
+    caption: 'The morning shift — two cups poured, before the adda begins.',
     bn: 'সকালের চা',
     lens: '35mm · f/2.8 · ISO 400',
     timecode: '00:01:24:12',
@@ -108,27 +114,67 @@ const REEL_FRAMES = [
   },
   {
     id: 2,
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-fzkrcnggvx.webp',
-    caption: 'Books, tea, a slow afternoon — the table forgets the time.',
-    bn: 'বইপাড়ার বিকেল',
+    src: 'mime-cafe-green-tea.webp',
+    caption: 'Clay-green cups, a warm table — the table forgets the time.',
+    bn: 'ভাঁড়ের বিকেল',
     lens: '50mm · f/1.8 · ISO 200',
-    timecode: '00:14:08:22',
+    timecode: '00:08:12:04',
     location: 'reading corner',
-    note: 'cut on the page turn',
+    note: 'let it steep',
   },
   {
     id: 3,
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-h3gejc5rf6-250.jpg',
-    caption: 'Steam rising from the bhar — a small public theatre.',
-    bn: 'ভাঁড়ের ধোঁয়া',
+    src: 'mime-cafe-fries-skewer.webp',
+    caption: 'Fries and a skewer — the interval snack, shared across the table.',
+    bn: 'বিরতির খাবার',
+    lens: '50mm · f/2.2 · ISO 320',
+    timecode: '00:14:08:22',
+    location: 'centre table',
+    note: 'cut on the crunch',
+  },
+  {
+    id: 4,
+    src: 'mime-cafe-skewer-plate.webp',
+    caption: 'Plated and dressed — supper arrives, slow and deliberate.',
+    bn: 'সন্ধ্যার পাত',
+    lens: '60mm · f/2.8 · ISO 500',
+    timecode: '00:21:37:09',
+    location: 'kitchen pass',
+    note: 'steady the plate',
+  },
+  {
+    id: 5,
+    src: 'mime-cafe-menu-adda.webp',
+    caption: 'Hands over the menu, a cold coffee waiting — the adda finds its shape.',
+    bn: 'আড্ডার শুরু',
+    lens: '35mm · f/2.0 · ISO 640',
+    timecode: '00:27:55:16',
+    location: 'window table',
+    note: 'catch the laugh',
+  },
+  {
+    id: 6,
+    src: 'mime-cafe-mac-cheese.webp',
+    caption: 'A bowl passed around — comfort, in the middle of the evening.',
+    bn: 'গরম খাবার',
     lens: '85mm · f/2.0 · ISO 800',
-    timecode: '00:22:41:03',
+    timecode: '00:33:02:11',
     location: 'counter, eye-level',
     note: 'closer next take',
   },
   {
-    id: 4,
-    src: 'art-teas-tree-cafe-kolkata-coffee-shops-lxs22xc0rr-250.webp',
+    id: 7,
+    src: 'mime-cafe-wooden-sign.webp',
+    caption: 'Art-Teas-Tree, carved in wood — the name that holds the room.',
+    bn: 'আর্ট-টিজ-ট্রি',
+    lens: '40mm · f/4 · ISO 400',
+    timecode: '00:39:18:00',
+    location: 'entrance wall',
+    note: 'hold — the sign',
+  },
+  {
+    id: 8,
+    src: 'mime-cafe-lantern-glow.webp',
     caption: 'After the last conversation, before the lights go down.',
     bn: 'শেষ আলো',
     lens: '24mm · f/4 · ISO 1600',
@@ -443,22 +489,22 @@ function HeroCarousel() {
       </div>
 
       {/* Manual nav arrows — copper-tinted, sit on the inner playbill margin.
-          Hidden on the smallest screens where swiping is the natural gesture. */}
+          Shown on every breakpoint; sized down on phones with a ≥40px tap target. */}
       <button
         type="button"
         aria-label="Previous photo"
         onClick={() => emblaApi?.scrollPrev()}
-        className="absolute left-3 top-1/2 z-20 hidden -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] sm:left-6 sm:grid sm:p-3"
+        className="absolute left-2 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A] sm:left-6 sm:p-3"
       >
-        <ChevronLeft size={20} strokeWidth={1.5} />
+        <ChevronLeft size={18} strokeWidth={1.5} className="sm:h-5 sm:w-5" aria-hidden="true" />
       </button>
       <button
         type="button"
         aria-label="Next photo"
         onClick={() => emblaApi?.scrollNext()}
-        className="absolute right-3 top-1/2 z-20 hidden -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] sm:right-6 sm:grid sm:p-3"
+        className="absolute right-2 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/55 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/80 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A] sm:right-6 sm:p-3"
       >
-        <ChevronRight size={20} strokeWidth={1.5} />
+        <ChevronRight size={18} strokeWidth={1.5} className="sm:h-5 sm:w-5" aria-hidden="true" />
       </button>
 
       {/* Dot indicators — also direct-jump buttons. Active dot is a longer
@@ -868,6 +914,24 @@ function Reel() {
   // mobile/reduced-motion — they repaint every frame for the whole section.
   const calm = useCalmMotion();
 
+  const stripRef = useRef(null);
+  const frameRefs = useRef([]);
+  const go = (dir) => setActive((a) => (a + dir + total) % total);
+
+  // Keep the active thumbnail in view — but only scroll if it isn't already
+  // fully visible, so repeated arrow taps don't jitter the strip.
+  useEffect(() => {
+    const strip = stripRef.current;
+    const el = frameRefs.current[active];
+    if (!strip || !el) return;
+    const stripRect = strip.getBoundingClientRect();
+    const elRect = el.getBoundingClientRect();
+    if (elRect.left < stripRect.left || elRect.right > stripRect.right) {
+      const target = el.offsetLeft - (strip.clientWidth - el.clientWidth) / 2;
+      strip.scrollTo({ left: target, behavior: 'smooth' });
+    }
+  }, [active]);
+
   return (
     <section
       id="reel"
@@ -1062,22 +1126,42 @@ function Reel() {
             </p>
           </div>
 
-          <div className="relative overflow-x-auto pb-2">
-            <div className="inline-block min-w-full bg-[#1C1208] p-2">
-              {/* Top sprocket row */}
-              <SprocketRow count={REEL_FRAMES.length * 5} />
+          <div className="relative">
+            {/* Prev / next — same copper film-control styling as the hero arrows */}
+            <button
+              type="button"
+              aria-label="Previous frame"
+              onClick={() => go(-1)}
+              className="absolute left-0 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/80 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/95 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
+            >
+              <ChevronLeft size={20} strokeWidth={1.5} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next frame"
+              onClick={() => go(1)}
+              className="absolute right-0 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/80 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/95 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
+            >
+              <ChevronRight size={20} strokeWidth={1.5} aria-hidden="true" />
+            </button>
 
-              {/* Frame row */}
-              <div className="flex items-stretch gap-2 px-1 py-2">
-                {REEL_FRAMES.map((f, i) => {
-                  const isActive = i === active;
-                  return (
-                    <button
-                      key={f.id}
-                      type="button"
-                      onClick={() => setActive(i)}
-                      aria-label={`Load frame ${i + 1}: ${f.caption}`}
-                      aria-pressed={isActive}
+            <div ref={stripRef} className="relative overflow-x-auto pb-2">
+              <div className="inline-block min-w-full bg-[#1C1208] p-2">
+                {/* Top sprocket row */}
+                <SprocketRow count={REEL_FRAMES.length * 5} />
+
+                {/* Frame row */}
+                <div className="flex items-stretch gap-2 px-1 py-2">
+                  {REEL_FRAMES.map((f, i) => {
+                    const isActive = i === active;
+                    return (
+                      <button
+                        key={f.id}
+                        type="button"
+                        ref={(el) => (frameRefs.current[i] = el)}
+                        onClick={() => setActive(i)}
+                        aria-label={`Load frame ${i + 1}: ${f.caption}`}
+                        aria-pressed={isActive}
                       className={`group relative shrink-0 border bg-[#0A0604] p-1 transition-colors ${
                         isActive
                           ? 'border-[#C9A87A]'
@@ -1125,6 +1209,7 @@ function Reel() {
 
               {/* Bottom sprocket row */}
               <SprocketRow count={REEL_FRAMES.length * 5} />
+            </div>
             </div>
           </div>
         </div>
@@ -1494,25 +1579,60 @@ function Books() {
           </p>
         </motion.div>
 
-        {/* Book donation callout */}
+        {/* Book donation callout — a pinned handbill on the Boipara wall */}
         <motion.div
           variants={fadeUp}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.9, delay: 0.3 }}
-          className="mt-10 border-l-2 border-[#F5F0E6]/30 pl-6"
+          className="mt-16 flex justify-center"
         >
-          <p className="font-hand text-2xl leading-snug text-[#F5F0E6]/90">
-            Have a book looking for a new reader?
-          </p>
-          <p className="mt-2 font-body text-base leading-7 text-[#F5F0E6]/68">
-            Bring it in. The shelf is always open to a new arrival — leave it at the counter and it
-            finds its place.
-          </p>
-          <p className="mt-3 font-typewriter text-[10px] uppercase tracking-[0.28em] text-[#F5F0E6]/45">
-            Walk in · Sector-II, Salt Lake City, Kolkata
-          </p>
+          <div
+            className="relative w-full max-w-2xl bg-[#F5F0E6] px-6 py-8 text-[#1C1410] shadow-[0_26px_60px_-18px_rgba(0,0,0,0.5)] sm:px-10 sm:py-10"
+            style={{ transform: 'rotate(-1deg)' }}
+          >
+            {/* pinned with washi tape */}
+            <WashiTape className="-top-3 left-1/2 -translate-x-1/2" width={132} rotate={2} />
+
+            <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
+              <span
+                aria-hidden="true"
+                className="grid h-14 w-14 shrink-0 place-content-center rounded-full border border-[#5A6B3E]/40 bg-[#5A6B3E]/10 text-[#5A6B3E]"
+              >
+                <HeartHandshake size={26} strokeWidth={1.6} />
+              </span>
+              <div>
+                <p className="font-typewriter text-[10px] uppercase tracking-[0.32em] text-[#7A4A2A]">
+                  Donate a book
+                </p>
+                <h3 className="mt-1 font-hand text-3xl leading-tight text-[#3B2418] sm:text-4xl">
+                  Have a book looking for a new reader?
+                </h3>
+              </div>
+            </div>
+
+            <p className="mt-5 font-body text-base leading-7 text-[#3B2418]/80">
+              Bring it in. The shelf is always open to a new arrival — leave it at the counter, or
+              write to us first and it finds its place on the College Street wall.
+            </p>
+
+            <div className="mt-6 flex flex-col gap-3 border-t border-[#1C1410]/12 pt-5 sm:flex-row sm:items-center sm:justify-between">
+              <a
+                href="mailto:books@artteastree.com"
+                className="inline-flex items-center gap-2 font-typewriter text-sm tracking-wide text-[#5E3820] underline decoration-[#5A6B3E]/40 underline-offset-4 transition-colors hover:text-[#5A6B3E] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5A6B3E]"
+              >
+                <BookOpen size={16} strokeWidth={1.6} aria-hidden="true" />
+                books@artteastree.com
+              </a>
+              <p className="font-typewriter text-[10px] uppercase tracking-[0.28em] text-[#1C1410]/45">
+                Walk in · Sector-II, Salt Lake City, Kolkata
+              </p>
+            </div>
+
+            {/* placeholder marker — swap the email above before launch */}
+            {/* TODO(placeholder-email): confirm final donation inbox with the café before shipping. */}
+          </div>
         </motion.div>
 
         {/* Café photo */}
@@ -1544,7 +1664,7 @@ function Footer() {
             where conversations steep slowly
           </p>
           <p className="mt-4 font-bn text-base text-[#F5F0E6]/40">
-            মাইম ইনস্টিটিউট অফ ক্যালকাটা
+            ন্যাশনাল মাইম ইনস্টিটিউট
           </p>
         </div>
 
@@ -1564,7 +1684,17 @@ function Footer() {
           </p>
           <p className="flex items-start gap-3">
             <Theater size={16} className="mt-1 shrink-0" />
-            Associated with the National Mime Institute
+            <span>
+              Associated with the{' '}
+              <a
+                href={site.affiliation.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="underline decoration-[#C9A87A]/40 underline-offset-4 transition-colors hover:text-[#C9A87A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
+              >
+                {site.affiliation.name}
+              </a>
+            </span>
           </p>
         </div>
 

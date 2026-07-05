@@ -34,6 +34,7 @@ export const site = {
   },
   affiliation: {
     name: 'National Mime Institute',
+    url: 'https://nationalmimeinstitute.in/',
     note: 'A long shared lineage of theatre, performance, and the slow ritual of adda.',
   },
 } as const;
