@@ -1,0 +1,11 @@
+import { chromium } from 'playwright';
+const b = await chromium.launch();
+const p = await b.newPage({ viewport: { width: 1280, height: 900 } });
+await p.goto('http://localhost:4321/', { waitUntil: 'networkidle' });
+await p.getByRole('button', { name: 'Café Events' }).click();
+await p.waitForTimeout(1500);
+await p.screenshot({ path: 'tmp/cafe-panel-carousel.png', fullPage: true });
+const errors = [];
+p.on('pageerror', e => errors.push(e.message));
+console.log('Errors:', errors.length ? errors : 'none');
+await b.close();
