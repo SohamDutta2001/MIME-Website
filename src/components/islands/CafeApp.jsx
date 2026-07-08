@@ -1623,19 +1623,16 @@ function Books() {
 
             <div className="mt-6 flex flex-col gap-3 border-t border-[#1C1410]/12 pt-5 sm:flex-row sm:items-center sm:justify-between">
               <a
-                href="mailto:books@artteastree.com"
+                href="mailto:Art.teas.tree.cafe@gmail.com"
                 className="inline-flex items-center gap-2 font-typewriter text-sm tracking-wide text-[#5E3820] underline decoration-[#5A6B3E]/40 underline-offset-4 transition-colors hover:text-[#5A6B3E] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#5A6B3E]"
               >
                 <BookOpen size={16} strokeWidth={1.6} aria-hidden="true" />
-                books@artteastree.com
+                Art.teas.tree.cafe@gmail.com
               </a>
               <p className="font-typewriter text-[10px] uppercase tracking-[0.28em] text-[#1C1410]/45">
                 Walk in · Sector-II, Salt Lake City, Kolkata
               </p>
             </div>
-
-            {/* placeholder marker — swap the email above before launch */}
-            {/* TODO(placeholder-email): confirm final donation inbox with the café before shipping. */}
           </div>
         </motion.div>
 
