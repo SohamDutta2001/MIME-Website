@@ -989,6 +989,23 @@ function Reel() {
 
           {/* Film cell — black frame with sprocket holes on left + right */}
           <div className="relative aspect-[16/9] overflow-hidden border border-[#3B2418] bg-[#0A0604]">
+            {/* Prev / next overlaid on the viewfinder photo */}
+            <button
+              type="button"
+              aria-label="Previous frame"
+              onClick={() => go(-1)}
+              className="absolute left-5 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/70 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/95 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A] sm:left-6"
+            >
+              <ChevronLeft size={18} strokeWidth={1.5} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              aria-label="Next frame"
+              onClick={() => go(1)}
+              className="absolute right-5 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/70 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/95 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A] sm:right-6"
+            >
+              <ChevronRight size={18} strokeWidth={1.5} aria-hidden="true" />
+            </button>
             {/* Left sprocket column */}
             <div className="absolute inset-y-2 left-0 flex w-4 flex-col items-center justify-around sm:w-5">
               {Array.from({ length: 9 }).map((_, i) => (
@@ -1131,24 +1148,6 @@ function Reel() {
           </div>
 
           <div className="relative">
-            {/* Prev / next — same copper film-control styling as the hero arrows */}
-            <button
-              type="button"
-              aria-label="Previous frame"
-              onClick={() => go(-1)}
-              className="absolute left-0 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/80 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/95 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
-            >
-              <ChevronLeft size={20} strokeWidth={1.5} aria-hidden="true" />
-            </button>
-            <button
-              type="button"
-              aria-label="Next frame"
-              onClick={() => go(1)}
-              className="absolute right-0 top-1/2 z-20 grid min-h-[40px] min-w-[40px] -translate-y-1/2 place-content-center border border-[#C9A87A]/25 bg-[#1C1208]/80 p-2 text-[#C9A87A]/70 backdrop-blur-sm transition-all hover:border-[#C9A87A]/65 hover:bg-[#1C1208]/95 hover:text-[#F5F0E6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
-            >
-              <ChevronRight size={20} strokeWidth={1.5} aria-hidden="true" />
-            </button>
-
             <div ref={stripRef} className="relative overflow-x-auto pb-2">
               <div className="inline-block min-w-full bg-[#1C1208] p-2">
                 {/* Top sprocket row */}
