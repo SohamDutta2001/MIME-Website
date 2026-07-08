@@ -481,7 +481,8 @@ function HeroCarousel() {
                   scale: i === index && !reduceMotion.current ? 1.1 : 1,
                 }}
                 transition={{ duration: 8, ease: 'linear' }}
-                className="h-full w-full select-none object-cover opacity-80 sepia will-change-transform sm:opacity-55"
+                className="h-full w-full select-none object-cover opacity-90 will-change-transform sm:opacity-80"
+                style={{ filter: 'sepia(0.38) brightness(1.18) contrast(1.03) saturate(0.9)' }}
               />
             </div>
           ))}
