@@ -2,6 +2,9 @@
 // Fully static — no Sheet dependency.
 
 import { motion } from 'framer-motion';
+import { WashiTape } from '../Scraps.jsx';
+import { firstStagePhotos } from '../../../data/gallery.ts';
+import { cldImg } from '../../../lib/img.js';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -122,6 +125,63 @@ export default function FirstStage({ onBack }) {
               </a>
             </div>
           </motion.div>
+        </motion.div>
+
+        {/* Photo strip — pinned documentary cards from the studio */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.9, delay: 0.2 }}
+          className="mt-16"
+        >
+          <p className="font-typewriter text-[9px] uppercase tracking-[0.4em] text-[#C9A87A]/45">
+            from the studio · in pictures
+          </p>
+          <div
+            className="mt-6 flex gap-5 overflow-x-auto pb-6 sm:gap-6"
+            style={{ touchAction: 'pan-x' }}
+            tabIndex={0}
+            role="region"
+            aria-label="First Stage photo gallery"
+          >
+            {firstStagePhotos.map((photo, i) => {
+              const tilts = [-1.2, 0.8, -1.5, 1.0, -0.7, 1.3];
+              const tapeColors = ['#C9A87A', '#5A6B3E', '#C9A87A', '#5A6B3E', '#C9A87A', '#5A6B3E'];
+              return (
+                <div
+                  key={photo.src}
+                  className="group relative shrink-0 w-[260px] sm:w-[300px]"
+                  style={{ transform: `rotate(${tilts[i % tilts.length]}deg)` }}
+                >
+                  <WashiTape
+                    className="-top-3 left-1/2 -translate-x-1/2"
+                    color={tapeColors[i % tapeColors.length]}
+                    width={80}
+                    rotate={i % 2 ? 2 : -2}
+                  />
+                  <div className="relative aspect-[3/2] overflow-hidden border border-[#C9A87A]/20 bg-[#1C1208]">
+                    <img
+                      src={cldImg(photo.src)}
+                      alt={photo.alt}
+                      width={800}
+                      height={533}
+                      loading="lazy"
+                      decoding="async"
+                      fetchpriority="low"
+                      className="h-full w-full object-cover sepia-[0.45] transition-all duration-700 ease-ink group-hover:scale-[1.04] group-hover:sepia-0"
+                    />
+                  </div>
+                  {photo.caption && (
+                    <p className="mt-2 truncate font-typewriter text-[9px] uppercase tracking-[0.3em] text-[#C9A87A]/55">
+                      {photo.caption}
+                    </p>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </motion.div>
       </div>
     </section>

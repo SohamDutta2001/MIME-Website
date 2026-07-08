@@ -5,6 +5,8 @@
 import { motion } from 'framer-motion';
 import programmes from '../../../data/instituteData.json';
 import ProgrammeAccordion from './ProgrammeAccordion.jsx';
+import { workshopPhotos } from '../../../data/gallery.ts';
+import { cldImg } from '../../../lib/img.js';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -69,6 +71,43 @@ export default function OurRoots({ onBack }) {
               would be delighted to collaborate and create an engaging, meaningful, and memorable
               artistic experience together.
             </p>
+          </div>
+        </motion.div>
+
+        {/* Workshop photo grid */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.9, delay: 0.15 }}
+          className="mt-16"
+        >
+          <p className="mb-5 font-typewriter text-[9px] uppercase tracking-[0.42em] text-[#5E3820]/45">
+            the work · out in the world
+          </p>
+          <div className="grid grid-cols-1 gap-4 bg-[#C9A87A]/[0.06] p-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3">
+            {workshopPhotos.map((photo) => (
+              <div key={photo.src} className="group">
+                <div className="relative aspect-[4/3] overflow-hidden">
+                  <img
+                    src={cldImg(photo.src)}
+                    alt={photo.alt}
+                    width={800}
+                    height={600}
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                    className="h-full w-full object-cover sepia-[0.35] transition-all duration-700 ease-ink group-hover:scale-[1.04] group-hover:sepia-0"
+                  />
+                </div>
+                {photo.caption && (
+                  <p className="mt-2 truncate font-typewriter text-[8px] uppercase tracking-[0.3em] text-[#5E3820]/50">
+                    {photo.caption}
+                  </p>
+                )}
+              </div>
+            ))}
           </div>
         </motion.div>
 
