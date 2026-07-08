@@ -19,23 +19,6 @@
     "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
   },
   {
-    "slug": "music-event",
-    "active": true,
-    "category": "Performance",
-    "section": "cafe",
-    "title": "Music Event",
-    "date": "2026-12-07",
-    "time": "7:30 PM",
-    "venue": "Art-Teas-Tree Cafe",
-    "bannerUrl": "https://drive.google.com/file/d/1vMT4WpGp6ZAViSrIejdKMhe-gBLuLg_w/view?usp=drive_link",
-    "description": "Immerse yourself in an electrifying musical experience featuring live performances, vibrant energy, captivating melodies, and unforgettable entertainment.",
-    "additionalInfo": "Sponsored by Sponsor",
-    "galleryUrls": [
-      "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
-    ],
-    "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
-  },
-  {
     "slug": "standup-comedy-event",
     "active": true,
     "category": "Performance",
@@ -106,7 +89,7 @@
     "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
   },
   {
-    "slug": "music-event-2",
+    "slug": "music-event",
     "active": true,
     "category": "Performance",
     "section": "third-space",
@@ -116,23 +99,6 @@
     "venue": "Art-Teas-Tree Cafe",
     "bannerUrl": "https://drive.google.com/file/d/1vMT4WpGp6ZAViSrIejdKMhe-gBLuLg_w/view?usp=drive_link",
     "description": "Immerse yourself in an electrifying musical experience featuring live performances, vibrant energy, captivating melodies, and unforgettable entertainment.",
-    "additionalInfo": "Sponsored by Sponsor",
-    "galleryUrls": [
-      "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
-    ],
-    "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
-  },
-  {
-    "slug": "standup-comedy-event-2",
-    "active": true,
-    "category": "Performance",
-    "section": "third-space",
-    "title": "Standup Comedy Event",
-    "date": "2026-12-07",
-    "time": "7:30 PM",
-    "venue": "Art-Teas-Tree Cafe",
-    "bannerUrl": "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=drive_link",
-    "description": "Enjoy an evening of laughter with hilarious stand-up performances, sharp wit, relatable humor, and unforgettable comedic moments",
     "additionalInfo": "Sponsored by Sponsor",
     "galleryUrls": [
       "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"

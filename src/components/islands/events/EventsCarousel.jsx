@@ -233,7 +233,7 @@ export default function EventsCarousel({
               Events · pinned to the board this season
             </p>
             <h2 id="events-heading" className="mt-3 font-serif text-5xl font-medium leading-tight text-[#1C1410] sm:text-6xl">
-              Events board.
+              Café events.
             </h2>
           </div>
 

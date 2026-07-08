@@ -13,21 +13,19 @@ const PANELS = {
   'our-roots': OurRoots,
 };
 
-export default function EventsSection() {
-  const [active, setActive] = useState(null);
-
+export default function EventsSection({ active, onSetActive }) {
   // Close on Escape
   useEffect(() => {
     if (!active) return;
-    const onKey = (e) => { if (e.key === 'Escape') setActive(null); };
+    const onKey = (e) => { if (e.key === 'Escape') onSetActive(null); };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [active]);
+  }, [active, onSetActive]);
 
   const Panel = active ? PANELS[active] : null;
 
   return (
-    <div>
+    <div id="events">
       <AnimatePresence mode="wait">
         {!active ? (
           <motion.div
@@ -37,7 +35,7 @@ export default function EventsSection() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <SectionCards onSelect={setActive} />
+            <SectionCards onSelect={onSetActive} />
           </motion.div>
         ) : (
           <motion.div
@@ -47,7 +45,7 @@ export default function EventsSection() {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Panel onBack={() => setActive(null)} />
+            <Panel onBack={() => onSetActive(null)} />
           </motion.div>
         )}
       </AnimatePresence>

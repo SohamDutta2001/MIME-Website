@@ -42,7 +42,7 @@ export default function ThirdSpace({ onBack }) {
             <button
               type="button"
               onClick={onBack}
-              className="font-typewriter text-[9px] uppercase tracking-[0.38em] text-[#F5F0E6]/40 hover:text-[#F5F0E6]/70"
+              className="font-typewriter text-sm uppercase tracking-[0.38em] text-[#F5F0E6]/80 hover:text-[#F5F0E6] transition-colors px-3 py-2"
             >
               ← back to events
             </button>

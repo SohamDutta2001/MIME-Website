@@ -22,7 +22,7 @@ export default function OurRoots({ onBack }) {
             <button
               type="button"
               onClick={onBack}
-              className="font-typewriter text-[9px] uppercase tracking-[0.38em] text-[#5E3820]/50 hover:text-[#5E3820]"
+              className="font-typewriter text-sm uppercase tracking-[0.38em] text-[#5E3820]/75 hover:text-[#5E3820] transition-colors px-3 py-2"
             >
               ← back to events
             </button>

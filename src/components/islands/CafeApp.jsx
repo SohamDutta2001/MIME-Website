@@ -540,7 +540,7 @@ function HeroCarousel() {
   );
 }
 
-function Hero() {
+function Hero({ onEventsClick }) {
   // Cinematic parallax — the photo layer drifts slower than the page so the
   // hero recedes like a backdrop on rails. Scale hides the travelling edge.
   // Disabled on mobile/reduced-motion: a full-screen image moving on every
@@ -653,12 +653,16 @@ function Hero() {
             >
               <Coffee size={17} /> Open menu
             </a>
-            <a
-              href="#events"
+            <button
+              type="button"
+              onClick={() => {
+                onEventsClick();
+                document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' });
+              }}
               className="inline-flex items-center gap-2 rounded-full border border-[#F5F0E6]/35 px-6 py-3 font-body text-sm font-semibold uppercase tracking-[0.16em] text-[#F5F0E6] transition-colors hover:bg-[#F5F0E6]/10"
             >
               <CalendarDays size={17} /> Events
-            </a>
+            </button>
           </div>
         </div>
       </motion.div>
@@ -1716,6 +1720,8 @@ function Footer() {
 // ─── CafeApp (root) ───────────────────────────────────────────────────────────
 
 export default function CafeApp() {
+  const [activeEventPanel, setActiveEventPanel] = useState(null);
+
   return (
     <div className="relative min-h-screen font-body text-[#1C1410]">
       {/* Animated cinematic film grain — fixed overlay, sits above everything */}
@@ -1725,11 +1731,11 @@ export default function CafeApp() {
       <Nav />
 
       <main>
-        <Hero />
+        <Hero onEventsClick={() => setActiveEventPanel(null)} />
         <Ticker />
         {/* Notice board first — what's on at the café matters more to a
             visitor than the manifesto. */}
-        <EventsSection />
+        <EventsSection active={activeEventPanel} onSetActive={setActiveEventPanel} />
         <Philosophy />
         <Reel />
         <Menu />
