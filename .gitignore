@@ -33,6 +33,9 @@ desktop.ini
 # local Claude Code tooling (skills, fonts, scripts) — not part of the site
 .claude/
 
+# source photos — processed WebP outputs live in public/cafe-assets/ instead
+Web gallery /
+
 # docker
 .env.override
 .gstack/

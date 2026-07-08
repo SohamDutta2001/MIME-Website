@@ -4,6 +4,8 @@
 import { motion } from 'framer-motion';
 import EventsCarousel from './EventsCarousel.jsx';
 import { thirdSpaceUpcomingEvents } from '../../../lib/events/events';
+import { performancePhotos } from '../../../data/gallery.ts';
+import { cldImg } from '../../../lib/img.js';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 32 },
@@ -138,6 +140,52 @@ export default function ThirdSpace({ onBack }) {
             </div>
           </motion.div>
         </div>
+
+        {/* Performance photo strip */}
+        <motion.div
+          variants={fadeUp}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-60px' }}
+          transition={{ duration: 0.9, delay: 0.25 }}
+          className="mt-16"
+        >
+          <p className="font-typewriter text-[9px] uppercase tracking-[0.42em] text-[#F5F0E6]/35">
+            performances · workshops · the space in use
+          </p>
+          <div
+            className="mt-6 flex gap-4 overflow-x-auto pb-4 sm:gap-5"
+            style={{ touchAction: 'pan-x' }}
+            tabIndex={0}
+            role="region"
+            aria-label="The Third Space performance gallery"
+          >
+            {performancePhotos.map((photo) => (
+              <div
+                key={photo.src}
+                className="group relative shrink-0 w-[80vw] sm:w-[45%] lg:w-[31.5%]"
+              >
+                <div className="relative aspect-[16/9] overflow-hidden border border-[#C9A87A]/25 bg-[#1C1208]">
+                  <img
+                    src={cldImg(photo.src)}
+                    alt={photo.alt}
+                    width={1200}
+                    height={675}
+                    loading="lazy"
+                    decoding="async"
+                    fetchpriority="low"
+                    className="h-full w-full object-cover sepia-[0.45] transition-all duration-700 ease-ink group-hover:scale-[1.04] group-hover:sepia-0"
+                  />
+                  {photo.caption && (
+                    <p className="absolute bottom-0 inset-x-0 truncate px-3 py-2 font-typewriter text-[9px] uppercase tracking-[0.3em] text-[#C9A87A]/60">
+                      {photo.caption}
+                    </p>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </motion.div>
 
         {thirdSpaceUpcomingEvents.length > 0 && (
           <motion.div
