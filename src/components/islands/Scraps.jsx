@@ -1,6 +1,8 @@
 // Reusable scrapbook + cultural-motif fragments.
 // Pure SVG / Tailwind, no Framer dependency — drop them anywhere in CafeApp.
 
+import { assetPath } from '../../lib/img.js';
+
 export function WashiTape({
   className = '',
   color = '#C9A87A',
@@ -266,5 +268,94 @@ export function PencilUnderline({ width = 140, className = '', color = '#8B2D2D'
         strokeLinecap="round"
       />
     </svg>
+  );
+}
+
+/**
+ * Hand-drawn ticket booth — the theatre motif from the original printed menu.
+ * Sourced as a pencil-sketch raster (not line art), so it's rendered as an
+ * optimized, ink-tinted PNG rather than inlined as SVG like its siblings.
+ * Purely decorative — used as a header anchor above the menu category tabs.
+ */
+export function TicketBooth({ className = '', style }) {
+  return (
+    <img
+      src={assetPath('/ticket-booth.png')}
+      alt=""
+      aria-hidden="true"
+      width={480}
+      height={317}
+      loading="lazy"
+      decoding="async"
+      className={`select-none ${className}`}
+      // Intrinsic ratio of ticket-booth.png — keeps layout stable while it
+      // loads (no CLS) regardless of the display width a caller applies.
+      style={{ aspectRatio: '480 / 317', ...style }}
+    />
+  );
+}
+
+// Responsive width tokens for menu caricatures — shared scale so every
+// illustration in the set reads as one family regardless of placement.
+const ILLUSTRATION_SIZES = {
+  sm: 'w-20 sm:w-28 md:w-32',
+  md: 'w-28 sm:w-36 md:w-44',
+  lg: 'w-32 sm:w-44 md:w-56',
+};
+
+// placement -> wrapper classes. `grid` and `closing-signature` are the only
+// modes with a live consumer today; the rest are staged recipes for future
+// illustrations — validate each when its first real illustration lands,
+// don't treat them as battle-tested. The floating-* modes need a `relative`
+// positioned ancestor at the call site.
+const ILLUSTRATION_PLACEMENTS = {
+  grid: 'flex items-center justify-center py-6 sm:py-2',
+  inline: 'inline-flex align-middle',
+  'floating-left': 'pointer-events-none absolute bottom-0 left-0 z-0',
+  'floating-right': 'pointer-events-none absolute bottom-0 right-0 z-0',
+  'section-divider': 'my-8 flex justify-center',
+  // Centered closing signature, asymmetric spacing — tighter above (toward
+  // the footer text), looser below (toward the torn edge), so it reads as
+  // anchored to the closing edge rather than to the text above it.
+  'closing-signature': 'mt-[18px] mb-[22px] flex justify-center',
+  header: 'flex justify-center',
+};
+
+/**
+ * Generic wrapper for the theatre-caricature illustrations sourced from the
+ * original printed menu (sandwich performer, running waiter, reclining
+ * actor, curtain-call legs, ...). Unlike TicketBooth these keep their
+ * original artwork colors — only sizing, rotation, and a faint separation
+ * shadow are applied. `placement` picks a layout recipe; see
+ * ILLUSTRATION_PLACEMENTS for what's actually wired up vs. staged.
+ */
+export function MenuIllustration({
+  src,
+  size = 'md',
+  rotate = 0,
+  placement = 'grid',
+  width,
+  height,
+  className = '',
+  style,
+}) {
+  return (
+    <div className={ILLUSTRATION_PLACEMENTS[placement] ?? ILLUSTRATION_PLACEMENTS.grid}>
+      <img
+        src={assetPath(src)}
+        alt=""
+        aria-hidden="true"
+        width={width}
+        height={height}
+        loading="lazy"
+        decoding="async"
+        className={`select-none ${ILLUSTRATION_SIZES[size] ?? ILLUSTRATION_SIZES.md} ${className}`}
+        style={{
+          transform: rotate ? `rotate(${rotate}deg)` : undefined,
+          filter: 'drop-shadow(0 2px 8px rgba(0,0,0,0.08))',
+          ...style,
+        }}
+      />
+    </div>
   );
 }
