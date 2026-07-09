@@ -28,7 +28,7 @@ export const site = {
   ],
   contact: {
     phone: '+91 33 0000 0000',
-    email: 'hello@artteastreecafe.com',
+    email: 'Art.teas.tree.cafe@gmail.com',
     instagram: '@artteastree',
     instagramUrl: 'https://instagram.com/artteastree',
   },

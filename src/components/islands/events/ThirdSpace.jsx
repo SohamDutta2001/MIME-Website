@@ -91,7 +91,7 @@ export default function ThirdSpace({ onBack }) {
             </p>
 
             <a
-              href="mailto:hello@artteastreecafe.com"
+              href="mailto:Art.teas.tree.cafe@gmail.com"
               className="mt-4 inline-flex items-center gap-2 font-typewriter text-[10px] uppercase tracking-[0.32em] text-[#C9A87A] underline underline-offset-4 hover:text-[#F5F0E6]"
             >
               Enquire about the space ↗

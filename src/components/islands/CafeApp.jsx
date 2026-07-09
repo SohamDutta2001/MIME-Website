@@ -644,7 +644,7 @@ function Hero({ onEventsClick }) {
             className="mt-4 font-bn text-sm text-[#F5F0E6]/70 sm:text-base"
             style={{ textShadow: '0 2px 16px rgba(10,6,4,0.85)' }}
           >
-            চা, থিয়েটার, আড্ডা &mdash; Bidhan Nagar, Kolkata
+            চা, থিয়েটার, আড্ডা &mdash; Bidhannagar, Kolkata
           </p>
 
           {/* CTAs — pointer-events restored here since the parent column is
@@ -865,7 +865,7 @@ function Philosophy() {
             </div>
             <div>
               <p className="font-typewriter text-[10px] uppercase tracking-[0.28em] text-[#7A4A2A]">
-                Est. Bidhan Nagar, Kolkata
+                Est. Bidhannagar, Kolkata
               </p>
               <p className="font-body text-sm text-[#5E3820]">
                 Associated with the National Mime Institute
@@ -1533,7 +1533,7 @@ function Books() {
   const features = [
     { label: 'Little library', Icon: BookOpen },
     { label: 'Evening readings', Icon: Sparkles },
-    { label: 'Bidhan Nagar, Sector-II', Icon: MapPin },
+    { label: 'Sector II, Bidhannagar', Icon: MapPin },
   ];
 
   return (
@@ -1683,7 +1683,7 @@ function Books() {
                 Art.teas.tree.cafe@gmail.com
               </a>
               <p className="font-typewriter text-[10px] uppercase tracking-[0.28em] text-[#1C1410]/45">
-                Walk in · Sector-II, Salt Lake City, Kolkata
+                Walk in · Sector II, Salt Lake City, Kolkata
               </p>
             </div>
           </div>

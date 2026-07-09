@@ -50,10 +50,10 @@ export default function CafeEvents({ onBack }) {
             this space — theatre, books, music, or just an interesting idea worth sharing.
           </p>
           <a
-            href="mailto:hello@artteastreecafe.com"
+            href="mailto:Art.teas.tree.cafe@gmail.com"
             className="mt-6 inline-flex items-center gap-2 font-typewriter text-[10px] uppercase tracking-[0.32em] text-[#6B2D2D] underline underline-offset-4 hover:text-[#3B2418]"
           >
-            hello@artteastreecafe.com ↗
+            Art.teas.tree.cafe@gmail.com ↗
           </a>
         </div>
       </motion.div>

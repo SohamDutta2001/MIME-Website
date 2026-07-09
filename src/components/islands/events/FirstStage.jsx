@@ -118,10 +118,10 @@ export default function FirstStage({ onBack }) {
                 Questions? Come by during class hours or write to us:
               </p>
               <a
-                href="mailto:hello@artteastreecafe.com"
+                href="mailto:Art.teas.tree.cafe@gmail.com"
                 className="inline-block font-typewriter text-[9px] uppercase tracking-[0.3em] text-[#C9A87A] underline underline-offset-4 hover:text-[#F5F0E6]"
               >
-                hello@artteastreecafe.com
+                Art.teas.tree.cafe@gmail.com
               </a>
             </div>
           </motion.div>
