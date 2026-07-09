@@ -28,6 +28,8 @@ import {
   InkCorrection,
   CoasterStamp,
   PencilUnderline,
+  TicketBooth,
+  MenuIllustration,
 } from './Scraps.jsx';
 import { assetPath, cldImg } from '../../lib/img.js';
 import EventsSection from './events/EventsSection.jsx';
@@ -1320,11 +1322,13 @@ function Menu() {
 
           <div className="relative bg-[#F5EDD6] bg-paper px-5 py-8 text-[#1C1410] shadow-[0_22px_65px_rgba(0,0,0,0.42)] sm:px-8 sm:py-10">
 
-            {/* Absolute top alignment mimics an official physical letterhead watermark layout */}
-            <div className="pointer-events-none absolute inset-x-0 top-6 z-10 select-none text-center">
-              <p className="font-meta text-[9px] uppercase tracking-[0.45em] text-[#5E3820]/85 whitespace-nowrap">
-                Art-Teas-Tree · Café
+            {/* Letterhead: café name, then the ticket-booth motif hanging just
+                beneath it — tight gap above, generous gap below before the tabs. */}
+            <div className="select-none text-center">
+              <p className="font-meta text-[9px] uppercase text-[#5E3820]/85 whitespace-nowrap">
+                <span className="mr-[-0.45em] inline-block tracking-[0.45em]">Art-Teas-Tree · Café</span>
               </p>
+              <TicketBooth className="mx-auto mt-2 mb-8 w-24 opacity-90 sm:mt-3 sm:mb-9 sm:w-32 md:mb-10 md:w-40" />
             </div>
 
             {/* Category filters — ink-stamped labels with item counts.
@@ -1428,6 +1432,41 @@ function Menu() {
                               </motion.article>
                               );
                             })}
+                            {cat === 'Performance' && sub === 'Lead Role' && (
+                              <MenuIllustration
+                                src="/kebab-performer.png"
+                                placement="grid"
+                                rotate={-2}
+                                width={400}
+                                height={483}
+                                // Widened from the sandwich performer's !w-24/32/40 baseline —
+                                // this asset's aspect ratio (0.83 w/h) is less elongated, so
+                                // matching those exact tokens would render ~17-20% shorter and
+                                // break visual parity between the pair. Bumped to land on the
+                                // same ~140/187/234px height budget instead. First illustration
+                                // in the section, so it also gets extra rhythm spacing beyond
+                                // the shared wrapper's own py-6 sm:py-2.
+                                className="!w-28 opacity-95 my-8 sm:my-3 sm:!w-36 md:my-4 md:!w-48"
+                                // Lighter than the default baked-in shadow — this illustration's
+                                // open, gestural silhouette needs less separation from the paper.
+                                style={{ filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.05))' }}
+                              />
+                            )}
+                            {cat === 'Performance' && sub === 'Chicken in Cameo Role' && (
+                              <MenuIllustration
+                                src="/sandwich-performer.png"
+                                placement="grid"
+                                rotate={2}
+                                width={420}
+                                height={613}
+                                // Sized by height, not the size-token width scale — this
+                                // illustration's aspect ratio (0.68 w/h) means matching the
+                                // usual `lg` width would render ~330px tall on desktop,
+                                // dominating the subsection. !w-* pins the intended visual
+                                // scale (roughly a 128/176/224px accent) by width instead.
+                                className="!w-24 opacity-95 sm:!w-32 md:!w-40"
+                              />
+                            )}
                           </div>
                         </div>
                       ))}
@@ -1463,6 +1502,20 @@ function Menu() {
                 see what's on →
               </a>
             </p>
+
+            {/* Curtain call — the performers have exited, only their shoes
+                remain. Closing signature for the menu card itself, not tied
+                to any category — renders identically regardless of which tab
+                is active. Centered, with room either side for future footer
+                content; asymmetric spacing anchors it to the closing edge. */}
+            <MenuIllustration
+              src="/curtain-call-legs.png"
+              placement="closing-signature"
+              rotate={0}
+              width={220}
+              height={214}
+              className="!w-[72px] opacity-90 sm:!w-[88px] md:!w-[104px]"
+            />
           </div>
 
           {/* Torn bottom edge */}
