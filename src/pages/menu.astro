@@ -33,6 +33,46 @@ const rotateFor = (i: number) => ((i % 5) - 2) * 0.5;
 ---
 
 <Layout title="Menu" description="The menu at Art-Teas-Tree, a cafe in Salt Lake, Kolkata — tea pulled slow, coffee from south filter beans, and snacks worth pausing for.">
+  {/* Events teaser — playbill notice, above the menu header */}
+  <div class="pt-8 pb-6 sm:pt-10" data-reveal style="--reveal-delay: 80ms;">
+    <a
+      href="/events"
+      class="group relative block w-full border border-tea-700/40 bg-tea-800
+             -rotate-[0.5deg] px-7 py-6
+             shadow-[0_4px_24px_-8px_rgba(28,20,16,0.45)]
+             transition-all duration-500 ease-ink
+             hover:-translate-y-0.5 hover:border-tea-500/60
+             hover:shadow-[0_10px_36px_-8px_rgba(28,20,16,0.55)]
+             focus-visible:outline focus-visible:outline-2
+             focus-visible:outline-offset-2 focus-visible:outline-tea-300"
+    >
+      <WashiTape className="-top-3 left-6" color="#6B2D2D" width={72} rotate={-3} style={{}} />
+      <div class="flex items-start justify-between gap-4">
+        <div>
+          <p class="font-typewriter text-[9px] uppercase tracking-[0.45em] text-tea-400/60">
+            Now on stage
+          </p>
+          <p class="mt-4 font-body text-base leading-7 text-tea-200/70">
+            Beyond the menu, the café becomes a stage for performances, readings,
+            workshops and gatherings all month long.
+          </p>
+          <p class="mt-3 font-typewriter text-[10px] uppercase tracking-[0.3em] text-tea-400/55"
+             aria-hidden="true">
+            First Stage · Third Space · Café Events
+          </p>
+          <p class="mt-4 font-hand text-2xl leading-tight text-cream transition-colors
+                     duration-300 ease-ink group-hover:text-tea-100 sm:text-3xl">
+            Explore upcoming events →
+          </p>
+        </div>
+        <p class="hidden shrink-0 select-none font-bn text-4xl text-tea-500/25 sm:block"
+           aria-hidden="true">
+          মঞ্চ
+        </p>
+      </div>
+    </a>
+  </div>
+
   <header class="pt-12 sm:pt-16">
     <p class="font-hand text-lg text-tea-500">A tea-stained page</p>
     <h1 class="mt-2 text-balance font-serif text-display-xl font-medium text-tea-900">The Menu</h1>

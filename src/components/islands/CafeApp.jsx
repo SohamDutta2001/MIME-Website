@@ -1298,6 +1298,40 @@ function Menu() {
           </h2>
         </div>
 
+        {/* Events notice — playbill pinned above the menu card */}
+        <a
+          href="#events"
+          className="group relative mb-10 block -rotate-[0.5deg] border border-[#6B2D2D]/50 bg-[#3B2418]
+                     px-6 py-5 shadow-[0_6px_24px_-6px_rgba(0,0,0,0.5)]
+                     transition-all duration-500 ease-ink
+                     hover:-translate-y-0.5 hover:border-[#6B2D2D]/80
+                     hover:shadow-[0_12px_32px_-6px_rgba(0,0,0,0.6)]
+                     focus-visible:outline focus-visible:outline-2
+                     focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
+        >
+          <WashiTape className="-top-3 left-6" color="#6B2D2D" width={72} rotate={-3} />
+          <div className="flex items-start justify-between gap-4">
+            <div>
+              <p className="font-typewriter text-[9px] uppercase tracking-[0.45em] text-[#C9A87A]/70">
+                Now on stage
+              </p>
+              <p className="mt-3 font-body text-sm leading-6 text-[#F5F0E6]/70">
+                Beyond the menu, the café becomes a stage for performances, readings,
+                workshops and gatherings all month long.
+              </p>
+              <p className="mt-2 font-typewriter text-[9px] uppercase tracking-[0.3em] text-[#C9A87A]/45" aria-hidden="true">
+                First Stage · Third Space · Café Events
+              </p>
+              <p className="mt-3 font-hand text-xl leading-tight text-[#F5F0E6] transition-colors duration-300 ease-ink group-hover:text-[#C9A87A]">
+                Explore upcoming events →
+              </p>
+            </div>
+            <p className="hidden shrink-0 select-none font-bn text-3xl text-[#C9A87A]/20 sm:block" aria-hidden="true">
+              মঞ্চ
+            </p>
+          </div>
+        </a>
+
         {/* Physical paper menu card */}
         <div className="relative">
           {/* Washi tape — pinning the menu to the wicker chair */}
