@@ -39,3 +39,7 @@ Web gallery /
 # docker
 .env.override
 .gstack/
+
+# generated build artifacts — produced by sync scripts at build time, not committed
+src/data/menu.json
+src/data/events.json

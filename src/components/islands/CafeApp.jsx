@@ -20,7 +20,8 @@ import {
   Sparkles,
   Theater,
 } from 'lucide-react';
-import menuRows from '../../data/mockMenuData.json';
+import menuFile from '../../data/menu.json';
+const menuRows = menuFile.data;
 import { site } from '../../data/site.ts';
 import {
   WashiTape,

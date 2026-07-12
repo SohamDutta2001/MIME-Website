@@ -15,7 +15,8 @@
     "sync:menu": "node scripts/sync-menu.mjs",
     "sync:menu:local": "node --env-file=.env scripts/sync-menu.mjs",
     "sync:events": "node scripts/sync-events.mjs",
-    "sync:events:local": "node --env-file=.env scripts/sync-events.mjs"
+    "sync:events:local": "node --env-file=.env scripts/sync-events.mjs",
+    "update-seeds": "node --env-file=.env scripts/sync-menu.mjs && node --env-file=.env scripts/sync-events.mjs && cp src/data/menu.json src/data/menu.seed.json && cp src/data/events.json src/data/events.seed.json && echo 'Seeds updated — commit src/data/*.seed.json'"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -28,6 +29,8 @@
     "@fontsource/lora": "^5.1.1",
     "@fontsource/marcellus-sc": "^5.2.8",
     "astro": "^4.16.18",
+    "csv-parse": "^7.0.1",
+    "date-fns": "^4.4.0",
     "embla-carousel-auto-scroll": "^8.6.0",
     "embla-carousel-react": "^8.6.0",
     "framer-motion": "^12.38.0",

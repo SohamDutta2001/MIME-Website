@@ -4,7 +4,8 @@ import Section from '~/components/Section.astro';
 import MenuCard from '~/components/MenuCard.astro';
 import MenuFilter from '~/components/islands/MenuFilter.tsx';
 import { WashiTape } from '~/components/islands/Scraps.jsx';
-import menuRows from '~/data/mockMenuData.json';
+import menuFile from '~/data/menu.json';
+const menuRows = (menuFile as any).data as typeof import('~/data/menu.seed.json')['data'];
 
 // Category-level notes shown beneath the section heading.
 const CATEGORY_NOTES: Record<string, string> = {

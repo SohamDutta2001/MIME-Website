@@ -1,162 +1,210 @@
-// Build-time sheet sync — pulls live data from Google Sheets (CSV export of
-// public sheets) and rewrites JSON files that React islands import at build time.
+// Fetches the Menu and Institute Programmes tabs from Google Sheets (CSV export)
+// and writes src/data/menu.json and src/data/instituteData.json at build time.
 //
-// ─── Environment variables ────────────────────────────────────────────────────
+// Environment variables:
+//   MENU_SHEET_ID       — required for menu sync (sheet id from its URL)
+//   MENU_SHEET_GID      — optional; tab gid for the menu tab (default: 0)
+//   INSTITUTE_SHEET_GID — optional; tab gid for the Institute Programmes tab
 //
-//   MENU_SHEET_ID        — required for menu sync; the sheet's id from its URL
-//   MENU_SHEET_GID       — optional; tab gid for the menu tab (default: 0)
-//
-//   INSTITUTE_SHEET_GID  — optional; tab gid for the "Institute Programmes" tab
-//                          in the same sheet (MENU_SHEET_ID). If omitted, the
-//                          institute sync is skipped and the existing JSON is kept.
-//
-// ─── Behaviour ────────────────────────────────────────────────────────────────
-//
-//   - env var missing / not set → skip that tab, exit 0, keep existing JSON.
-//   - env var set + fetch ok    → overwrite the JSON, exit 0.
-//   - env var set + fetch fails → log error, exit 1 (build fails loudly).
-//
-// ─── Sheet column expectations ────────────────────────────────────────────────
-//
-//   Menu tab (id, category, itemName, price — required):
-//     id, category, subcategory, itemName, price, priceDisplay, description
-//
-//   Institute Programmes tab (title — required):
-//     title, shortDesc, fullDesc, type
-//
-// ─── Adding a new tab ─────────────────────────────────────────────────────────
-//
-//   1. Add a new entry to the TABS array below.
-//   2. Set the corresponding env var in CI / .env.
-//   3. Done — no other code changes needed.
-//
-// Usage:
-//   node --env-file=.env scripts/sync-menu.mjs    (local with .env)
-//   node scripts/sync-menu.mjs                    (CI — vars from environment)
+// If an env var is missing: seed fallback is used (menu.seed.json → menu.json).
+// If fetch/parse/validation fails: seed fallback is used; build continues.
+// Sheet must be public ("Anyone with the link can view").
 
-import { writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { parseCsv } from './lib/parse-csv.mjs';
+import {
+  REQUEST_TIMEOUT_MS, MAX_RETRIES,
+  fetchCsvWithRetry, assertCsvContentType, parseCsvText,
+  validateHeaders, cell, normalizeHeader,
+  atomicWrite, copySeed, buildId,
+} from './lib/sync-sheet.mjs';
 
-// ─── helpers ─────────────────────────────────────────────────────────────────
-
-function sheetCsvUrl(sheetId, gid) {
-  return `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${gid}`;
-}
-
-async function fetchCsv(url, label) {
-  const res = await fetch(url, { redirect: 'follow' });
-  if (!res.ok) throw new Error(`HTTP ${res.status} ${res.statusText}`);
-  return res.text();
-}
-
-function buildIndex(headerRow) {
-  return Object.fromEntries(headerRow.map((h, i) => [h.trim().toLowerCase(), i]));
-}
-
-function cell(row, idx, key) {
-  return row[idx[key]]?.trim() ?? '';
-}
-
-// ─── tab definitions ──────────────────────────────────────────────────────────
-//
-// Each entry describes one Sheet tab → JSON file mapping. Add new tabs here.
+const MENU_SEED  = resolve(process.cwd(), 'src/data/menu.seed.json');
+const MENU_OUT   = resolve(process.cwd(), 'src/data/menu.json');
+const INST_OUT   = resolve(process.cwd(), 'src/data/instituteData.json');
 
 const sheetId = process.env.MENU_SHEET_ID?.trim();
 
-const TABS = [
-  // ── Menu ──────────────────────────────────────────────────────────────────
-  {
-    label: 'menu',
-    enabled: !!sheetId,
-    url: sheetId
-      ? sheetCsvUrl(sheetId, process.env.MENU_SHEET_GID?.trim() || '0')
-      : null,
-    outPath: resolve(process.cwd(), 'src/data/mockMenuData.json'),
-    required: ['id', 'category', 'itemname', 'price'],
-    parse(rows) {
-      const header = rows[0].map((h) => h.trim().toLowerCase());
-      const idx = buildIndex(rows[0]);
-      const required = ['id', 'category', 'itemname', 'price'];
-      const missing = required.filter((c) => !header.includes(c));
-      if (missing.length) throw new Error(`missing required columns: ${missing.join(', ')}`);
+// ─── Menu tab ─────────────────────────────────────────────────────────────────
 
-      return rows
-        .slice(1)
-        .filter((r) => r.some((c) => c.trim() !== ''))
-        .map((r, n) => {
-          const rawPrice = cell(r, idx, 'price');
-          const priceNum = Number(rawPrice.replace(/[^\d.]/g, ''));
-          const price = Number.isFinite(priceNum) && rawPrice !== '' ? priceNum : null;
-          const rawDisplay = cell(r, idx, 'pricedisplay');
-          return {
-            id: Number(cell(r, idx, 'id')) || n + 1,
-            category: cell(r, idx, 'category') || 'Uncategorised',
-            subcategory: cell(r, idx, 'subcategory'),
-            itemName: cell(r, idx, 'itemname') || '(unnamed)',
-            price,
-            priceDisplay: rawDisplay || (price != null ? `₹${price}` : ''),
-            description: cell(r, idx, 'description'),
-          };
-        });
-    },
-  },
+const MENU_REQUIRED = ['id', 'category', 'itemname', 'price'];
 
-  // ── Institute Programmes (Our Roots) ──────────────────────────────────────
-  {
-    label: 'institute programmes',
-    enabled: !!(sheetId && process.env.INSTITUTE_SHEET_GID?.trim()),
-    url:
-      sheetId && process.env.INSTITUTE_SHEET_GID?.trim()
-        ? sheetCsvUrl(sheetId, process.env.INSTITUTE_SHEET_GID.trim())
-        : null,
-    outPath: resolve(process.cwd(), 'src/data/instituteData.json'),
-    parse(rows) {
-      const idx = buildIndex(rows[0]);
-      if (!('title' in idx)) throw new Error('missing required column: title');
+async function syncMenu() {
+  const label = 'sync-menu';
+  const t0 = Date.now();
 
-      return rows
-        .slice(1)
-        .filter((r) => r.some((c) => c.trim() !== ''))
-        .map((r) => ({
-          title: cell(r, idx, 'title'),
-          shortDesc: cell(r, idx, 'shortdesc'),
-          fullDesc: cell(r, idx, 'fulldesc'),
-          type: cell(r, idx, 'type'),
-        }))
-        .filter((p) => p.title);
-    },
-  },
-];
-
-// ─── sync runner ──────────────────────────────────────────────────────────────
-
-let anyFailed = false;
-
-for (const tab of TABS) {
-  if (!tab.enabled) {
-    const reason =
-      tab.label === 'menu' ? 'MENU_SHEET_ID not set' : 'INSTITUTE_SHEET_GID not set';
-    console.log(`• ${tab.label} sync: ${reason} — keeping existing JSON`);
-    continue;
+  if (!sheetId) {
+    console.warn(`[${label}] MENU_SHEET_ID not set — copying seed fallback`);
+    await copySeed(MENU_SEED, MENU_OUT, label);
+    return;
   }
 
-  console.log(`• ${tab.label} sync: fetching ${tab.url}`);
+  const gid = process.env.MENU_SHEET_GID?.trim() || '0';
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${gid}`;
+  console.log(`[${label}] fetching ${url}`);
+
+  let rows, csvSize;
   try {
-    const csv = await fetchCsv(tab.url, tab.label);
-    const rows = parseCsv(csv);
-    if (rows.length < 2) throw new Error('sheet has no data rows');
+    const { text, contentType, attempt } = await fetchCsvWithRetry(url, label);
+    console.log(`[${label}] fetched (attempt ${attempt})`);
 
-    const items = tab.parse(rows);
-    if (items.length === 0) throw new Error('no valid items found after parsing');
+    assertCsvContentType(contentType, label);
 
-    await writeFile(tab.outPath, JSON.stringify(items, null, 2) + '\n');
-    console.log(`✓ ${tab.label} sync: wrote ${items.length} items`);
+    csvSize = text.length;
+    rows = parseCsvText(text, label);
+    console.log(`[${label}] CSV: ${(csvSize / 1024).toFixed(1)} KB (${rows.length} rows) — content-type: ${contentType || 'unknown'}`);
   } catch (err) {
-    console.error(`✗ ${tab.label} sync failed: ${err.message}`);
-    console.error('  (sheet must be shared as "Anyone with the link can view")');
-    anyFailed = true;
+    console.error(`[${label}] Fetch/parse failed: ${err.message} — using seed fallback`);
+    await copySeed(MENU_SEED, MENU_OUT, label);
+    return;
+  }
+
+  try {
+    validateHeaders(rows, MENU_REQUIRED, label);
+    console.log(`[${label}] Headers OK (normalized): ${Object.keys(rows[0]).join(', ')}`);
+  } catch (err) {
+    console.error(`[${label}] ${err.message} — using seed fallback`);
+    await copySeed(MENU_SEED, MENU_OUT, label);
+    return;
+  }
+
+  const items = [];
+  const skipped = { invalidPrice: 0, duplicateId: 0, other: 0 };
+  const seenIds = new Set();
+
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i];
+    const rowNum = i + 2;
+
+    const rawId = cell(r, 'id');
+    const id = Number(rawId) || (i + 1);
+    const rawPrice = cell(r, 'price');
+    const priceNum = Number(rawPrice.replace(/[^\d.]/g, ''));
+    const price = Number.isFinite(priceNum) && rawPrice !== '' ? priceNum : null;
+
+    if (rawPrice !== '' && price === null) {
+      console.warn(`[${label}] row ${rowNum}: invalid price "${rawPrice}" — skipping`);
+      skipped.invalidPrice++;
+      continue;
+    }
+
+    if (seenIds.has(id)) {
+      console.warn(`[${label}] row ${rowNum}: duplicate ID ${id} — skipping`);
+      skipped.duplicateId++;
+      continue;
+    }
+    seenIds.add(id);
+
+    const rawDisplay = cell(r, 'pricedisplay');
+    items.push({
+      id,
+      category: cell(r, 'category') || 'Uncategorised',
+      subcategory: cell(r, 'subcategory'),
+      itemName: cell(r, 'itemname') || '(unnamed)',
+      price,
+      priceDisplay: rawDisplay || (price != null ? `₹${price}` : ''),
+      description: cell(r, 'description'),
+    });
+  }
+
+  if (items.length === 0) {
+    console.error(
+      `[${label}] 0 valid rows after validation. ` +
+      `Possible causes: wrong GID, columns missing, accidental delete. ` +
+      `Using seed fallback. ACTION REQUIRED: check the sheet.`
+    );
+    await copySeed(MENU_SEED, MENU_OUT, label);
+    return;
+  }
+
+  const totalSkipped = Object.values(skipped).reduce((a, b) => a + b, 0);
+  const skipSummary = totalSkipped
+    ? ` (${totalSkipped} skipped: ${skipped.invalidPrice} invalid price, ${skipped.duplicateId} duplicate ID)`
+    : '';
+
+  const categories = [...new Set(items.map((x) => x.category))];
+  console.log(`[${label}] Wrote ${items.length} items across ${categories.length} categories${skipSummary}`);
+
+  const output = {
+    schemaVersion: 1,
+    generatedAt: new Date().toISOString(),
+    source: 'Google Sheets',
+    sheetId,
+    buildId: buildId(),
+    activeRowCount: items.length,
+    data: items,
+  };
+
+  console.log(`[${label}] Metadata: schemaVersion=${output.schemaVersion} buildId=${output.buildId} activeRowCount=${output.activeRowCount}`);
+
+  try {
+    await atomicWrite(MENU_OUT, JSON.stringify(output, null, 2) + '\n');
+  } catch (err) {
+    console.error(`[${label}] Atomic write failed: ${err.message} — using seed fallback`);
+    await copySeed(MENU_SEED, MENU_OUT, label);
+    return;
+  }
+
+  console.log(`[${label}] Completed in ${((Date.now() - t0) / 1000).toFixed(1)}s`);
+}
+
+// ─── Institute Programmes tab ─────────────────────────────────────────────────
+
+const INST_REQUIRED = ['title'];
+
+async function syncInstitute() {
+  const label = 'sync-institute';
+  const instGid = process.env.INSTITUTE_SHEET_GID?.trim();
+
+  if (!sheetId || !instGid) {
+    const reason = !sheetId ? 'MENU_SHEET_ID not set' : 'INSTITUTE_SHEET_GID not set';
+    console.log(`[${label}] ${reason} — keeping existing instituteData.json`);
+    return;
+  }
+
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:csv&gid=${instGid}`;
+  console.log(`[${label}] fetching ${url}`);
+
+  let rows;
+  try {
+    const { text, contentType, attempt } = await fetchCsvWithRetry(url, label);
+    assertCsvContentType(contentType, label);
+    rows = parseCsvText(text, label);
+    console.log(`[${label}] CSV: ${(text.length / 1024).toFixed(1)} KB (${rows.length} rows)`);
+  } catch (err) {
+    console.error(`[${label}] fetch failed: ${err.message} — keeping existing JSON`);
+    return;
+  }
+
+  try {
+    validateHeaders(rows, INST_REQUIRED, label);
+  } catch (err) {
+    console.error(`[${label}] ${err.message} — keeping existing JSON`);
+    return;
+  }
+
+  const items = rows
+    .map((r) => ({
+      title: cell(r, 'title'),
+      shortDesc: cell(r, 'shortdesc'),
+      fullDesc: cell(r, 'fulldesc'),
+      type: cell(r, 'type'),
+    }))
+    .filter((p) => p.title);
+
+  if (items.length === 0) {
+    console.warn(`[${label}] 0 valid rows — keeping existing JSON`);
+    return;
+  }
+
+  try {
+    await atomicWrite(INST_OUT, JSON.stringify(items, null, 2) + '\n');
+    console.log(`[${label}] Wrote ${items.length} institute programmes`);
+  } catch (err) {
+    console.error(`[${label}] write failed: ${err.message}`);
   }
 }
 
-if (anyFailed) process.exit(1);
+// ─── Run ──────────────────────────────────────────────────────────────────────
+
+await syncMenu();
+await syncInstitute();

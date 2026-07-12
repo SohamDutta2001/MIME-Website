@@ -1,0 +1,150 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-07-09T20:11:40.458Z",
+  "source": "seed",
+  "sheetId": "seed",
+  "buildId": "seed",
+  "activeRowCount": 8,
+  "data": [
+    {
+      "slug": "drama-event",
+      "active": true,
+      "category": "Performance",
+      "section": "cafe",
+      "title": "Drama Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=drive_link",
+      "description": "Experience a captivating drama performance filled with powerful emotions, compelling storytelling, unforgettable characters, and thought-provoking moments.",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing",
+        "https://drive.google.com/file/d/1vMT4WpGp6ZAViSrIejdKMhe-gBLuLg_w/view?usp=sharing",
+        "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    },
+    {
+      "slug": "standup-comedy-event",
+      "active": true,
+      "category": "Performance",
+      "section": "cafe",
+      "title": "Standup Comedy Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=drive_link",
+      "description": "Enjoy an evening of laughter with hilarious stand-up performances, sharp wit, relatable humor, and unforgettable comedic moments",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    },
+    {
+      "slug": "food-tasting-event",
+      "active": true,
+      "category": "Exhibition",
+      "section": "cafe",
+      "title": "Food Tasting Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=drive_link",
+      "description": "Enjoy an evening of laughter with hilarious stand-up performances, sharp wit, relatable humor, and unforgettable comedic moments",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    },
+    {
+      "slug": "tathu-tasting-event",
+      "active": true,
+      "category": "Exhibition",
+      "section": "cafe",
+      "title": "Tathu Tasting Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=drive_link",
+      "description": "Enjoy an evening of laughter with hilarious stand-up performances, sharp wit, relatable humor, and unforgettable comedic moments",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    },
+    {
+      "slug": "drama-event-2",
+      "active": true,
+      "category": "Performance",
+      "section": "third-space",
+      "title": "Drama Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=drive_link",
+      "description": "Experience a captivating drama performance filled with powerful emotions, compelling storytelling, unforgettable characters, and thought-provoking moments.",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing",
+        "https://drive.google.com/file/d/1vMT4WpGp6ZAViSrIejdKMhe-gBLuLg_w/view?usp=sharing",
+        "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    },
+    {
+      "slug": "music-event",
+      "active": true,
+      "category": "Performance",
+      "section": "third-space",
+      "title": "Music Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/1vMT4WpGp6ZAViSrIejdKMhe-gBLuLg_w/view?usp=drive_link",
+      "description": "Immerse yourself in an electrifying musical experience featuring live performances, vibrant energy, captivating melodies, and unforgettable entertainment.",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    },
+    {
+      "slug": "food-tasting-event-2",
+      "active": true,
+      "category": "Exhibition",
+      "section": "third-space",
+      "title": "Food Tasting Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=drive_link",
+      "description": "Enjoy an evening of laughter with hilarious stand-up performances, sharp wit, relatable humor, and unforgettable comedic moments",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    },
+    {
+      "slug": "tathu-tasting-event-2",
+      "active": true,
+      "category": "Exhibition",
+      "section": "third-space",
+      "title": "Tathu Tasting Event",
+      "date": "2026-12-07",
+      "time": "7:30 PM",
+      "venue": "Art-Teas-Tree Cafe",
+      "bannerUrl": "https://drive.google.com/file/d/1zGsiCr6vUbrN3xq19xzgY6N4qvKgQ1LW/view?usp=drive_link",
+      "description": "Enjoy an evening of laughter with hilarious stand-up performances, sharp wit, relatable humor, and unforgettable comedic moments",
+      "additionalInfo": "Sponsored by Sponsor",
+      "galleryUrls": [
+        "https://drive.google.com/file/d/163QhA-kOZ12ngRcnUPN7Q4aFb8YKhhGR/view?usp=sharing"
+      ],
+      "registrationUrl": "https://forms.gle/T77xq6zZPG7z8NB96"
+    }
+  ]
+}
