@@ -65,10 +65,6 @@ const HERO_IMAGES = [
     alt: 'The long interior of Art-Teas-Tree at night — hanging pendant lamps, a reader in the foreground, people gathered in adda behind',
   },
   {
-    src: 'mime-cafe-exterior-night-signs.webp',
-    alt: 'The café exterior after dark — the illuminated CAFÉ sign and circular logo visible past a tree trunk, string lights lining the orange patterned walls',
-  },
-  {
     src: 'mime-cafe-interior-evening-crowd.webp',
     alt: 'An evening gathering inside Art-Teas-Tree — warm pendant lights, orange walls, visitors in quiet conversation',
   },
@@ -77,8 +73,12 @@ const HERO_IMAGES = [
     alt: 'Looking up at the handmade Edison bulb lamps hanging from the bamboo ceiling grid of the café',
   },
   {
-    src: 'mime-cafe-sign-night-bulbs.webp',
-    alt: 'The Art-Teas-Tree CAFÉ illuminated signboard at night, with a row of warm Edison bulbs hanging below on the bamboo fascia',
+    src: 'mime-cafe-cold-coffee-frappe.webp',
+    alt: 'A tall glass of frothy cold coffee dusted with cocoa, a metal straw resting in it, cups of tea and coffee on the warm wooden table behind',
+  },
+  {
+    src: 'mime-cafe-veg-pasta-plate.webp',
+    alt: 'A creamy plate of pasta tossed with colourful peppers and sweetcorn, a ceramic spoon on the rim, skewers on a plate behind',
   },
 ];
 
