@@ -61,10 +61,6 @@ const MENU_SCROLL_THRESHOLD = 20;
 // new image to Cloudinary with public_id matching the filename minus ext).
 const HERO_IMAGES = [
   {
-    src: 'mime-cafe-interior-adda-lamps.webp',
-    alt: 'The long interior of Art-Teas-Tree at night — hanging pendant lamps, a reader in the foreground, people gathered in adda behind',
-  },
-  {
     src: 'mime-cafe-interior-evening-crowd.webp',
     alt: 'An evening gathering inside Art-Teas-Tree — warm pendant lights, orange walls, visitors in quiet conversation',
   },
