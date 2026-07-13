@@ -3,6 +3,7 @@
 
 import { motion } from 'framer-motion';
 import EventsCarousel from './EventsCarousel.jsx';
+import AutoScrollStrip from './AutoScrollStrip.jsx';
 import { thirdSpaceUpcomingEvents } from '../../../lib/events/events';
 import { performancePhotos } from '../../../data/gallery.ts';
 import { cldImg } from '../../../lib/img.js';
@@ -153,8 +154,10 @@ export default function ThirdSpace({ onBack }) {
           <p className="font-typewriter text-[9px] uppercase tracking-[0.42em] text-[#F5F0E6]/35">
             performances · workshops · the space in use
           </p>
-          <div
-            className="mt-6 flex gap-4 overflow-x-auto pb-4 sm:gap-5"
+          <AutoScrollStrip
+            slideCount={performancePhotos.length}
+            trackClassName="flex gap-4 sm:gap-5"
+            className="mt-6 pb-4"
             style={{ touchAction: 'pan-x' }}
             tabIndex={0}
             role="region"
@@ -184,7 +187,7 @@ export default function ThirdSpace({ onBack }) {
                 </div>
               </div>
             ))}
-          </div>
+          </AutoScrollStrip>
         </motion.div>
 
         {thirdSpaceUpcomingEvents.length > 0 && (

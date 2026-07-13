@@ -3,6 +3,7 @@
 
 import { motion } from 'framer-motion';
 import { WashiTape } from '../Scraps.jsx';
+import AutoScrollStrip from './AutoScrollStrip.jsx';
 import { firstStagePhotos } from '../../../data/gallery.ts';
 import { cldImg } from '../../../lib/img.js';
 
@@ -139,8 +140,10 @@ export default function FirstStage({ onBack }) {
           <p className="font-typewriter text-[9px] uppercase tracking-[0.4em] text-[#C9A87A]/45">
             from the studio · in pictures
           </p>
-          <div
-            className="mt-6 flex gap-5 overflow-x-auto pb-6 sm:gap-6"
+          <AutoScrollStrip
+            slideCount={firstStagePhotos.length}
+            trackClassName="flex gap-5 sm:gap-6"
+            className="mt-6 pb-6"
             style={{ touchAction: 'pan-x' }}
             tabIndex={0}
             role="region"
@@ -181,7 +184,7 @@ export default function FirstStage({ onBack }) {
                 </div>
               );
             })}
-          </div>
+          </AutoScrollStrip>
         </motion.div>
       </div>
     </section>

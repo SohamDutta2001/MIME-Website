@@ -92,18 +92,12 @@ const HERO_AUTO_ADVANCE_MS = 6000;
 
 // Book spines for the College Street shelf — inline to keep CafeApp self-contained
 const SHELF_BOOKS = [
-  { title: 'পথের পাঁচালী', author: 'বিভূতিভূষণ', color: '#7a4a2a', h: 228, w: 42 },
-  { title: 'Gora', author: 'Tagore', color: '#3b2418', h: 248, w: 44 },
-  { title: 'Chowringhee', author: 'Sankar', color: '#5e3820', h: 208, w: 38 },
-  { title: 'The Hungry Tide', author: 'Ghosh', color: '#7a4a2a', h: 236, w: 40 },
-  { title: 'আরণ্যক', author: 'বিভূতিভূষণ', color: '#5a6b3e', h: 218, w: 40 },
-  { title: 'On Photography', author: 'Sontag', color: '#1c1410', h: 222, w: 38 },
-  { title: 'Letters — Rilke', author: 'Rilke', color: '#a87b4a', h: 196, w: 36 },
-  { title: 'The Lowland', author: 'Lahiri', color: '#3b2418', h: 214, w: 38 },
-  { title: 'Charulata', author: 'Tagore', color: '#5e3820', h: 202, w: 36 },
-  { title: 'My Days', author: 'Narayan', color: '#caa173', h: 192, w: 34 },
-  { title: 'Em & the Big Hoom', author: 'Jerry Pinto', color: '#5a6b3e', h: 226, w: 40 },
-  { title: 'Strange Address', author: 'Chaudhuri', color: '#6a4729', h: 210, w: 38 },
+  { title: 'No More Mr. Nice Guy', author: 'Robert Glover', color: '#6B2D2D', h: 214, w: 40 },
+  { title: 'The Inner Courtyard', author: 'Lakshmi Holmström', color: '#5a6b3e', h: 232, w: 42 },
+  { title: 'Andromeda', author: '', color: '#3b2418', h: 200, w: 36 },
+  { title: 'The Karamazov Brothers', author: 'Dostoevsky', color: '#1c1410', h: 246, w: 44 },
+  { title: 'Games People Play', author: 'Eric Berne', color: '#a87b4a', h: 208, w: 38 },
+  { title: 'Mother', author: 'Maxim Gorky', color: '#7a4a2a', h: 226, w: 40 },
 ];
 
 // Reel section — `src` is just a filename now; cldImg() resolves it to a
@@ -1656,7 +1650,7 @@ function Books() {
                   width: `${book.w}px`,
                   backgroundColor: book.color,
                 }}
-                title={`${book.title} — ${book.author}`}
+                title={book.author ? `${book.title} — ${book.author}` : book.title}
               >
                 {/* Vertical title text */}
                 <p
