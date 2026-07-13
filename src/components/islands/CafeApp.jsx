@@ -574,15 +574,6 @@ function Hero({ onEventsClick }) {
       >
         <div className="relative max-w-3xl">
 
-          {/* Playbill rule line */}
-          <div className="mb-7 flex items-center gap-4">
-            <div className="h-px w-10 bg-[#C9A87A]/55" />
-            <p className="font-typewriter text-[9px] uppercase tracking-[0.48em] text-[#C9A87A]/70 sm:text-[10px]">
-              National Mime Institute presents
-            </p>
-            <div className="h-px flex-1 bg-[#C9A87A]/55" />
-          </div>
-
           {/* Main title — film-title-card reveal: each letter rises out of a
               clipped line, then "Café" blurs in underneath. Falls back to a
               static title under prefers-reduced-motion. */}
