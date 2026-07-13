@@ -1465,7 +1465,7 @@ function Menu() {
                               </motion.article>
                               );
                             })}
-                            {cat === 'Performance' && sub === 'Lead Role' && (
+                            {cat === 'Lead Role' && (
                               <MenuIllustration
                                 src="/kebab-performer.png"
                                 placement="grid"
@@ -1485,7 +1485,7 @@ function Menu() {
                                 style={{ filter: 'drop-shadow(0 1px 4px rgba(0,0,0,0.05))' }}
                               />
                             )}
-                            {cat === 'Performance' && sub === 'Chicken in Cameo Role' && (
+                            {cat === 'Chicken in Cameo Role' && (
                               <MenuIllustration
                                 src="/sandwich-performer.png"
                                 placement="grid"
