@@ -88,7 +88,7 @@ const HERO_IMAGES = [
 
 // Auto-advance every 6 seconds — slow enough to feel like a film cut, not a
 // slide carousel. Paused on hover and when the user clicks an arrow.
-const HERO_AUTO_ADVANCE_MS = 6000;
+const HERO_AUTO_ADVANCE_MS = 3000;
 
 // Book spines for the College Street shelf — inline to keep CafeApp self-contained
 const SHELF_BOOKS = [
@@ -421,14 +421,17 @@ function HeroCarousel() {
   const [index, setIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const reduceMotion = useRef(false);
+  const prefersReducedMotion = useRef(false);
 
-  // Capture the "calm motion" preference once on mount — reduced-motion OR a
-  // phone-sized viewport. When true we skip the Ken Burns zoom and the
-  // auto-advance timer; the strip is still swipeable and arrow/dot driven.
+  // Capture motion preferences once on mount. `reduceMotion` (reduced-motion OR
+  // a phone-sized viewport) gates the heavier Ken Burns zoom. `prefersReducedMotion`
+  // gates only the auto-advance timer — so the carousel still glides on phones,
+  // but goes still for visitors who ask their OS for reduced motion.
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    prefersReducedMotion.current = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     reduceMotion.current =
-      window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      prefersReducedMotion.current ||
       window.matchMedia('(max-width: 767px)').matches;
   }, []);
 
@@ -450,7 +453,7 @@ function HeroCarousel() {
   // Auto-advance timer. Pauses on hover/drag, or when the OS says not to
   // animate. Cleared on unmount / dependency change.
   useEffect(() => {
-    if (!emblaApi || isPaused || reduceMotion.current) return undefined;
+    if (!emblaApi || isPaused || prefersReducedMotion.current) return undefined;
     const id = window.setInterval(() => emblaApi.scrollNext(), HERO_AUTO_ADVANCE_MS);
     return () => window.clearInterval(id);
   }, [emblaApi, isPaused]);
