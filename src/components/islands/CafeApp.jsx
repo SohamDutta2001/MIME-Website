@@ -80,6 +80,10 @@ const HERO_IMAGES = [
     src: 'mime-cafe-veg-pasta-plate.webp',
     alt: 'A creamy plate of pasta tossed with colourful peppers and sweetcorn, a ceramic spoon on the rim, skewers on a plate behind',
   },
+  {
+    src: 'mime-cafe-chicken-skewer-fries.webp',
+    alt: 'A plate of grilled chicken skewers served with a side of golden fries',
+  },
 ];
 
 // Auto-advance every 6 seconds — slow enough to feel like a film cut, not a
