@@ -45,7 +45,7 @@ const CATEGORIES = ['All', ...Array.from(new Set(menuRows.map((r) => r.category)
 
 // Category-level notes shown beside the section header.
 const CATEGORY_NOTES = {
-  'Second Bell':  'Add Milk +₹10',
+  'Second Bell':  'Large +₹10',
   'Curtain Call': 'Homemade · No Preservatives',
 };
 

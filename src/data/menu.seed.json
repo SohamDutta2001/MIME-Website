@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-09T20:11:40.458Z",
+  "generatedAt": "2026-07-13T12:21:19.578Z",
   "source": "seed",
   "sheetId": "seed",
   "buildId": "seed",
-  "activeRowCount": 61,
+  "activeRowCount": 60,
   "data": [
     {
       "id": 1,
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Beetroot Kanji",
-      "price": 44,
-      "priceDisplay": "₹44",
+      "price": 57,
+      "priceDisplay": "₹57",
       "description": ""
     },
     {
@@ -20,8 +20,8 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Amla Kanji",
-      "price": 44,
-      "priceDisplay": "₹44",
+      "price": 57,
+      "priceDisplay": "₹57",
       "description": ""
     },
     {
@@ -29,26 +29,26 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Ginger Honey",
-      "price": 55,
-      "priceDisplay": "₹55",
+      "price": 77,
+      "priceDisplay": "₹77",
       "description": ""
     },
     {
       "id": 4,
       "category": "First Bell",
       "subcategory": "",
-      "itemName": "Jeera Shikhanji",
-      "price": 55,
-      "priceDisplay": "₹55",
+      "itemName": "Jeera Shikanji",
+      "price": 77,
+      "priceDisplay": "₹77",
       "description": ""
     },
     {
       "id": 5,
       "category": "First Bell",
       "subcategory": "",
-      "itemName": "Sauf Thandaai",
-      "price": 55,
-      "priceDisplay": "₹55",
+      "itemName": "Sauf Thandai",
+      "price": 77,
+      "priceDisplay": "₹77",
       "description": ""
     },
     {
@@ -56,8 +56,8 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Dates Milkshake",
-      "price": 55,
-      "priceDisplay": "₹55",
+      "price": 87,
+      "priceDisplay": "₹87",
       "description": ""
     },
     {
@@ -65,8 +65,8 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Butterscotch Splash",
-      "price": 66,
-      "priceDisplay": "₹66",
+      "price": 77,
+      "priceDisplay": "₹77",
       "description": ""
     },
     {
@@ -83,8 +83,8 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Lassi",
-      "price": 77,
-      "priceDisplay": "₹77",
+      "price": 97,
+      "priceDisplay": "₹97",
       "description": ""
     },
     {
@@ -92,8 +92,8 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Indie Mojito",
-      "price": 88,
-      "priceDisplay": "₹88",
+      "price": 107,
+      "priceDisplay": "₹107",
       "description": ""
     },
     {
@@ -101,8 +101,8 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Oreo Shake",
-      "price": 111,
-      "priceDisplay": "₹111",
+      "price": 137,
+      "priceDisplay": "₹137",
       "description": ""
     },
     {
@@ -110,8 +110,8 @@
       "category": "First Bell",
       "subcategory": "",
       "itemName": "Mineral Water",
-      "price": 10,
-      "priceDisplay": "₹10 | ₹20",
+      "price": 20,
+      "priceDisplay": "₹20",
       "description": ""
     },
     {
@@ -119,26 +119,26 @@
       "category": "Second Bell",
       "subcategory": "",
       "itemName": "Ayurvedic Tea",
-      "price": 27,
-      "priceDisplay": "₹27",
+      "price": 37,
+      "priceDisplay": "Black ₹37 | Milk ₹47",
       "description": ""
     },
     {
       "id": 14,
       "category": "Second Bell",
       "subcategory": "",
-      "itemName": "Lemon Green Tea",
-      "price": 47,
-      "priceDisplay": "₹47 | ₹67",
+      "itemName": "Ginger Tea",
+      "price": 37,
+      "priceDisplay": "Black ₹37 | Milk ₹47",
       "description": ""
     },
     {
       "id": 15,
       "category": "Second Bell",
       "subcategory": "",
-      "itemName": "Earl Gray Tea",
-      "price": 67,
-      "priceDisplay": "₹67 | ₹87",
+      "itemName": "Earl Grey",
+      "price": 77,
+      "priceDisplay": "Black ₹77 | Milk ₹97",
       "description": ""
     },
     {
@@ -146,8 +146,8 @@
       "category": "Second Bell",
       "subcategory": "",
       "itemName": "Darjeeling Tea",
-      "price": 37,
-      "priceDisplay": "₹37 | ₹57",
+      "price": 47,
+      "priceDisplay": "Black ₹47 | Milk ₹77",
       "description": ""
     },
     {
@@ -155,8 +155,8 @@
       "category": "Second Bell",
       "subcategory": "",
       "itemName": "Kolkata Street",
-      "price": 27,
-      "priceDisplay": "₹27 | ₹37",
+      "price": 37,
+      "priceDisplay": "Black ₹37 | Milk ₹47",
       "description": ""
     },
     {
@@ -164,26 +164,26 @@
       "category": "Second Bell",
       "subcategory": "",
       "itemName": "Bombay Cutting",
-      "price": 27,
-      "priceDisplay": "₹27 | ₹37",
+      "price": 37,
+      "priceDisplay": "Black ₹37 | Milk ₹47",
       "description": ""
     },
     {
       "id": 19,
       "category": "Second Bell",
       "subcategory": "",
-      "itemName": "Kashmir Saffron Rose",
-      "price": 27,
-      "priceDisplay": "₹27 | ₹37",
+      "itemName": "Kashmiri Saffron",
+      "price": 47,
+      "priceDisplay": "Black ₹47 | Milk ₹57",
       "description": ""
     },
     {
       "id": 20,
       "category": "Second Bell",
       "subcategory": "",
-      "itemName": "Punjabi Masala",
-      "price": 27,
-      "priceDisplay": "₹27 | ₹37",
+      "itemName": "Panjabi Masala",
+      "price": 47,
+      "priceDisplay": "Black ₹47 | Milk ₹57",
       "description": ""
     },
     {
@@ -191,17 +191,17 @@
       "category": "Second Bell",
       "subcategory": "",
       "itemName": "Jaipur Jashn",
-      "price": 27,
-      "priceDisplay": "₹27 | ₹37",
+      "price": 37,
+      "priceDisplay": "Black ₹37 | Milk ₹47",
       "description": ""
     },
     {
       "id": 22,
       "category": "Second Bell",
       "subcategory": "",
-      "itemName": "Wayanad Cardamom",
-      "price": 27,
-      "priceDisplay": "₹27 | ₹37",
+      "itemName": "Hyderabad Cardamom",
+      "price": 47,
+      "priceDisplay": "Black ₹47 | Milk ₹57",
       "description": ""
     },
     {
@@ -209,8 +209,8 @@
       "category": "Second Bell",
       "subcategory": "",
       "itemName": "Awesome Assam",
-      "price": 27,
-      "priceDisplay": "₹27 | ₹37",
+      "price": 47,
+      "priceDisplay": "Black ₹47 | Milk ₹67",
       "description": ""
     },
     {
@@ -218,84 +218,291 @@
       "category": "Second Bell",
       "subcategory": "",
       "itemName": "Ice Tea",
-      "price": 67,
-      "priceDisplay": "₹67",
+      "price": 87,
+      "priceDisplay": "₹87",
       "description": ""
     },
     {
       "id": 25,
       "category": "Second Bell",
       "subcategory": "",
-      "itemName": "Original Coffee | Black",
-      "price": 47,
-      "priceDisplay": "₹47",
+      "itemName": "Lemon Green Tea",
+      "price": 67,
+      "priceDisplay": "Black ₹67 | Milk ₹87",
       "description": ""
     },
     {
       "id": 26,
-      "category": "Second Bell",
+      "category": "Coffee",
       "subcategory": "",
-      "itemName": "Original Coffee | Milk",
+      "itemName": "Original Coffee",
       "price": 67,
-      "priceDisplay": "Black ₹47 | Milk ₹67",
+      "priceDisplay": "Black ₹67 | Milk ₹87",
       "description": ""
     },
     {
       "id": 27,
-      "category": "Second Bell",
+      "category": "Coffee",
+      "subcategory": "",
+      "itemName": "Original Coffee (Flavoured)",
+      "price": 87,
+      "priceDisplay": "Black ₹87 | Milk ₹107",
+      "description": ""
+    },
+    {
+      "id": 28,
+      "category": "Coffee",
       "subcategory": "",
       "itemName": "Original Cold Coffee",
-      "price": 97,
-      "priceDisplay": "₹97",
-      "description": "Flavoured Coffee +₹10 · Ask for the flavour"
+      "price": 127,
+      "priceDisplay": "Black ₹127 | Milk ₹147",
+      "description": ""
     },
     {
       "id": 29,
-      "category": "Second Bell",
+      "category": "Third Bell",
       "subcategory": "",
-      "itemName": "Mojo Coffee",
-      "price": 107,
-      "priceDisplay": "₹107",
-      "description": ""
+      "itemName": "Cookies",
+      "price": 15,
+      "priceDisplay": "₹15 | ₹20 | ₹25",
+      "description": "Ask for the options"
     },
     {
       "id": 30,
       "category": "Third Bell",
       "subcategory": "",
-      "itemName": "Cookies",
-      "price": 8,
-      "priceDisplay": "₹8 | ₹10 | ₹15 | ₹20",
-      "description": "Ask for the options"
+      "itemName": "French Fries",
+      "price": 117,
+      "priceDisplay": "₹117",
+      "description": ""
     },
     {
       "id": 31,
       "category": "Third Bell",
       "subcategory": "",
-      "itemName": "French Fries",
-      "price": 87,
-      "priceDisplay": "₹87",
+      "itemName": "Nuggets",
+      "price": 177,
+      "priceDisplay": "₹177",
       "description": ""
     },
     {
       "id": 32,
       "category": "Third Bell",
       "subcategory": "",
-      "itemName": "Nuggets",
-      "price": 157,
-      "priceDisplay": "₹157",
+      "itemName": "Sausage",
+      "price": 177,
+      "priceDisplay": "₹177",
       "description": ""
     },
     {
       "id": 33,
-      "category": "Third Bell",
+      "category": "Lead Role",
       "subcategory": "",
-      "itemName": "Sausages",
+      "itemName": "Paneer Kebab",
+      "price": 147,
+      "priceDisplay": "₹147",
+      "description": ""
+    },
+    {
+      "id": 34,
+      "category": "Lead Role",
+      "subcategory": "",
+      "itemName": "Chicken Malai Kebab",
+      "price": 137,
+      "priceDisplay": "₹137",
+      "description": ""
+    },
+    {
+      "id": 35,
+      "category": "Lead Role",
+      "subcategory": "",
+      "itemName": "Chicken Hariyali Kebab",
+      "price": 137,
+      "priceDisplay": "₹137",
+      "description": ""
+    },
+    {
+      "id": 36,
+      "category": "Lead Role",
+      "subcategory": "",
+      "itemName": "Chicken Masala Kebab",
+      "price": 137,
+      "priceDisplay": "₹137",
+      "description": ""
+    },
+    {
+      "id": 37,
+      "category": "Lead Role",
+      "subcategory": "",
+      "itemName": "Fish Masala Kebab",
+      "price": 167,
+      "priceDisplay": "₹167",
+      "description": ""
+    },
+    {
+      "id": 38,
+      "category": "Chicken in Cameo Role",
+      "subcategory": "",
+      "itemName": "Chicken Maggie",
+      "price": 147,
+      "priceDisplay": "₹147",
+      "description": ""
+    },
+    {
+      "id": 39,
+      "category": "Chicken in Cameo Role",
+      "subcategory": "",
+      "itemName": "Chicken Wrap",
       "price": 157,
       "priceDisplay": "₹157",
       "description": ""
     },
     {
-      "id": 34,
+      "id": 40,
+      "category": "Chicken in Cameo Role",
+      "subcategory": "",
+      "itemName": "Chicken Crystal Wrap",
+      "price": 187,
+      "priceDisplay": "₹187",
+      "description": ""
+    },
+    {
+      "id": 41,
+      "category": "Chicken in Cameo Role",
+      "subcategory": "",
+      "itemName": "Chicken Sandwich",
+      "price": 187,
+      "priceDisplay": "₹187",
+      "description": ""
+    },
+    {
+      "id": 42,
+      "category": "Chicken in Cameo Role",
+      "subcategory": "",
+      "itemName": "Chicken Pasta",
+      "price": 177,
+      "priceDisplay": "₹177",
+      "description": ""
+    },
+    {
+      "id": 43,
+      "category": "Paneer in Cameo Role",
+      "subcategory": "",
+      "itemName": "Paneer Tikka Wrap",
+      "price": 147,
+      "priceDisplay": "₹147",
+      "description": ""
+    },
+    {
+      "id": 44,
+      "category": "Paneer in Cameo Role",
+      "subcategory": "",
+      "itemName": "Paneer Sandwich",
+      "price": 187,
+      "priceDisplay": "₹187",
+      "description": ""
+    },
+    {
+      "id": 45,
+      "category": "Mushroom in Cameo Role",
+      "subcategory": "",
+      "itemName": "Butter Garlic Mushroom",
+      "price": 157,
+      "priceDisplay": "₹157",
+      "description": ""
+    },
+    {
+      "id": 46,
+      "category": "Mushroom in Cameo Role",
+      "subcategory": "",
+      "itemName": "Garlic Mushroom Wrap",
+      "price": 167,
+      "priceDisplay": "₹167",
+      "description": ""
+    },
+    {
+      "id": 47,
+      "category": "Mushroom in Cameo Role",
+      "subcategory": "",
+      "itemName": "Mushroom Pasta",
+      "price": 157,
+      "priceDisplay": "₹157",
+      "description": ""
+    },
+    {
+      "id": 48,
+      "category": "Egg as Omelette",
+      "subcategory": "",
+      "itemName": "with Vegetables",
+      "price": 117,
+      "priceDisplay": "₹117",
+      "description": ""
+    },
+    {
+      "id": 49,
+      "category": "Egg as Omelette",
+      "subcategory": "",
+      "itemName": "with Maggie",
+      "price": 127,
+      "priceDisplay": "₹127",
+      "description": ""
+    },
+    {
+      "id": 50,
+      "category": "Egg as Omelette",
+      "subcategory": "",
+      "itemName": "with Wrap",
+      "price": 137,
+      "priceDisplay": "₹137",
+      "description": ""
+    },
+    {
+      "id": 51,
+      "category": "Egg as Omelette",
+      "subcategory": "",
+      "itemName": "with Mushroom",
+      "price": 147,
+      "priceDisplay": "₹147",
+      "description": ""
+    },
+    {
+      "id": 52,
+      "category": "Egg as Omelette",
+      "subcategory": "",
+      "itemName": "with Chicken",
+      "price": 157,
+      "priceDisplay": "₹157",
+      "description": ""
+    },
+    {
+      "id": 53,
+      "category": "Veggies as Chorus",
+      "subcategory": "",
+      "itemName": "with Maggie",
+      "price": 97,
+      "priceDisplay": "₹97",
+      "description": ""
+    },
+    {
+      "id": 54,
+      "category": "Veggies as Chorus",
+      "subcategory": "",
+      "itemName": "with Wrap",
+      "price": 127,
+      "priceDisplay": "₹127",
+      "description": ""
+    },
+    {
+      "id": 55,
+      "category": "Veggies as Chorus",
+      "subcategory": "",
+      "itemName": "with Pasta",
+      "price": 137,
+      "priceDisplay": "₹137",
+      "description": ""
+    },
+    {
+      "id": 56,
       "category": "Curtain Call",
       "subcategory": "",
       "itemName": "Chocolate",
@@ -304,34 +511,25 @@
       "description": "Ask for the varieties"
     },
     {
-      "id": 35,
+      "id": 57,
       "category": "Curtain Call",
       "subcategory": "",
       "itemName": "Popsicles",
-      "price": 57,
-      "priceDisplay": "₹57",
+      "price": 67,
+      "priceDisplay": "₹67",
       "description": "Ask for the flavour"
     },
     {
-      "id": 36,
+      "id": 58,
       "category": "Curtain Call",
       "subcategory": "",
       "itemName": "Choco Mug Cake",
-      "price": 107,
-      "priceDisplay": "₹107",
+      "price": 157,
+      "priceDisplay": "₹157",
       "description": ""
     },
     {
-      "id": 37,
-      "category": "Curtain Call",
-      "subcategory": "",
-      "itemName": "Kulfi",
-      "price": 97,
-      "priceDisplay": "₹97",
-      "description": "Ask for the flavour"
-    },
-    {
-      "id": 38,
+      "id": 59,
       "category": "Curtain Call",
       "subcategory": "",
       "itemName": "Ice Cream",
@@ -340,220 +538,13 @@
       "description": "Ask for the flavour"
     },
     {
-      "id": 39,
-      "category": "Performance",
-      "subcategory": "Lead Role",
-      "itemName": "Paneer Kebab",
-      "price": 107,
-      "priceDisplay": "₹107",
-      "description": ""
-    },
-    {
-      "id": 40,
-      "category": "Performance",
-      "subcategory": "Lead Role",
-      "itemName": "Chicken Malai Kebab",
-      "price": 117,
-      "priceDisplay": "₹117",
-      "description": ""
-    },
-    {
-      "id": 41,
-      "category": "Performance",
-      "subcategory": "Lead Role",
-      "itemName": "Chicken Hariyali Kebab",
-      "price": 117,
-      "priceDisplay": "₹117",
-      "description": ""
-    },
-    {
-      "id": 42,
-      "category": "Performance",
-      "subcategory": "Lead Role",
-      "itemName": "Chicken Masala Kebab",
-      "price": 117,
-      "priceDisplay": "₹117",
-      "description": ""
-    },
-    {
-      "id": 43,
-      "category": "Performance",
-      "subcategory": "Lead Role",
-      "itemName": "Fish Masala Kebab",
-      "price": 137,
-      "priceDisplay": "₹137",
-      "description": ""
-    },
-    {
-      "id": 44,
-      "category": "Performance",
-      "subcategory": "Paneer in Cameo Role",
-      "itemName": "Paneer Tikka Wrap",
-      "price": 107,
-      "priceDisplay": "₹107",
-      "description": ""
-    },
-    {
-      "id": 45,
-      "category": "Performance",
-      "subcategory": "Paneer in Cameo Role",
-      "itemName": "Paneer Sandwich",
-      "price": 127,
-      "priceDisplay": "₹127",
-      "description": ""
-    },
-    {
-      "id": 46,
-      "category": "Performance",
-      "subcategory": "Mushroom in Cameo Role",
-      "itemName": "Butter Garlic Mushroom",
-      "price": 107,
-      "priceDisplay": "₹107",
-      "description": ""
-    },
-    {
-      "id": 47,
-      "category": "Performance",
-      "subcategory": "Mushroom in Cameo Role",
-      "itemName": "Garlic Mushroom Wrap",
-      "price": 107,
-      "priceDisplay": "₹107",
-      "description": ""
-    },
-    {
-      "id": 48,
-      "category": "Performance",
-      "subcategory": "Mushroom in Cameo Role",
-      "itemName": "Mushroom Pasta",
-      "price": 137,
-      "priceDisplay": "₹137",
-      "description": ""
-    },
-    {
-      "id": 49,
-      "category": "Performance",
-      "subcategory": "Chicken in Cameo Role",
-      "itemName": "Chicken Envelope",
-      "price": 97,
-      "priceDisplay": "₹97",
-      "description": ""
-    },
-    {
-      "id": 50,
-      "category": "Performance",
-      "subcategory": "Chicken in Cameo Role",
-      "itemName": "Chicken Maggie",
-      "price": 117,
-      "priceDisplay": "₹117",
-      "description": ""
-    },
-    {
-      "id": 51,
-      "category": "Performance",
-      "subcategory": "Chicken in Cameo Role",
-      "itemName": "Chicken Wrap",
-      "price": 127,
-      "priceDisplay": "₹127",
-      "description": ""
-    },
-    {
-      "id": 52,
-      "category": "Performance",
-      "subcategory": "Chicken in Cameo Role",
-      "itemName": "Chicken Sandwich",
-      "price": 157,
-      "priceDisplay": "₹157",
-      "description": ""
-    },
-    {
-      "id": 53,
-      "category": "Performance",
-      "subcategory": "Chicken in Cameo Role",
-      "itemName": "Chicken Pasta",
-      "price": 157,
-      "priceDisplay": "₹157",
-      "description": ""
-    },
-    {
-      "id": 54,
-      "category": "Performance",
-      "subcategory": "Egg as Omelette",
-      "itemName": "with Vegetables",
-      "price": 87,
-      "priceDisplay": "₹87",
-      "description": ""
-    },
-    {
-      "id": 55,
-      "category": "Performance",
-      "subcategory": "Egg as Omelette",
-      "itemName": "with Maggie",
-      "price": 87,
-      "priceDisplay": "₹87",
-      "description": ""
-    },
-    {
-      "id": 56,
-      "category": "Performance",
-      "subcategory": "Egg as Omelette",
-      "itemName": "with Wrap",
-      "price": 97,
-      "priceDisplay": "₹97",
-      "description": ""
-    },
-    {
-      "id": 57,
-      "category": "Performance",
-      "subcategory": "Egg as Omelette",
-      "itemName": "with Mushroom",
-      "price": 107,
-      "priceDisplay": "₹107",
-      "description": ""
-    },
-    {
-      "id": 58,
-      "category": "Performance",
-      "subcategory": "Egg as Omelette",
-      "itemName": "with Chicken",
-      "price": 127,
-      "priceDisplay": "₹127",
-      "description": ""
-    },
-    {
-      "id": 59,
-      "category": "Performance",
-      "subcategory": "Veggies as Chorus",
-      "itemName": "with Maggie",
+      "id": 60,
+      "category": "Curtain Call",
+      "subcategory": "",
+      "itemName": "Masala Cola",
       "price": 77,
       "priceDisplay": "₹77",
       "description": ""
-    },
-    {
-      "id": 60,
-      "category": "Performance",
-      "subcategory": "Veggies as Chorus",
-      "itemName": "with Wrap",
-      "price": 117,
-      "priceDisplay": "₹117",
-      "description": ""
-    },
-    {
-      "id": 61,
-      "category": "Performance",
-      "subcategory": "Veggies as Chorus",
-      "itemName": "with Pasta",
-      "price": 117,
-      "priceDisplay": "₹117",
-      "description": ""
-    },
-    {
-      "id": 62,
-      "category": "Performance",
-      "subcategory": "Special Act",
-      "itemName": "Special Act by Big Brother, PORK",
-      "price": 177,
-      "priceDisplay": "₹177",
-      "description": "On request"
     }
   ]
 }
