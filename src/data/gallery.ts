@@ -65,6 +65,16 @@ export const workshopPhotos: GalleryPhoto[] = [
     alt: 'Physical theatre training — participants in movement and acrobatic exercise',
     caption: 'Physical theatre training',
   },
+  {
+    src: 'mime-performance-outdoor-festival.webp',
+    alt: 'Performers in traditional costumes doing acrobatics at an outdoor festival',
+    caption: 'Outdoor festival · in the city',
+  },
+  {
+    src: 'mime-performance-vw-festival.webp',
+    alt: 'Performers in patchwork costumes at an outdoor festival, a VW Beetle visible behind',
+    caption: 'The city as stage',
+  },
 ];
 
 export const performancePhotos: GalleryPhoto[] = [
@@ -82,15 +92,5 @@ export const performancePhotos: GalleryPhoto[] = [
     src: 'mime-performance-aerial-blue.webp',
     alt: 'An aerial performer under dramatic purple and blue stage lighting',
     caption: 'Aerial · dramatic light',
-  },
-  {
-    src: 'mime-performance-outdoor-festival.webp',
-    alt: 'Performers in traditional costumes doing acrobatics at an outdoor festival',
-    caption: 'Outdoor festival · in the city',
-  },
-  {
-    src: 'mime-performance-vw-festival.webp',
-    alt: 'Performers in patchwork costumes at an outdoor festival, a VW Beetle visible behind',
-    caption: 'The city as stage',
   },
 ];

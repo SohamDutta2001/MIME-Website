@@ -1,4 +1,4 @@
-// Segment (b) — First Stage: the children's theatre wing of National Mime Institute.
+// Segment (b) — First Stage: the children's theatre wing of Indian Mime Theatre.
 // Fully static — no Sheet dependency.
 
 import { motion } from 'framer-motion';
@@ -50,7 +50,7 @@ export default function FirstStage({ onBack }) {
 
             <div className="mt-8 space-y-5 font-body text-lg leading-8 text-[#F5F0E6]/75">
               <p>
-                First Stage is the children's theatre wing of National Mime Institute, offering
+                First Stage is the children's theatre wing of Indian Mime Theatre, offering
                 theatre training for children aged 6–14 years.
               </p>
               <p>
