@@ -72,7 +72,7 @@ Click the cell, edit it, press Enter. Done.
 | `bannerUrl` | A photo URL for the event poster | No | `https://...` |
 | `description` | Main description. Leave a blank line between paragraphs | No | See below |
 | `additionalInfo` | Extra details: artist bio, what to bring, curator note | No | `Ustad Ratan Das has performed...` |
-| `galleryUrls` | Photo links, one per line (use Alt+Enter to add lines in a cell) | No | See below |
+| `Gallery URL 1` … `Gallery URL 8` | One photo link per column. Fill left to right; leave the rest blank | No | See below |
 | `registrationUrl` | Link to register or sign up. Leave blank for walk-in events | No | `https://forms.google.com/...` |
 
 ### How to add a new event
@@ -98,11 +98,11 @@ The date column must be in **YYYY-MM-DD** format (year-month-day). Google Sheets
 
 ### Tip: multiple gallery photos
 
-To add several photo links in the `galleryUrls` cell:
-1. Type the first URL
-2. Press **Alt+Enter** (not just Enter) to start a new line inside the same cell
-3. Type the second URL
-4. Repeat for each photo
+Each event can have up to 8 gallery photos. Put each photo link in its own `Gallery URL`
+column (1 through 8) — paste a link, press Tab, paste the next one. Leave any unused
+columns empty; you don't need to fill all 8. Links must start with `http://` or
+`https://`, or they'll be skipped. The column order is the order photos appear on the
+site.
 
 ### How to add a banner photo
 

@@ -11,7 +11,13 @@
 //
 // Sheet columns (header names are normalized — case, spaces, underscores ignored):
 //   active, category, title, date, time, venue, bannerUrl, description,
-//   additionalInfo, galleryUrls, registrationUrl, section (optional)
+//   additionalInfo, Gallery URL 1..8, registrationUrl, section (optional)
+//
+// Gallery URL 1 through Gallery URL 8: one photo link per column (replaces the old
+// single "galleryUrls" cell that required Alt+Enter for multiple links). Column
+// order determines display order; any subset can be left blank. Values are
+// deduplicated, validated as http(s) links, and capped at 8 — see
+// collectGalleryUrls() below.
 //
 // Zero-row policy:
 //   0 active events  → valid; writes empty data array (off-season / between programmes)
@@ -81,9 +87,17 @@ if (rows.length === 0) {
   process.exit(0);
 }
 
+// UX choice, not a technical limit — current events use 1-3 photos; 8 gives headroom
+// while keeping the sheet scannable. Raise this (and the sheet template) if that changes.
+const GALLERY_URL_COLUMN_COUNT = 8;
+const GALLERY_URL_HEADERS = Array.from(
+  { length: GALLERY_URL_COLUMN_COUNT },
+  (_, i) => `galleryurl${i + 1}`,
+);
+
 const REQUIRED_HEADERS = [
   'active', 'category', 'title', 'date', 'time', 'venue', 'bannerurl',
-  'description', 'additionalinfo', 'galleryurls', 'registrationurl',
+  'description', 'additionalinfo', ...GALLERY_URL_HEADERS, 'registrationurl',
 ];
 try {
   validateHeaders(rows, REQUIRED_HEADERS, label);
@@ -147,6 +161,37 @@ function parseDateStr(raw, rowNum) {
     );
   }
   return null;
+}
+
+// Collects one event row's gallery links from its 8 columns into an ordered,
+// deduplicated array (first occurrence wins). Column order == display order.
+// Tolerates a leftover Alt+Enter multi-line paste in any single cell (old habit)
+// by splitting it too, but warns so we can tell if that's still happening.
+function collectGalleryUrls(row, rowNum) {
+  const raw = GALLERY_URL_HEADERS.map((h) => cell(row, h));
+
+  const multilineIndex = raw.findIndex((v) => /\r?\n/.test(v));
+  if (multilineIndex !== -1) {
+    console.warn(`[${label}] row ${rowNum}: Gallery URL ${multilineIndex + 1} has multiple lines — old Alt+Enter habit? Splitting it anyway.`);
+  }
+
+  const urls = raw
+    .flatMap((u) => u.split(/\r?\n/))
+    .map((u) => u.trim())
+    .filter(Boolean)
+    .filter((u) => {
+      const looksLikeUrl = /^https?:\/\//i.test(u);
+      if (!looksLikeUrl) console.warn(`[${label}] row ${rowNum}: skipping gallery value that isn't a link: "${u}"`);
+      return looksLikeUrl;
+    });
+
+  const deduped = [...new Set(urls)]; // Set preserves first-seen insertion order
+
+  if (deduped.length > GALLERY_URL_COLUMN_COUNT) {
+    console.warn(`[${label}] row ${rowNum}: ${deduped.length} gallery URLs collected — truncating to ${GALLERY_URL_COLUMN_COUNT}`);
+    return deduped.slice(0, GALLERY_URL_COLUMN_COUNT);
+  }
+  return deduped;
 }
 
 // ─── Row validation ───────────────────────────────────────────────────────────
@@ -225,10 +270,7 @@ for (let i = 0; i < rows.length; i++) {
     bannerUrl: cell(r, 'bannerurl'),
     description: cell(r, 'description'),
     additionalInfo: cell(r, 'additionalinfo'),
-    galleryUrls: cell(r, 'galleryurls')
-      .split(/\r?\n/)
-      .map((u) => u.trim())
-      .filter(Boolean),
+    galleryUrls: collectGalleryUrls(r, rowNum),
     registrationUrl: cell(r, 'registrationurl'),
   });
 }

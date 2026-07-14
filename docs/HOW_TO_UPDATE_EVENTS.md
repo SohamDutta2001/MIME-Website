@@ -36,7 +36,7 @@ Open the spreadsheet, go to the **Events** tab, and fill a new row:
 | **bannerUrl** | Paste the banner image URL from Cloudinary | `https://res.cloudinary.com/…` |
 | **description** | The main text. Leave an empty line between paragraphs | |
 | **additionalInfo** | Performance → who is performing. Workshop → what people will learn. Exhibition → the curator's note | |
-| **galleryUrls** | Photo URLs, **one per line inside the same cell** (press `Ctrl+Enter` on Windows, `⌘+Enter` on Mac for a new line) | |
+| **Gallery URL 1** … **Gallery URL 8** | Paste each photo link into its own column — fill left to right, leave the rest blank. Links must start with `http://` or `https://`, or they're skipped. The order you fill them in is the order photos appear on the site. | |
 | **registrationUrl** | Where people sign up — a Google Form, a WhatsApp link like `https://wa.me/91…`, a ticket page, or Instagram. **Leave empty for walk-in events** | |
 
 ### Step 3 — that's it

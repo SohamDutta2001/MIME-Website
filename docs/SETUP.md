@@ -180,7 +180,7 @@ In the same spreadsheet as the menu (or a separate one), add a tab named
 | `bannerUrl`       | Cloudinary URL                                   | The hero image. A bare filename (no `https://`) is treated as a file in `/public/cafe-assets/` — handy before Cloudinary is set up. |
 | `description`     | text                                             | Main description. Blank lines split paragraphs. |
 | `additionalInfo`  | text                                             | Category-specific: artist bios (Performance), learning outcomes (Workshop), curator notes (Exhibition). |
-| `galleryUrls`     | one URL per line (Alt+Enter inside the cell)     | Optional gallery images. |
+| `Gallery URL 1` … `Gallery URL 8` | Cloudinary/Drive URL, one per column | Optional gallery images — up to 8, fill left to right, leave the rest blank. Values are deduplicated, capped at 8, and must start with `http://`/`https://` or they're skipped. |
 | `registrationUrl` | any link                                         | Google Form, WhatsApp (`https://wa.me/…`), ticketing site, Instagram… Leave blank for walk-in events. |
 
 Header matching is forgiving — `Banner URL`, `bannerUrl`, and `bannerurl` all
