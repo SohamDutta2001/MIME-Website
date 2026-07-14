@@ -22,15 +22,14 @@ export const site = {
     country: 'IN',
   },
   hours: [
-    { days: 'Mon — Thu', time: '10:00 — 22:00' },
-    { days: 'Fri — Sat', time: '10:00 — 23:30' },
-    { days: 'Sunday', time: '12:00 — 22:00' },
+    { days: 'Daily', time: '5:00 PM — 10:00 PM' },
   ],
   contact: {
     phone: '+91 33 0000 0000',
     email: 'Art.teas.tree.cafe@gmail.com',
-    instagram: '@artteastree',
-    instagramUrl: 'https://instagram.com/artteastree',
+    instagram: '@art_teas_tree_cafe',
+    instagramUrl: 'https://www.instagram.com/art_teas_tree_cafe',
+    facebookUrl: 'https://www.facebook.com/people/Art-Teas-Tree-Caf%C3%A9/61589309727983/?rdid=0qt6N2u5LwZDVoFJ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DKrCGpMdf%2F',
   },
   affiliation: {
     name: 'National Mime Institute',

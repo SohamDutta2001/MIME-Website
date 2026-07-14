@@ -1730,6 +1730,46 @@ function Books() {
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
+function FacebookIcon({ size = 16, className = '' }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  );
+}
+
+function InstagramIcon({ size = 16, className = '' }) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+    </svg>
+  );
+}
+
 function Footer() {
   return (
     <footer className="bg-[#1C1208] px-5 py-14 text-[#F5F0E6] sm:px-8 lg:py-20">
@@ -1753,11 +1793,7 @@ function Footer() {
           </p>
           <p className="flex items-start gap-3">
             <Clock size={16} className="mt-1 shrink-0" />
-            Open daily &mdash; 10:00 AM to 10:00 PM
-            <br />
-            <span className="font-typewriter text-[10px] text-[#F5F0E6]/38">
-              (Fri–Sat until 11:30 PM)
-            </span>
+            Open daily &mdash; 5:00 PM to 10:00 PM
           </p>
           <p className="flex items-start gap-3">
             <Theater size={16} className="mt-1 shrink-0" />
@@ -1772,6 +1808,26 @@ function Footer() {
                 {site.affiliation.name}
               </a>
             </span>
+          </p>
+          <p className="flex items-center gap-4 pt-1">
+            <a
+              href={site.contact.facebookUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-[#F5F0E6]/68 transition-colors hover:text-[#C9A87A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
+            >
+              <FacebookIcon size={18} />
+            </a>
+            <a
+              href={site.contact.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram"
+              className="text-[#F5F0E6]/68 transition-colors hover:text-[#C9A87A] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#C9A87A]"
+            >
+              <InstagramIcon size={18} />
+            </a>
           </p>
         </div>
 
